@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="sv"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Perfectum Sales Dashboard V6</title>
+<title>Perfectum Sales Dashboard V9.10</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -10,15 +10,30 @@
 body{font-family:'DM Sans',system-ui,sans-serif;background:#f5f5f7;overflow:hidden;height:100vh}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:#c1c1c1;border-radius:3px}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 .card{background:#fff;border-radius:14px;border:1px solid #e5e7eb;transition:all .15s;cursor:pointer}
 .card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.07)}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
 .btn-dark{background:#1d1d1f;color:#fff}.btn-light{background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb}
 .btn-green{background:#10b981;color:#fff}.btn-red{background:#fef2f2;color:#dc2626}
+.btn-orange{background:#f97316;color:#fff}
 .tag{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600}
 input,textarea,select{font-family:inherit;padding:8px 12px;border-radius:8px;border:1px solid #e5e7eb;font-size:13px;width:100%}
 input:focus,textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
 .lbl{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:2px}
+.order-fab{position:fixed;bottom:20px;right:20px;z-index:90;background:#1d1d1f;color:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 8px 24px rgba(0,0,0,.3);cursor:pointer;font-weight:700;animation:slideUp .3s;min-width:180px}
+.order-fab:hover{background:#3b82f6}
+.obj-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s;padding:20px}
+.obj-modal{background:#fff;border-radius:20px;width:100%;max-width:520px;max-height:85vh;overflow:auto;animation:popIn .25s}
+@media (max-width:768px){
+.sidebar-mobile{width:60px!important}
+.sidebar-mobile nav button span.label{display:none}
+.sidebar-mobile .footer-info{display:none}
+.main-mobile{padding:16px!important}
+.order-fab{bottom:12px!important;right:12px!important;min-width:auto!important;padding:10px 14px!important}
+.order-fab .fab-extra{display:none}
+}
 </style></head><body><div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useCallback}=React;
@@ -35,11 +50,11 @@ const SCRIPTS=[
 {t:0,x:"PAUS 3 sek"},
 {t:1,x:"Enda motprestationen: prova en liten förbrukningsvara. Inga volymer, inga pallar. Strumpa, handske, dunke spolarvätska — du väljer."},
 {t:1,x:"VAD SKULLE DU SÄGA GÅR ÅT ALLRA MEST?"},
-{t:0,x:"→ Produkter → välj rätt → AVSLUT"}]},
+{t:2,x:"🏢 AVSLUT → Välj kundens bransch för produkter"}]},
 {id:"s2",n:"🎪 Mässa-versionen",c:"#3b82f6",l:[
-{t:1,x:"Hej du [NAMN], de var Kim från Perfectum."},{t:0,x:"KALLSNACK 15 sek"},{t:1,x:"Perfectum — verktyg, förbrukningsvaror, kem. Anledningen: visa vilka vi är, få in en fot."},{t:1,x:"Vi fick grejer från en mässa — verktygsväska 94 delar, den ligger på mig."},{t:0,x:"PAUS"},{t:1,x:"Motprestation: prova en förbrukningsvara. Inga volymer. Du väljer."},{t:1,x:"VAD GÅR ÅT MEST?"},{t:0,x:"→ Produkter → AVSLUT"}]},
+{t:1,x:"Hej du [NAMN], de var Kim från Perfectum."},{t:0,x:"KALLSNACK 15 sek"},{t:1,x:"Perfectum — verktyg, förbrukningsvaror, kem. Anledningen: visa vilka vi är, få in en fot."},{t:1,x:"Vi fick grejer från en mässa — verktygsväska 94 delar, den ligger på mig."},{t:0,x:"PAUS"},{t:1,x:"Motprestation: prova en förbrukningsvara. Inga volymer. Du väljer."},{t:1,x:"VAD GÅR ÅT MEST?"},{t:2,x:"🏢 AVSLUT → Välj bransch"}]},
 {id:"s3",n:"👔 Chef-versionen",c:"#f59e0b",l:[
-{t:1,x:"Hej! Kim från Perfectum, hur mår vi?"},{t:0,x:"KALLSNACK"},{t:1,x:"Vi är totalleverantör — som Swedol fast vi kommer till dig. Allt under ett tak, 18 000 kunder."},{t:1,x:"Min chef velat att jag ringer (haha) — men jag skapar relationer."},{t:1,x:"Verktygsväska 94 delar — ligger på mig. Motprestation: testa en vara. Inga volymer."},{t:1,x:"Vad går åt mest?"},{t:0,x:"→ Produkter → AVSLUT"}]},
+{t:1,x:"Hej! Kim från Perfectum, hur mår vi?"},{t:0,x:"KALLSNACK"},{t:1,x:"Vi är totalleverantör — som Swedol fast vi kommer till dig. Allt under ett tak, 18 000 kunder."},{t:1,x:"Min chef velat att jag ringer (haha) — men jag skapar relationer."},{t:1,x:"Verktygsväska 94 delar — ligger på mig. Motprestation: testa en vara. Inga volymer."},{t:1,x:"Vad går åt mest?"},{t:2,x:"🏢 AVSLUT → Välj bransch"}]},
 {id:"s5",n:"✅ AVSLUT + Varuprover + 12000 varor",c:"#dc2626",l:[
 {t:0,x:"═══ EFTER PRODUKTVAL ═══"},
 {t:1,x:"Toppen [NAMN]! Då kör vi på det — en [PRODUKT]."},
@@ -51,13 +66,13 @@ const SCRIPTS=[
 {t:1,x:"Skostorlek för strumporna?"},{t:0,x:"✍️ Sko: ___"},
 {t:1,x:"Hur många är ni?"},{t:0,x:"✍️ Antal: ___"},
 {t:0,x:"── 12 000 VAROR ──"},
-{t:1,x:"Och sen [NAMN] — vi har över 12 000 varor. Allt från strumpor till trädgårdsmaskiner. Har du behov av nåt annat — ring mig gärna. Vi har riktigt bra avtal med alla våra leverantörer så jag kan lösa bra produkter på det mesta. Du slipper åka runt och beställa hos massa andra — jag skickar allt till dig. Fråga mig om vad som helst!"},
+{t:1,x:"Och sen [NAMN] — vi har över 12 000 varor. Allt från strumpor till trädgårdsmaskiner. Har du behov av nåt annat — ring mig gärna."},
 {t:0,x:"── ADRESS ──"},
 {t:1,x:"Stämmer adressen [ADRESS]? Så det inte hamnar hos grannen (haha)"},
 {t:0,x:"── UPPFÖLJNING ──"},
 {t:1,x:"Jag ringer om 1-2 månader — genuint nyfiken vad du tycker."},
 {t:1,x:"Toppen [NAMN]! Tack — ha det bäst!"},
-{t:0,x:"📱 SMS direkt | 📝 Spara kund i CRM med storlekar+adress+uppföljning ~6v"}]},
+{t:0,x:"📱 SMS direkt | 📝 Spara som Varm Kund"}]},
 ];
 
 function App(){
@@ -65,43 +80,66 @@ const[tab,setTab]=useState("scripts");const[selS,setSelS]=useState(null);const[s
 const[q,setQ]=useState("");const[cp,setCp]=useState(null);const[showLog,setShowLog]=useState(false);
 const[log,setLog]=useState({namn:"",tel:"",antal:"",hsk:"",sko:"",prod:"",adr:"",bday:"",note:""});
 const[missed,setMissed]=useState(LS.g("pf-miss")||[]);const[missIn,setMissIn]=useState("");
-const[cust,setCust]=useState(LS.g("pf-cust")||[]);const[custF,setCustF]=useState(null);const[custSt,setCustSt]=useState("alla");
+const[cust,setCust]=useState(LS.g("pf-cust")||[]);const[custSt,setCustSt]=useState("alla");
 const[cf,setCf]=useState(null);const[typeF,setTypeF]=useState(null);const[editS,setEditS]=useState(null);const[editL,setEditL]=useState(null);
 const[scripts,setScripts]=useState(LS.g("pf-scripts")||SCRIPTS);
+const[selBranch,setSelBranch]=useState(null);
+const[showBranches,setShowBranches]=useState(false);
+const[order,setOrder]=useState(LS.g("pf-order")||[]);
+const[objOpen,setObjOpen]=useState(false);
+const[objQ,setObjQ]=useState("");
+
 const saveM=m=>{setMissed(m);LS.s("pf-miss",m)};
 const saveC=c=>{setCust(c);LS.s("pf-cust",c)};
 const saveSc=s=>{setScripts(s);LS.s("pf-scripts",s)};
+const saveO=o=>{setOrder(o);LS.s("pf-order",o)};
 const copy=(t,id)=>{navigator.clipboard.writeText(t).catch(()=>{});setCp(id);setTimeout(()=>setCp(null),1500)};
 const today=new Date().toISOString().split("T")[0];
 
-// Group products
+const addToOrder=(p,qty=1,size="")=>{
+const existing=order.find(o=>o.id===p.id&&o.size===size);
+if(existing){saveO(order.map(o=>o.id===p.id&&o.size===size?{...o,qty:o.qty+qty}:o))}
+else{saveO([...order,{id:p.id,n:p.n,e:p.e,price:p.pr,qty,size,added:Date.now()}])}
+};
+const removeFromOrder=id=>saveO(order.filter(o=>o.added!==id));
+const clearOrder=()=>{if(confirm("Rensa hela ordern?"))saveO([])};
+const orderTotal=order.reduce((s,o)=>{
+const m=o.price?.match(/(\d+)/);return s+(m?parseInt(m[1])*o.qty:0);
+},0);
+
 const sorted=[...PRODUCTS].sort((a,b)=>(a.r||99)-(b.r||99));
 const filt=typeF?sorted.filter(p=>p.tags?.includes(typeF)):sorted;
 const searched=q?filt.filter(p=>p.n.toLowerCase().includes(q.toLowerCase())||p.cat?.toLowerCase().includes(q.toLowerCase())||p.sub?.toLowerCase().includes(q.toLowerCase())||p.p?.toLowerCase().includes(q.toLowerCase())):null;
 const cats=[];const cm={};(searched||filt).forEach(p=>{const c=p.cat||"Övrigt";if(!cm[c]){cm[c]={n:c,ps:[]};cats.push(cm[c])}cm[c].ps.push(p)});
+
+const filteredObj=objQ?OBJ.filter(o=>o.q.toLowerCase().includes(objQ.toLowerCase())||o.a.toLowerCase().includes(objQ.toLowerCase())):OBJ;
 
 const addCust=c=>{saveC([...cust,{...c,id:Date.now(),created:today,history:[]}])};
 const filtC=custSt==="alla"?cust:custSt==="ring"?cust.filter(c=>c.followUp&&c.followUp<=today):cust.filter(c=>c.status===custSt);
 
 return React.createElement("div",{style:{display:"flex",height:"100vh",fontFamily:"'DM Sans',system-ui,sans-serif",background:"#f5f5f7",overflow:"hidden"}},
 
-// ══ SIDEBAR ══
 React.createElement("div",{style:{width:200,background:"#1d1d1f",color:"#fff",display:"flex",flexDirection:"column",flexShrink:0}},
-React.createElement("div",{style:{padding:"18px 14px 10px",borderBottom:"1px solid #333"}},React.createElement("div",{style:{fontSize:10,fontWeight:600,color:"#9ca3af",textTransform:"uppercase",letterSpacing:1.5}},"Perfectum"),React.createElement("div",{style:{fontSize:16,fontWeight:700}},"Sales Dashboard")),
+React.createElement("div",{style:{padding:"18px 14px 10px",borderBottom:"1px solid #333"}},React.createElement("div",{style:{fontSize:10,fontWeight:600,color:"#9ca3af",textTransform:"uppercase",letterSpacing:1.5}},"Perfectum"),React.createElement("div",{style:{fontSize:16,fontWeight:700}},"Sales Dashboard"),React.createElement("div",{style:{fontSize:9,color:"#6b7280",marginTop:2}},"V9.10")),
 React.createElement("nav",{style:{flex:1,padding:"6px 4px",overflowY:"auto"}},
-[{id:"scripts",e:"📋",l:"Manus"},{id:"products",e:"📦",l:"Produkter ("+PRODUCTS.length+")"},{id:"customers",e:"👥",l:"Kunder ("+cust.length+")"},{id:"objections",e:"🛡️",l:"Invändningar"},{id:"jokes",e:"😄",l:"Skämt"},{id:"missed",e:"📞",l:"Ringlista ("+missed.length+")"}].map(t=>
-React.createElement("button",{key:t.id,onClick:()=>{setTab(t.id);setSelS(null);setSelP(null);setQ("");setTypeF(null)},style:{display:"flex",alignItems:"center",gap:7,width:"100%",padding:"8px 10px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:500,fontFamily:"inherit",marginBottom:1,background:tab===t.id?"rgba(255,255,255,.12)":"transparent",color:tab===t.id?"#fff":"#9ca3af",fontSize:12.5}},t.e," ",t.l)),
+[{id:"scripts",e:"📋",l:"Manus"},{id:"products",e:"📦",l:"Produkter ("+PRODUCTS.length+")"},{id:"order",e:"🛒",l:"Order ("+order.length+")"},{id:"customers",e:"🔥",l:"Varm Kund ("+cust.length+")"},{id:"jokes",e:"😄",l:"Skämt"},{id:"missed",e:"📞",l:"Ringlista ("+missed.length+")"}].map(t=>
+React.createElement("button",{key:t.id,onClick:()=>{setTab(t.id);setSelS(null);setSelP(null);setQ("");setTypeF(null);setSelBranch(null);setShowBranches(false)},style:{display:"flex",alignItems:"center",gap:7,width:"100%",padding:"8px 10px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:500,fontFamily:"inherit",marginBottom:1,background:tab===t.id?"rgba(255,255,255,.12)":"transparent",color:tab===t.id?"#fff":"#9ca3af",fontSize:12.5}},t.e," ",t.l)),
+React.createElement("div",{style:{height:1,background:"#333",margin:"6px"}}),
+React.createElement("button",{onClick:()=>setObjOpen(true),style:{display:"flex",alignItems:"center",gap:7,width:"100%",padding:"8px 10px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:600,fontFamily:"inherit",marginBottom:1,background:"#dc2626",color:"#fff",fontSize:12.5}},"🛡️ Invändningar"),
 React.createElement("div",{style:{height:1,background:"#333",margin:"6px"}}),
 React.createElement("button",{onClick:()=>{if(confirm("Återställa manus?")){saveSc(SCRIPTS)}},style:{display:"flex",alignItems:"center",gap:6,width:"100%",padding:"8px 10px",borderRadius:8,border:"none",cursor:"pointer",fontSize:11,fontFamily:"inherit",background:"transparent",color:"#6b7280"}},"🔄 Återställ manus")),
-React.createElement("div",{style:{padding:"10px 14px",borderTop:"1px solid #333",fontSize:9,color:"#6b7280"}},"Perfectum V6.0 | ",PRODUCTS.length," produkter")),
+React.createElement("div",{style:{padding:"10px 14px",borderTop:"1px solid #333",fontSize:9,color:"#6b7280"}},"Perfectum V9.10 | ",PRODUCTS.length," produkter | ",BRANCHES.length," branscher")),
 
-// ══ MAIN ══
 React.createElement("div",{style:{flex:1,overflow:"auto",padding:"24px 32px",marginRight:showLog?300:0,transition:"margin .2s"}},
 
-// ── Samtalslogg button ──
-React.createElement("button",{onClick:()=>setShowLog(!showLog),style:{position:"fixed",bottom:16,right:showLog?316:16,zIndex:100,padding:"8px 16px",borderRadius:10,border:"none",background:showLog?"#dc2626":"#1d1d1f",color:"#fff",fontSize:12,fontWeight:600,cursor:"pointer",boxShadow:"0 4px 16px rgba(0,0,0,.25)",fontFamily:"inherit"}},showLog?"✕":"📝 Logg"),
+React.createElement("button",{onClick:()=>setShowLog(!showLog),style:{position:"fixed",bottom:16,right:showLog?316:(order.length>0?220:16),zIndex:100,padding:"8px 16px",borderRadius:10,border:"none",background:showLog?"#dc2626":"#1d1d1f",color:"#fff",fontSize:12,fontWeight:600,cursor:"pointer",boxShadow:"0 4px 16px rgba(0,0,0,.25)",fontFamily:"inherit"}},showLog?"✕":"📝 Logg"),
 
-// ── Samtalslogg panel ──
+order.length>0&&!showLog&&tab!=="order"&&React.createElement("div",{className:"order-fab",onClick:()=>setTab("order")},
+React.createElement("div",{style:{fontSize:11,color:"#9ca3af",marginBottom:2}},"🛒 Aktuell order"),
+React.createElement("div",{style:{fontSize:16,fontWeight:800}},order.length," produkter"),
+React.createElement("div",{style:{fontSize:13,color:"#10b981",fontWeight:700}},"~",orderTotal," kr"),
+React.createElement("div",{style:{fontSize:10,color:"#9ca3af",marginTop:4}},"Klicka för detaljer →")),
+
 showLog&&React.createElement("div",{style:{position:"fixed",right:0,top:0,width:300,height:"100vh",background:"#fff",borderLeft:"1px solid #e5e7eb",zIndex:99,overflow:"auto",padding:16,boxShadow:"-4px 0 16px rgba(0,0,0,.08)"}},
 React.createElement("h3",{style:{margin:"0 0 12px",fontSize:15,fontWeight:700}},"📝 Samtalslogg"),
 [{k:"namn",l:"Företag"},{k:"tel",l:"Telefon"},{k:"antal",l:"Antal anst."},{k:"hsk",l:"Handskstl"},{k:"sko",l:"Skostl"},{k:"prod",l:"Produkt"},{k:"adr",l:"Adress"},{k:"bday",l:"Födelsedag (MM-DD)"}].map(f=>
@@ -109,10 +147,24 @@ React.createElement("div",{key:f.k,style:{marginBottom:8}},React.createElement("
 React.createElement("div",{style:{marginBottom:8}},React.createElement("label",{className:"lbl"},"Anteckningar"),React.createElement("textarea",{value:log.note,onChange:e=>setLog({...log,note:e.target.value}),rows:2,style:{resize:"vertical"}})),
 React.createElement("div",{style:{display:"flex",gap:4,flexWrap:"wrap"}},
 React.createElement("button",{className:"btn btn-dark",onClick:()=>{const t=Object.entries(log).filter(([_,v])=>v).map(([k,v])=>k+": "+v).join("\n");copy(t,"log")}},cp==="log"?"✓":"📋 Kopiera"),
-React.createElement("button",{className:"btn btn-green",onClick:()=>{if(log.namn){addCust({name:log.namn,phone:log.tel,status:"ny",products:log.prod,sizes:log.hsk+"/"+log.sko,address:log.adr,antal:log.antal,followUp:"",notes:log.note,birthday:log.bday});setLog({namn:"",tel:"",antal:"",hsk:"",sko:"",prod:"",adr:"",bday:"",note:""})}}},"→ Spara kund"),
+React.createElement("button",{className:"btn btn-green",onClick:()=>{if(log.namn){addCust({name:log.namn,phone:log.tel,status:"ny",products:log.prod,sizes:log.hsk+"/"+log.sko,address:log.adr,antal:log.antal,followUp:"",notes:log.note,birthday:log.bday});setLog({namn:"",tel:"",antal:"",hsk:"",sko:"",prod:"",adr:"",bday:"",note:""})}}},"→ Spara"),
 React.createElement("button",{className:"btn btn-light",onClick:()=>setLog({namn:"",tel:"",antal:"",hsk:"",sko:"",prod:"",adr:"",bday:"",note:""})},"Rensa"))),
 
-// ══ SCRIPTS TAB ══
+objOpen&&React.createElement("div",{className:"obj-overlay",onClick:()=>setObjOpen(false)},
+React.createElement("div",{className:"obj-modal",onClick:e=>e.stopPropagation()},
+React.createElement("div",{style:{padding:"16px 20px",borderBottom:"1px solid #e5e7eb",display:"flex",justifyContent:"space-between",alignItems:"center"}},
+React.createElement("div",null,React.createElement("div",{style:{fontSize:18,fontWeight:800}},"🛡️ Invändningar"),React.createElement("div",{style:{fontSize:11,color:"#6b7280"}},OBJ.length," färdiga svar")),
+React.createElement("button",{onClick:()=>setObjOpen(false),style:{width:32,height:32,borderRadius:8,border:"none",background:"#f3f4f6",cursor:"pointer",fontSize:14}},"✕")),
+React.createElement("div",{style:{padding:"12px 20px"}},React.createElement("input",{value:objQ,onChange:e=>setObjQ(e.target.value),placeholder:"🔍 Sök invändning...",autoFocus:true})),
+React.createElement("div",{style:{padding:"0 20px 20px",maxHeight:"55vh",overflow:"auto"}},
+filteredObj.length===0?React.createElement("div",{style:{textAlign:"center",padding:20,color:"#9ca3af"}},"Inga träffar")
+:filteredObj.map((o,i)=>React.createElement("div",{key:i,style:{padding:12,borderRadius:10,background:"#f9fafb",marginBottom:6,border:"1px solid #e5e7eb"}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,color:"#dc2626"}},'"',o.q,'"'),
+React.createElement("div",{style:{fontSize:13,margin:"4px 0"}},React.createElement("span",{style:{color:"#10b981",fontWeight:600}},"→ "),o.a),
+React.createElement("div",{style:{display:"flex",gap:6,marginTop:4,alignItems:"center"}},
+React.createElement("div",{style:{fontSize:10,color:"#f59e0b",flex:1}},"⚠️ ",o.w),
+React.createElement("button",{onClick:()=>copy(o.a,"obj"+i),style:{padding:"3px 8px",borderRadius:6,border:"none",background:"#1d1d1f",color:"#fff",fontSize:10,cursor:"pointer"}},cp==="obj"+i?"✓ Kopierad":"📋 Kopiera svar"))))))),
+
 tab==="scripts"&&!selS&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
 React.createElement("h1",{style:{fontSize:24,fontWeight:800,marginBottom:16}},"📋 Manus"),
 React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))",gap:10}},
@@ -123,22 +175,45 @@ React.createElement("div",{style:{fontSize:12,color:"#6b7280"}},s.l.length," rad
 tab==="scripts"&&selS&&(()=>{const s=scripts.find(x=>x.id===selS);if(!s)return null;const ed=editS===s.id;const lines=ed?editL:s.l;
 return React.createElement("div",{style:{animation:"fadeIn .3s"}},
 React.createElement("div",{style:{display:"flex",gap:6,marginBottom:14}},
-React.createElement("button",{className:"btn btn-light",onClick:()=>{setSelS(null);setEditS(null);setEditL(null)}},"← Tillbaka"),
+React.createElement("button",{className:"btn btn-light",onClick:()=>{setSelS(null);setEditS(null);setEditL(null);setShowBranches(false);setSelBranch(null)}},"← Tillbaka"),
 !ed?React.createElement("button",{className:"btn btn-light",onClick:()=>{setEditS(s.id);setEditL(s.l.map(l=>({...l})))}},"✏️ Redigera")
 :React.createElement(React.Fragment,null,
 React.createElement("button",{className:"btn btn-green",onClick:()=>{saveSc(scripts.map(x=>x.id===s.id?{...x,l:editL}:x));setEditS(null);setEditL(null)}},"💾 Spara"),
 React.createElement("button",{className:"btn btn-light",onClick:()=>{setEditS(null);setEditL(null)}},"Avbryt"))),
 React.createElement("h2",{style:{fontSize:20,fontWeight:700,marginBottom:16}},s.n),
 React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:2}},
-lines.map((l,i)=>React.createElement("div",{key:i,style:{display:"flex",gap:8,padding:"8px 12px",borderRadius:8,background:l.t===0?"#fef3c7":"#fff",border:l.t===0?"1px solid #fde68a":"1px solid #f3f4f6",alignItems:"flex-start"}},
+lines.map((l,i)=>{
+if(l.t===2)return React.createElement("div",{key:i,style:{marginTop:10,padding:14,background:"#ecfdf5",borderRadius:10,border:"2px solid #10b981"}},
+React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"#065f46",marginBottom:8}},l.x),
+!showBranches?React.createElement("button",{className:"btn btn-green",style:{fontSize:13},onClick:()=>setShowBranches(true)},"🏢 Välj kundens bransch →")
+:React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:6,marginTop:8}},
+BRANCHES.map(b=>React.createElement("button",{key:b.id,onClick:()=>setSelBranch(b.id),style:{padding:"10px 12px",borderRadius:8,border:selBranch===b.id?"2px solid #10b981":"1px solid #d1d5db",background:selBranch===b.id?"#d1fae5":"#fff",cursor:"pointer",textAlign:"left",fontFamily:"inherit"}},
+React.createElement("div",{style:{fontSize:12,fontWeight:700,marginBottom:2}},b.n),
+React.createElement("div",{style:{fontSize:9,color:"#6b7280"}},"SNI: ",b.sni)))));
+return React.createElement("div",{key:i,style:{display:"flex",gap:8,padding:"8px 12px",borderRadius:8,background:l.t===0?"#fef3c7":"#fff",border:l.t===0?"1px solid #fde68a":"1px solid #f3f4f6",alignItems:"flex-start"}},
 React.createElement("span",{style:{width:20,height:20,borderRadius:6,background:l.t===0?"#f59e0b":s.c,display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2,fontSize:9,color:"#fff",fontWeight:700}},l.t===0?"!":"💬"),
 ed?React.createElement("textarea",{value:l.x,onChange:e=>{const nl=[...editL];nl[i]={...nl[i],x:e.target.value};setEditL(nl)},style:{flex:1,fontSize:13,lineHeight:1.4,border:"1px solid #d1d5db",borderRadius:6,padding:"4px 8px",fontFamily:"inherit",resize:"vertical",minHeight:32}})
 :React.createElement("div",{style:{flex:1,fontSize:13,lineHeight:1.5,color:l.t===0?"#92400e":"#1d1d1f",fontWeight:l.t===0?500:400}},l.x),
 !ed&&l.t===1&&React.createElement("button",{onClick:()=>copy(l.x,"l"+i),style:{width:26,height:26,borderRadius:6,border:"none",background:"#f3f4f6",cursor:"pointer",color:"#6b7280",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}},cp==="l"+i?"✓":"📋"),
-ed&&React.createElement("button",{onClick:()=>setEditL(editL.filter((_,x)=>x!==i)),style:{width:26,height:26,borderRadius:6,border:"none",background:"#fef2f2",cursor:"pointer",color:"#ef4444",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}},"✕"))),
-ed&&React.createElement("button",{className:"btn btn-light",style:{marginTop:4},onClick:()=>setEditL([...editL,{t:1,x:""}])},"+Rad")))})(),
+ed&&React.createElement("button",{onClick:()=>setEditL(editL.filter((_,x)=>x!==i)),style:{width:26,height:26,borderRadius:6,border:"none",background:"#fef2f2",cursor:"pointer",color:"#ef4444",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}},"✕"))})),
+ed&&React.createElement("button",{className:"btn btn-light",style:{marginTop:4},onClick:()=>setEditL([...editL,{t:1,x:""}])},"+Rad"),
 
-// ══ PRODUCTS TAB ══
+selBranch&&(()=>{const b=BRANCHES.find(x=>x.id===selBranch);if(!b)return null;
+const branchProducts=b.ps.map(pid=>PRODUCTS.find(p=>p.id===pid)).filter(Boolean);
+return React.createElement("div",{style:{marginTop:16,padding:16,background:"#fff",borderRadius:12,border:"2px solid #10b981",animation:"fadeIn .3s"}},
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:4}},
+React.createElement("div",{style:{fontSize:15,fontWeight:800}},b.n),
+React.createElement("span",{className:"tag",style:{background:"#d1fae5",color:"#065f46"}},"SNI ",b.sni)),
+React.createElement("div",{style:{fontSize:12,color:"#6b7280",marginBottom:12,fontStyle:"italic"}},b.desc),
+React.createElement("div",{style:{fontSize:11,fontWeight:700,color:"#6b7280",marginBottom:8}},"RELEVANTA PRODUKTER (",branchProducts.length,"):"),
+React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:6}},
+branchProducts.map(p=>React.createElement("div",{key:p.id,className:"card",onClick:()=>{setTab("products");setSelP(p.id)},style:{padding:10}},
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:6}},
+React.createElement("span",{style:{fontSize:16}},p.e),
+React.createElement("span",{style:{flex:1,fontSize:12,fontWeight:700}},p.n),
+React.createElement("span",{style:{color:"#d1d5db",fontSize:14}},"›")),
+React.createElement("div",{style:{fontSize:10,color:"#6b7280",marginTop:4,lineHeight:1.3}},p.p?.substring(0,60)+"...")))))})())})(),
+
 tab==="products"&&!selP&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
 React.createElement("h1",{style:{fontSize:24,fontWeight:800,marginBottom:4}},"📦 Produkter"),
 React.createElement("div",{style:{display:"flex",gap:4,marginBottom:10,flexWrap:"wrap",marginTop:6}},
@@ -163,81 +238,120 @@ React.createElement("span",{style:{fontSize:36}},p.e),
 React.createElement("div",null,React.createElement("h2",{style:{margin:0,fontSize:22,fontWeight:700}},p.n),
 React.createElement("span",{className:"tag",style:{background:p.c+"15",color:p.c}},p.cat+(p.sub?" > "+p.sub:"")))),
 
-// Pitch
 React.createElement("div",{className:"card",style:{padding:16,marginBottom:10}},
-React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:6}},"🎯 Manus / Pitch"),
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:6}},"🎯 Pitch-summering"),
 React.createElement("div",{style:{fontSize:14,lineHeight:1.7,whiteSpace:"pre-wrap"}},p.p),
 p.box&&React.createElement("div",{style:{marginTop:10,padding:10,background:"#f0fdf4",borderRadius:8,fontSize:13,color:"#166534"}},"📦 Börja högt: ",p.box),
 p.bonus&&React.createElement("div",{style:{marginTop:6,padding:10,background:"#eff6ff",borderRadius:8,fontSize:13,color:"#1e40af"}},"🎁 Kampanj: ",p.bonus),
 React.createElement("button",{className:"btn btn-light",style:{marginTop:8},onClick:()=>copy(p.p,"pitch")},cp==="pitch"?"✓ Kopierad":"📋 Kopiera")),
 
-// Discovery
+p.discovery&&React.createElement("div",{className:"card",style:{padding:14,marginBottom:10,background:"#fef3c7",border:"1px solid #fde68a"}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:6,color:"#92400e"}},"❓ Discovery-fråga"),
+React.createElement("div",{style:{fontSize:14,lineHeight:1.5,fontStyle:"italic",color:"#78350f"}},'"',p.discovery,'"'),
+React.createElement("button",{className:"btn btn-light",style:{marginTop:8},onClick:()=>copy(p.discovery,"disc")},cp==="disc"?"✓ Kopierad":"📋 Kopiera")),
+
 p.di?.length>0&&React.createElement("div",{className:"card",style:{padding:16,marginBottom:10}},
-React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:6}},"❓ Discovery — klicka för manus"),
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:6}},"🔗 Relaterade produkter"),
 p.di.map((d,i)=>React.createElement("div",{key:i,style:{display:"flex",gap:6,alignItems:"center",padding:"5px 0",borderBottom:i<p.di.length-1?"1px solid #f3f4f6":"none"}},
 React.createElement("span",{style:{fontSize:13,flex:1}},'"',d.q,'"'),
 d.lk?React.createElement("button",{className:"btn btn-dark",style:{padding:"3px 10px",fontSize:11},onClick:()=>setSelP(d.lk)},"→ Manus")
 :React.createElement("button",{onClick:()=>copy(d.q,"d"+i),style:{width:24,height:24,borderRadius:6,border:"none",background:"#f3f4f6",cursor:"pointer",fontSize:10}},cp==="d"+i?"✓":"📋")))),
 
-// Specs + Pris
+React.createElement("div",{className:"card",style:{padding:16,marginBottom:10}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:8}},"📋 Nyckelpunkter"),
+p.sp?.map((s,i)=>React.createElement("div",{key:i,style:{fontSize:14,padding:"4px 0",lineHeight:1.5}},s))),
+
 React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}},
 React.createElement("div",{className:"card",style:{padding:14}},
-React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:4}},"📋 Specs"),
-p.sp?.map((s,i)=>React.createElement("div",{key:i,style:{fontSize:12,padding:"2px 0"}},"✅ ",s))),
-React.createElement("div",{className:"card",style:{padding:14}},
 React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:4}},"💰 Pris"),
-React.createElement("div",{style:{fontSize:13,fontFamily:"monospace",whiteSpace:"pre-wrap",lineHeight:1.6}},p.pr),
-p.fm&&React.createElement("div",{style:{marginTop:6}},p.fm.map((f,i)=>React.createElement("div",{key:i,style:{fontSize:11,color:"#6b7280"}},"• ",f))))),
+React.createElement("div",{style:{fontSize:13,fontFamily:"monospace",whiteSpace:"pre-wrap",lineHeight:1.6}},p.pr)),
+React.createElement("div",{className:"card",style:{padding:14}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:4}},"📦 Format"),
+p.fm?.map((f,i)=>React.createElement("div",{key:i,style:{fontSize:12,color:"#6b7280",padding:"2px 0"}},"• ",f)))),
 
-// Art + Avslut
 p.art&&React.createElement("div",{style:{fontSize:12,color:"#9ca3af",marginBottom:8}},"Art.nr: ",typeof p.art==="string"?p.art:p.art?.join(", ")),
+React.createElement("div",{style:{display:"flex",gap:8,marginBottom:10}},
+React.createElement("button",{className:"btn btn-orange",style:{flex:1,padding:"12px 16px",fontSize:14},onClick:()=>{addToOrder(p);setCp("added"+p.id);setTimeout(()=>setCp(null),1500)}},cp==="added"+p.id?"✓ Tillagd":"🛒 Lägg till i order")),
 React.createElement("div",{style:{padding:14,background:"#fef3c7",borderRadius:12,border:"1px solid #fde68a"}},
 React.createElement("div",{style:{fontWeight:700,fontSize:13,color:"#92400e"}},"🎁 Nästa → Manus → ✅ AVSLUT (varuprover + storlekar + 12000 varor)")))})(),
 
-// ══ CUSTOMERS TAB ══
+tab==="order"&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
+React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+React.createElement("h1",{style:{fontSize:24,fontWeight:800}},"🛒 Aktuell order"),
+order.length>0&&React.createElement("div",{style:{display:"flex",gap:6}},
+React.createElement("button",{className:"btn btn-dark",onClick:()=>{
+const txt="BESTÄLLNING - Perfectum\n═══════════════════\n"+order.map(o=>"• "+o.qty+"x "+o.n+(o.size?" ("+o.size+")":"")+" — "+o.price).join("\n")+"\n═══════════════════\nUppskattat total: ~"+orderTotal+" kr (exkl. moms)\nFri frakt | 45 dgr faktura";
+copy(txt,"order")}},cp==="order"?"✓ Kopierad":"📋 Kopiera som mail"),
+React.createElement("button",{className:"btn btn-red",onClick:clearOrder},"🗑️ Rensa"))),
+order.length===0?React.createElement("div",{style:{textAlign:"center",padding:40,color:"#9ca3af"}},
+React.createElement("div",{style:{fontSize:48,marginBottom:10}},"🛒"),
+React.createElement("div",{style:{fontSize:15,marginBottom:4}},"Ingen order igång"),
+React.createElement("div",{style:{fontSize:12}},"Gå till Produkter och klicka '🛒 Lägg till i order'"))
+:React.createElement(React.Fragment,null,
+order.map(o=>React.createElement("div",{key:o.added,className:"card",style:{padding:14,marginBottom:6,cursor:"default",display:"flex",alignItems:"center",gap:10}},
+React.createElement("span",{style:{fontSize:24}},o.e),
+React.createElement("div",{style:{flex:1}},
+React.createElement("div",{style:{fontWeight:700,fontSize:14}},o.n),
+React.createElement("div",{style:{fontSize:11,color:"#6b7280"}},o.price,o.size?" | Stl: "+o.size:"")),
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:6}},
+React.createElement("button",{onClick:()=>saveO(order.map(x=>x.added===o.added?{...x,qty:Math.max(1,x.qty-1)}:x)),style:{width:28,height:28,borderRadius:6,border:"1px solid #e5e7eb",background:"#fff",cursor:"pointer"}},"−"),
+React.createElement("div",{style:{minWidth:30,textAlign:"center",fontWeight:700}},o.qty),
+React.createElement("button",{onClick:()=>saveO(order.map(x=>x.added===o.added?{...x,qty:x.qty+1}:x)),style:{width:28,height:28,borderRadius:6,border:"1px solid #e5e7eb",background:"#fff",cursor:"pointer"}},"+")),
+React.createElement("button",{onClick:()=>removeFromOrder(o.added),style:{width:28,height:28,borderRadius:6,border:"none",background:"#fef2f2",color:"#dc2626",cursor:"pointer"}},"🗑️"))),
+React.createElement("div",{style:{padding:16,background:"#1d1d1f",color:"#fff",borderRadius:12,marginTop:10}},
+React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}},
+React.createElement("div",{style:{fontSize:12,color:"#9ca3af"}},"Antal produkter"),
+React.createElement("div",{style:{fontWeight:700}},order.length," st | ",order.reduce((s,o)=>s+o.qty,0)," enheter")),
+React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center"}},
+React.createElement("div",{style:{fontSize:12,color:"#9ca3af"}},"Uppskattad total"),
+React.createElement("div",{style:{fontSize:22,fontWeight:800,color:"#10b981"}},"~",orderTotal," kr")),
+React.createElement("div",{style:{fontSize:10,color:"#6b7280",marginTop:8,textAlign:"right"}},"Exkl. moms | Fri frakt | 45 dgr faktura")))),
+
 tab==="customers"&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
 React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}},
-React.createElement("h1",{style:{fontSize:24,fontWeight:800}},"👥 Kunder"),
-React.createElement("button",{className:"btn btn-dark",onClick:()=>setCf({name:"",phone:"",status:"ny",products:"",sizes:"",address:"",antal:"",followUp:"",notes:"",birthday:""})},"+ Ny kund")),
+React.createElement("div",null,React.createElement("h1",{style:{fontSize:24,fontWeight:800}},"🔥 Varm Kund"),React.createElement("div",{style:{fontSize:11,color:"#6b7280"}},"Kunder som köpt eller är nära avslut")),
+React.createElement("button",{className:"btn btn-dark",onClick:()=>setCf({name:"",orgnr:"",phone:"",email:"",title:"",status:"ny",products:"",sizes:"",address:"",antal:"",followUp:"",notes:"",birthday:"",personal:""})},"+ Ny Varm Kund")),
 React.createElement("div",{style:{display:"flex",gap:4,marginBottom:12,flexWrap:"wrap"}},
 React.createElement("button",{className:"btn "+(custSt==="alla"?"btn-dark":"btn-light"),onClick:()=>setCustSt("alla")},"Alla (",cust.length,")"),
-React.createElement("button",{className:"btn "+(custSt==="ring"?"btn-dark":"btn-light"),style:{background:custSt==="ring"?"#dc2626":undefined},onClick:()=>setCustSt("ring")},"🔴 Ring idag (",cust.filter(c=>c.followUp&&c.followUp<=today).length,")"),
+React.createElement("button",{className:"btn "+(custSt==="ring"?"btn-dark":"btn-light"),style:{background:custSt==="ring"?"#dc2626":undefined,color:custSt==="ring"?"#fff":undefined},onClick:()=>setCustSt("ring")},"🔴 Ring idag (",cust.filter(c=>c.followUp&&c.followUp<=today).length,")"),
 STATUSES.map(st=>React.createElement("button",{key:st.id,className:"btn "+(custSt===st.id?"btn-dark":"btn-light"),onClick:()=>setCustSt(custSt===st.id?"alla":st.id)},st.l))),
-cf&&React.createElement("div",{className:"card",style:{padding:16,marginBottom:12}},
+cf&&React.createElement("div",{className:"card",style:{padding:16,marginBottom:12,cursor:"default"}},
+React.createElement("div",{style:{fontWeight:700,fontSize:14,marginBottom:10}},cf.id?"✏️ Redigera Varm Kund":"➕ Ny Varm Kund"),
 React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}},
-[{k:"name",l:"Namn"},{k:"phone",l:"Telefon"},{k:"products",l:"Produkter"},{k:"sizes",l:"Storlekar"},{k:"address",l:"Adress"},{k:"antal",l:"Antal"},{k:"followUp",l:"Uppföljning YYYY-MM-DD"},{k:"birthday",l:"Födelsedag MM-DD"},{k:"notes",l:"Anteckningar"}].map(f=>
+[{k:"name",l:"Företag *"},{k:"orgnr",l:"Org.nr"},{k:"title",l:"Kontaktperson titel"},{k:"phone",l:"Mobilnummer"},{k:"email",l:"E-post"},{k:"antal",l:"Antal anställda"},{k:"products",l:"Produkter köpta"},{k:"sizes",l:"Storlekar (handskar/skor)"},{k:"address",l:"Leveransadress"},{k:"followUp",l:"Uppföljning YYYY-MM-DD"},{k:"birthday",l:"Födelsedag MM-DD"},{k:"personal",l:"Personligt (fika, hobby)"}].map(f=>
 React.createElement("div",{key:f.k},React.createElement("label",{className:"lbl"},f.l),React.createElement("input",{value:cf[f.k]||"",onChange:e=>setCf({...cf,[f.k]:e.target.value})})))),
+React.createElement("div",{style:{marginTop:8}},React.createElement("label",{className:"lbl"},"Anteckningar"),React.createElement("textarea",{value:cf.notes||"",onChange:e=>setCf({...cf,notes:e.target.value}),rows:3,style:{resize:"vertical"}})),
 React.createElement("div",{style:{display:"flex",gap:6,marginTop:10}},
-React.createElement("button",{className:"btn btn-green",onClick:()=>{addCust(cf);setCf(null)}},"💾 Spara"),
+React.createElement("button",{className:"btn btn-green",onClick:()=>{if(cf.id){saveC(cust.map(x=>x.id===cf.id?cf:x))}else{addCust(cf)}setCf(null)}},"💾 Spara"),
 React.createElement("button",{className:"btn btn-light",onClick:()=>setCf(null)},"Avbryt"))),
-filtC.length===0?React.createElement("div",{style:{textAlign:"center",padding:32,color:"#9ca3af"}},"Inga kunder här")
+filtC.length===0?React.createElement("div",{style:{textAlign:"center",padding:32,color:"#9ca3af"}},"Inga varma kunder här")
 :filtC.sort((a,b)=>(a.followUp||"z").localeCompare(b.followUp||"z")).map(c=>{const st=STATUSES.find(s=>s.id===c.status)||STATUSES[0];const od=c.followUp&&c.followUp<=today;const bd=c.birthday&&today.substring(5)===c.birthday;
 return React.createElement("div",{key:c.id,className:"card",style:{padding:14,marginBottom:6,borderColor:od?"#ef4444":bd?"#f59e0b":"#e5e7eb",borderWidth:od||bd?2:1,cursor:"default"}},
 React.createElement("div",{style:{display:"flex",alignItems:"center",gap:6,marginBottom:6,flexWrap:"wrap"}},
 React.createElement("span",{className:"tag",style:{background:st.c+"15",color:st.c}},st.l),
 od&&React.createElement("span",{className:"tag",style:{background:"#fef2f2",color:"#dc2626"}},"⚠️ RING IDAG"),
-bd&&React.createElement("span",{className:"tag",style:{background:"#fef3c7",color:"#92400e"}},"🎂 FÖDELSEDAG IDAG!"),
+bd&&React.createElement("span",{className:"tag",style:{background:"#fef3c7",color:"#92400e"}},"🎂 FÖDELSEDAG!"),
+c.orgnr&&React.createElement("span",{className:"tag",style:{background:"#f3f4f6",color:"#6b7280"}},"Org: ",c.orgnr),
 React.createElement("span",{style:{marginLeft:"auto",fontSize:10,color:"#9ca3af"}},c.created)),
-React.createElement("div",{style:{display:"flex",gap:16,marginBottom:6,fontSize:13,flexWrap:"wrap"}},
-React.createElement("strong",null,c.name),c.phone&&React.createElement("span",null,"📱 ",c.phone),
-c.products&&React.createElement("span",null,"📦 ",c.products),c.sizes&&React.createElement("span",null,"📏 ",c.sizes),
+React.createElement("div",{style:{display:"flex",gap:12,marginBottom:6,fontSize:13,flexWrap:"wrap"}},
+React.createElement("strong",null,c.name),
+c.title&&React.createElement("span",null,"👤 ",c.title),
+c.phone&&React.createElement("span",null,"📱 ",c.phone),
+c.email&&React.createElement("span",null,"📧 ",c.email),
+c.products&&React.createElement("span",null,"📦 ",c.products),
+c.sizes&&React.createElement("span",null,"📏 ",c.sizes),
+c.address&&React.createElement("span",null,"📍 ",c.address),
+c.antal&&React.createElement("span",null,"👥 ",c.antal," anst"),
 c.followUp&&React.createElement("span",{style:{color:od?"#dc2626":"#6b7280"}},"📅 ",c.followUp),
 c.birthday&&React.createElement("span",null,"🎂 ",c.birthday)),
-c.notes&&React.createElement("div",{style:{fontSize:11,color:"#9ca3af",marginBottom:6}},"📝 ",c.notes),
+c.personal&&React.createElement("div",{style:{fontSize:12,color:"#6b7280",fontStyle:"italic",marginBottom:4}},"💭 ",c.personal),
+c.notes&&React.createElement("div",{style:{fontSize:11,color:"#9ca3af",marginBottom:6,whiteSpace:"pre-wrap"}},"📝 ",c.notes),
 React.createElement("div",{style:{display:"flex",gap:4,flexWrap:"wrap"}},
 STATUSES.map(s=>React.createElement("button",{key:s.id,onClick:()=>{saveC(cust.map(x=>x.id===c.id?{...x,status:s.id}:x))},style:{padding:"2px 8px",borderRadius:6,border:c.status===s.id?"2px solid "+s.c:"1px solid #e5e7eb",fontSize:10,cursor:"pointer",background:c.status===s.id?s.c+"15":"#fff",color:s.c}},s.l)),
 React.createElement("input",{placeholder:"Uppföljning",defaultValue:c.followUp,onBlur:e=>saveC(cust.map(x=>x.id===c.id?{...x,followUp:e.target.value}:x)),style:{width:120,fontSize:10,padding:"2px 6px"}}),
+React.createElement("button",{className:"btn btn-light",style:{padding:"2px 8px",fontSize:10},onClick:()=>setCf(c)},"✏️ Redigera"),
 React.createElement("button",{className:"btn btn-red",style:{padding:"2px 8px",fontSize:10},onClick:()=>{if(confirm("Radera?"))saveC(cust.filter(x=>x.id!==c.id))}},"🗑️")))})),
 
-// ══ OBJECTIONS ══
-tab==="objections"&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
-React.createElement("h1",{style:{fontSize:24,fontWeight:800,marginBottom:12}},"🛡️ Invändningar (",OBJ.length,")"),
-OBJ.map((o,i)=>React.createElement("div",{key:i,className:"card",style:{padding:12,marginBottom:4,cursor:"default"}},
-React.createElement("div",{style:{fontWeight:700,fontSize:13,color:"#dc2626"}},'"',o.q,'"'),
-React.createElement("div",{style:{fontSize:13,margin:"4px 0"}},React.createElement("span",{style:{color:"#10b981",fontWeight:600}},"→ "),o.a),
-React.createElement("div",{style:{fontSize:11,color:"#f59e0b"}},"⚠️ ",o.w)))),
-
-// ══ JOKES ══
 tab==="jokes"&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
 React.createElement("h1",{style:{fontSize:24,fontWeight:800,marginBottom:12}},"😄 Skämt & Isbrytare"),
 JOKES.map((cat,ci)=>React.createElement("div",{key:ci,style:{marginBottom:16}},
@@ -246,7 +360,6 @@ cat.items.map((j,ji)=>React.createElement("div",{key:ji,className:"card",style:{
 React.createElement("span",{style:{fontSize:13,flex:1}},'"',j,'"'),
 React.createElement("button",{onClick:()=>copy(j,"j"+ci+ji),style:{width:24,height:24,borderRadius:6,border:"none",background:"#f3f4f6",cursor:"pointer",fontSize:10}},cp==="j"+ci+ji?"✓":"📋")))))),
 
-// ══ MISSED ══
 tab==="missed"&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
 React.createElement("h1",{style:{fontSize:24,fontWeight:800,marginBottom:4}},"📞 Ringlista"),
 React.createElement("p",{style:{fontSize:12,color:"#6b7280",marginBottom:12}},"Auto-bort efter 2 försök"),
