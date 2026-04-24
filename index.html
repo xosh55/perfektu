@@ -1,3121 +1,429 @@
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-<meta charset="UTF-8" />
-
-<link rel="preload" href="https://unpkg.com/react@18.3.1/umd/react.production.min.js" as="script" crossorigin>
-<link rel="preload" href="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" as="script" crossorigin>
-<link rel="preload" href="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" as="script">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Clarti — Se din hemsida innan du betalar</title>
-<meta name="description" content="Vi bygger din företagshemsida gratis. Du ser den inom 48h. Du betalar bara om du vill behålla den. Från 299 kr/mån. Inget förskott, ingen bindning.">
-<link rel="canonical" href="https://clarti.se/">
-
-<!-- Favicons -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-
-
-<meta name="theme-color" content="#0A0A0A">
-
-<!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://clarti.se/">
-<meta property="og:title" content="Clarti — Se din hemsida innan du betalar">
-<meta property="og:description" content="Vi bygger din företagshemsida gratis. Du ser den inom 48h. Du betalar bara om du vill behålla den. Från 299 kr/mån. Inget förskott, ingen bindning.">
-<meta property="og:image" content="https://clarti.se/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:site_name" content="Clarti">
-<meta property="og:locale" content="sv_SE">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Clarti — Se din hemsida innan du betalar">
-<meta name="twitter:description" content="Vi bygger din företagshemsida gratis. Du ser den inom 48h. Du betalar bara om du vill behålla den. Från 299 kr/mån. Inget förskott, ingen bindning.">
-<meta name="twitter:image" content="https://clarti.se/og-image.png">
-
-<!-- Apple mobile web app -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Clarti">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Clarti",
-  "url": "https://clarti.se",
-  "logo": "https://clarti.se/icon-512.png",
-  "description": "Hemsidor för svenska småföretag. Gratis först. Betala bara om du vill behålla.",
-  "foundingDate": "2026",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Göteborg",
-    "addressCountry": "SE"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "email": "hej@clarti.se",
-    "contactType": "customer service",
-    "availableLanguage": "Swedish"
-  }
-}
-</script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;450;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!DOCTYPE html><html lang="sv"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Perfectum Sales Dashboard V9.10</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="products.js"></script>
 <style>
-/* Clarti Design System */
-:root {
-  --bg: #FAFAF7;
-  --bg-warm: #F4F1EA;
-  --bg-dim: #EFEBE3;
-  --ink: #0A0A0A;
-  --ink-2: #1A1A1A;
-  --muted: #6B6B66;
-  --muted-2: #9A978F;
-  --line: rgba(10, 10, 10, 0.08);
-  --line-strong: rgba(10, 10, 10, 0.16);
-  --accent: #4F46E5;
-  --accent-soft: #EEF0FF;
-  --success: #0F8F5C;
-  --radius-sm: 10px;
-  --radius: 18px;
-  --radius-lg: 28px;
-  --shadow-sm: 0 1px 2px rgba(10,10,10,0.04), 0 2px 8px rgba(10,10,10,0.03);
-  --shadow: 0 2px 8px rgba(10,10,10,0.04), 0 24px 48px -24px rgba(10,10,10,0.12);
-  --shadow-lg: 0 40px 80px -30px rgba(10,10,10,0.22), 0 12px 24px -12px rgba(10,10,10,0.08);
-  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --motion: 1; /* tweakable 0..1 */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f5f5f7;overflow:hidden;height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:#c1c1c1;border-radius:3px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.card{background:#fff;border-radius:14px;border:1px solid #e5e7eb;transition:all .15s;cursor:pointer}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.07)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-dark{background:#1d1d1f;color:#fff}.btn-light{background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb}
+.btn-green{background:#10b981;color:#fff}.btn-red{background:#fef2f2;color:#dc2626}
+.btn-orange{background:#f97316;color:#fff}
+.tag{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600}
+input,textarea,select{font-family:inherit;padding:8px 12px;border-radius:8px;border:1px solid #e5e7eb;font-size:13px;width:100%}
+input:focus,textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+.lbl{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:2px}
+.order-fab{position:fixed;bottom:20px;right:20px;z-index:90;background:#1d1d1f;color:#fff;border-radius:16px;padding:14px 18px;box-shadow:0 8px 24px rgba(0,0,0,.3);cursor:pointer;font-weight:700;animation:slideUp .3s;min-width:180px}
+.order-fab:hover{background:#3b82f6}
+.obj-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s;padding:20px}
+.obj-modal{background:#fff;border-radius:20px;width:100%;max-width:520px;max-height:85vh;overflow:auto;animation:popIn .25s}
+@media (max-width:768px){
+.sidebar-mobile{width:60px!important}
+.sidebar-mobile nav button span.label{display:none}
+.sidebar-mobile .footer-info{display:none}
+.main-mobile{padding:16px!important}
+.order-fab{bottom:12px!important;right:12px!important;min-width:auto!important;padding:10px 14px!important}
+.order-fab .fab-extra{display:none}
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-body { overflow-x: hidden; }
-
-h1, h2, h3, h4, .display {
-  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 1.02;
-  color: var(--ink);
-  text-wrap: balance;
-}
-.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-feature-settings: 'ss01', 'ss02'; }
-
-p { text-wrap: pretty; color: var(--ink-2); line-height: 1.5; }
-
-button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-a { color: inherit; text-decoration: none; }
-
-.container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
-@media (max-width: 720px) { .container { padding: 0 20px; } }
-
-/* Reusable buttons */
-.btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 14px 22px; border-radius: 999px;
-  font-size: 15px; font-weight: 500; letter-spacing: -0.01em;
-  transition: transform 0.3s var(--ease-spring), background 0.2s, color 0.2s, box-shadow 0.3s;
-  white-space: nowrap;
-}
-.btn-primary { background: var(--ink); color: var(--bg); }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -12px rgba(10,10,10,0.4); }
-.btn-accent { background: var(--accent); color: #fff; }
-.btn-accent:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -12px var(--accent); }
-.btn-ghost { color: var(--ink); background: transparent; border: 1px solid var(--line-strong); }
-.btn-ghost:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
-  color: var(--muted); font-weight: 500;
-}
-.eyebrow::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 15%, transparent);
-}
-
-/* Scroll reveal */
-.reveal { opacity: 0; transform: translateY(calc(24px * var(--motion))); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-spring); }
-.reveal.in { opacity: 1; transform: translateY(0); }
-
-/* Section framing */
-section { position: relative; }
-.section-pad { padding: 120px 0; }
-@media (max-width: 720px) { .section-pad { padding: 80px 0; } }
-
-/* Noise texture helper */
-.noise { position: relative; }
-.noise::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.4; mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-}
-
-/* Marquee */
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* Tweaks panel */
-.tweaks-panel {
-  position: fixed; right: 24px; bottom: 24px; z-index: 100;
-  background: rgba(255,255,255,0.72); backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%);
-  border: 1px solid var(--line); border-radius: 20px; padding: 18px; width: 280px;
-  box-shadow: var(--shadow-lg);
-}
-.tweaks-panel h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 14px; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
-.tweaks-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-.tweaks-row label { font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
-.tweaks-swatches { display: flex; gap: 8px; }
-.swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: transform 0.2s; }
-.swatch:hover { transform: scale(1.1); }
-.swatch.active { border-color: var(--ink); }
-.tweaks-row input[type=range] { accent-color: var(--accent); }
-.tweaks-row .toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
-
-/* Hero specific */
-.hero-grid-bg {
-  position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    linear-gradient(to right, rgba(10,10,10,0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(10,10,10,0.035) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-}
-
-/* Card */
-.card {
-  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
-  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s, border-color 0.3s;
-}
-.card:hover { transform: translateY(calc(-4px * var(--motion))); box-shadow: var(--shadow); border-color: var(--line-strong); }
-
-/* Pricing table */
-.table-wrap { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: #fff; }
-.ptable { width: 100%; border-collapse: collapse; font-size: 14px; }
-.ptable th, .ptable td { padding: 18px 16px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: middle; }
-.ptable tr:last-child td { border-bottom: none; }
-.ptable thead th { background: var(--bg-warm); font-size: 13px; font-weight: 500; color: var(--muted); letter-spacing: 0.02em; position: sticky; top: 0; }
-.ptable .plan-col { text-align: center; }
-.ptable .plan-col.highlighted { background: color-mix(in srgb, var(--accent) 4%, transparent); }
-.ptable .check { color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); }
-.ptable .dash { color: var(--muted-2); }
-.ptable .group-row td { background: var(--bg-warm); font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); padding: 12px 16px; font-weight: 500; }
-.ptable .feat-name { color: var(--ink-2); font-weight: 450; }
-.ptable .num { font-family: 'JetBrains Mono', monospace; font-weight: 500; color: var(--ink); }
-
-/* Ticker numbers */
-.tick { font-variant-numeric: tabular-nums; }
-
-/* Process step */
-.step-card {
-  background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg);
-  padding: 36px; position: relative; overflow: hidden;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-/* Comparison bar */
-.vs-bar { height: 36px; border-radius: 8px; background: var(--bg-warm); position: relative; overflow: hidden; }
-.vs-fill { position: absolute; top: 0; left: 0; bottom: 0; background: var(--ink); border-radius: 8px; transition: width 1.2s var(--ease-spring); }
-.vs-fill.accent { background: var(--accent); }
-
-/* FAQ */
-details.faq { border-bottom: 1px solid var(--line); padding: 22px 0; cursor: pointer; }
-details.faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 500; letter-spacing: -0.02em; font-family: 'Inter Tight', sans-serif; }
-details.faq summary::-webkit-details-marker { display: none; }
-details.faq summary .plus { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--line-strong); display: grid; place-items: center; transition: transform 0.3s var(--ease-spring), background 0.2s; font-size: 16px; color: var(--muted); }
-details.faq[open] summary .plus { transform: rotate(45deg); background: var(--ink); color: var(--bg); border-color: var(--ink); }
-details.faq p { padding-top: 14px; max-width: 640px; color: var(--muted); font-size: 15px; }
-
-/* Footer */
-footer { background: var(--ink); color: #E6E6E0; padding: 80px 0 40px; }
-footer h5 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; color: #76766E; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
-footer ul { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
-footer a:hover { color: #fff; }
-
-/* Nav */
-.nav { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 50; width: calc(100% - 28px); max-width: 1180px; }
-.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px 10px 22px; background: rgba(255,255,255,0.7); backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow-sm); }
-.nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--muted); }
-.nav-links a:hover { color: var(--ink); }
-@media (max-width: 820px) { .nav-links { display: none; } }
-
-/* Logo */
-.logo { font-family: 'Inter Tight', sans-serif; font-weight: 600; letter-spacing: -0.04em; font-size: 20px; display: inline-flex; align-items: center; gap: 8px; }
-.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); animation: pulse 2.4s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.85); } }
-
-/* Hide scrollbar utility */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { scrollbar-width: none; }
-
-/* Big number */
-.bignum { font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(56px, 8vw, 120px); letter-spacing: -0.055em; line-height: 0.9; }
-
-/* Selection */
-::selection { background: var(--ink); color: var(--bg); }
-
-/* ============================================================
-   MOBILE OPTIMIZATION v2 — komplett översyn
-   Mål: 
-   - Animationer FULLA på mobil (motion: 1, inte dämpat)
-   - Hamburger-meny via JS (mobile-nav.js)
-   - Touch-targets minst 44×44
-   - Perfekt padding/spacing på varje breakpoint
-   - Inget stickar ut, inget klipps
-   ============================================================ */
-
-/* Basfixar */
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-body { overflow-x: hidden; max-width: 100vw; }
-img, svg, video { max-width: 100%; height: auto; }
-input, textarea, select { font-size: 16px !important; } /* Förhindrar iOS-zoom */
-
-/* --- HAMBURGER-MENY (mobil-meny injicerad via mobile-nav.js) --- */
-.mobile-menu-btn {
-  display: none; /* Dold på desktop */
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--line);
-  align-items: center; justify-content: center;
-  cursor: pointer; padding: 0;
-  transition: all 0.2s var(--ease-spring);
-}
-.mobile-menu-btn:hover { background: var(--ink); border-color: var(--ink); }
-.mobile-menu-btn:hover .mm-line { background: #fff; }
-.mobile-menu-btn .mm-lines { display: flex; flex-direction: column; gap: 4px; }
-.mobile-menu-btn .mm-line { width: 18px; height: 1.8px; background: var(--ink); border-radius: 2px; transition: all 0.3s var(--ease-spring); }
-.mobile-menu-btn.open .mm-line:nth-child(1) { transform: translateY(5.8px) rotate(45deg); }
-.mobile-menu-btn.open .mm-line:nth-child(2) { opacity: 0; transform: scale(0); }
-.mobile-menu-btn.open .mm-line:nth-child(3) { transform: translateY(-5.8px) rotate(-45deg); }
-
-.mobile-menu-panel {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(250,250,247,0.98);
-  backdrop-filter: blur(20px);
-  z-index: 999; padding: 80px 24px 40px;
-  display: flex; flex-direction: column; gap: 4px;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.25s var(--ease-out);
-}
-.mobile-menu-panel.open { opacity: 1; pointer-events: auto; }
-.mobile-menu-panel a {
-  padding: 18px 20px; border-radius: 14px;
-  font-size: 18px; font-weight: 500; color: var(--ink);
-  font-family: 'Inter Tight', sans-serif;
-  letter-spacing: -0.02em;
-  transition: background 0.2s;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.mobile-menu-panel a:hover,
-.mobile-menu-panel a:active { background: var(--bg-warm); }
-.mobile-menu-panel a.accent { background: var(--ink); color: #fff; margin-top: 16px; justify-content: center; }
-.mobile-menu-panel a.accent:hover { background: var(--accent); }
-.mobile-menu-panel .mm-divider { height: 1px; background: var(--line); margin: 12px 0; }
-.mobile-menu-panel .mm-footer { margin-top: auto; padding-top: 24px; font-size: 13px; color: var(--muted); text-align: center; }
-
-/* --- TABLET (≤ 1024px) --- */
-@media (max-width: 1024px) {
-  [style*="gridTemplateColumns: 'repeat(4"],
-  [style*="grid-template-columns: repeat(4"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-  .section-pad { padding: 80px 0 !important; }
-}
-
-/* --- MOBILE (≤ 820px) --- */
-@media (max-width: 820px) {
-  .container { padding: 0 18px !important; }
-  .section-pad { padding: 56px 0 !important; }
-
-  /* --- NAV --- */
-  .nav { top: 10px !important; width: calc(100% - 20px) !important; }
-  .nav-inner { padding: 8px 8px 8px 16px !important; gap: 8px; }
-  .nav-links { display: none !important; }
-  .nav .mobile-menu-btn { display: inline-flex !important; }
-  /* Dölj "Logga in" och "Starta gratis" på mobil — i hamburger-menyn istället */
-  .nav a[href="login.html"],
-  .nav a[href="brief.html"] { display: none !important; }
-  .logo { font-size: 15px !important; }
-
-  /* --- GRID OVERRIDES — allt 2+ kolumner blir 1 --- */
-  [style*="gridTemplateColumns: 'repeat(4"],
-  [style*="grid-template-columns: repeat(4"],
-  [style*="gridTemplateColumns: 'repeat(3"],
-  [style*="grid-template-columns: repeat(3"],
-  [style*="gridTemplateColumns: '1fr 1fr'"],
-  [style*="grid-template-columns: 1fr 1fr"],
-  [style*="gridTemplateColumns: '1.5fr 1fr 1fr 1fr'"],
-  [style*="gridTemplateColumns: 'minmax(0, 1.05fr) minmax(0, 1fr)'"],
-  [style*="gridTemplateColumns: '1.2fr 1fr'"],
-  [style*="gridTemplateColumns: '1.3fr 1fr'"] {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* --- GAP justering --- */
-  [style*="gap: 80"], [style*="gap: 72"] { gap: 32px !important; }
-  [style*="gap: 60"], [style*="gap: 56"], [style*="gap: 48"] { gap: 24px !important; }
-  [style*="gap: 40"], [style*="gap: 36"], [style*="gap: 32"] { gap: 20px !important; }
-
-  /* --- HERO --- */
-  section[style*="paddingTop: 140"] { padding-top: 90px !important; padding-bottom: 40px !important; }
-  .about-hero, .k-hero, .blog-hero, .j-hero, .hc-hero, .s-hero { padding: 96px 0 40px !important; }
-  
-  /* ANIMATIONER — FULL intensitet på mobil */
-  :root { --motion: 1; } /* inga dämpningar */
-
-  /* --- PERSPEKTIV & 3D --- */
-  [style*="rotateY(-4deg)"] { transform: none !important; }
-  [style*="perspective: '1600px'"] { perspective: none !important; aspect-ratio: 16/11 !important; }
-
-  /* --- Absolute-positionerade "floating chips" ovanpå hero/mockups --- */
-  [style*="position: 'absolute'"][style*="top: '-"],
-  [style*="position: 'absolute'"][style*="bottom: '-"],
-  [style*="transform: 'rotate(-2deg)'"],
-  [style*="transform: 'rotate(-3deg)'"],
-  [style*="transform: 'rotate(2deg)'"],
-  [style*="transform: 'rotate(3deg)'"] {
-    position: relative !important;
-    top: auto !important; bottom: auto !important;
-    left: auto !important; right: auto !important;
-    transform: none !important;
-    display: inline-flex !important;
-    margin: 6px 4px !important;
-  }
-
-  /* --- RUBRIKER — säkrare clamps --- */
-  h1 { font-size: clamp(30px, 8.5vw, 48px) !important; line-height: 1.08 !important; letter-spacing: -0.035em !important; }
-  h2 { font-size: clamp(26px, 7vw, 40px) !important; line-height: 1.1 !important; letter-spacing: -0.03em !important; }
-  h3 { font-size: clamp(20px, 5vw, 28px) !important; line-height: 1.15 !important; letter-spacing: -0.025em !important; }
-  h4 { font-size: clamp(16px, 4.5vw, 20px) !important; }
-  p { font-size: 15px !important; line-height: 1.55 !important; }
-
-  /* Font-size inline overrides */
-  [style*="fontSize: 64"], [style*="fontSize: 68"], [style*="fontSize: 72"], [style*="fontSize: 80"] { font-size: clamp(32px, 9vw, 48px) !important; line-height: 1.08 !important; }
-  [style*="fontSize: 52"], [style*="fontSize: 56"] { font-size: clamp(28px, 8vw, 40px) !important; }
-  [style*="fontSize: 48"] { font-size: clamp(26px, 7vw, 36px) !important; }
-  [style*="fontSize: 36"], [style*="fontSize: 40"] { font-size: clamp(22px, 6vw, 30px) !important; }
-  [style*="fontSize: 32"] { font-size: clamp(20px, 5.5vw, 28px) !important; }
-  [style*="fontSize: 28"] { font-size: clamp(19px, 5vw, 24px) !important; }
-  [style*="fontSize: 24"] { font-size: 18px !important; }
-  [style*="fontSize: 22"] { font-size: 17px !important; }
-  [style*="fontSize: 20"] { font-size: 16px !important; }
-
-  /* --- PADDING reductions i cards --- */
-  [style*="padding: 72px 56px"], [style*="padding: '72px 56px'"] { padding: 32px 20px !important; }
-  [style*="padding: 56px"], [style*="padding: '56px'"] { padding: 28px !important; }
-  [style*="padding: 48px"], [style*="padding: '48px'"] { padding: 24px !important; }
-  [style*="padding: 40px"], [style*="padding: '40px'"] { padding: 24px !important; }
-  [style*="padding: 36px"], [style*="padding: '36px'"] { padding: 20px !important; }
-  [style*="padding: 32px"], [style*="padding: '32px'"] { padding: 20px !important; }
-  [style*="padding: 28px"], [style*="padding: '28px'"] { padding: 18px !important; }
-
-  /* --- CTA-KNAPPAR — stapla och full-width i grupp --- */
-  [style*="flexWrap: 'wrap'"] .btn,
-  [style*="flex-wrap: wrap"] .btn {
-    flex: 1 1 100%;
-    justify-content: center;
-  }
-  .btn { min-height: 44px; padding: 13px 20px !important; font-size: 14.5px !important; }
-
-  /* --- PRICING-TABELL (ptable) --- */
-  .ptable { font-size: 11.5px !important; }
-  .ptable th, .ptable td { padding: 10px 6px !important; }
-  .ptable th:first-child, .ptable td:first-child { font-size: 11px !important; text-align: left !important; }
-
-  /* Tabeller scrollbara om de är för breda */
-  .table-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; max-width: 100vw !important; }
-
-  /* --- FOOTER --- */
-  footer [style*="gridTemplateColumns: '1.5fr 1fr 1fr 1fr'"] {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 28px 20px !important;
-  }
-  footer { padding: 48px 0 28px !important; }
-  footer [style*="display: 'flex'"][style*="justifyContent: 'space-between'"] {
-    flex-direction: column !important;
-    gap: 12px !important;
-    align-items: flex-start !important;
-  }
-
-  /* --- FAQ --- */
-  details.faq summary { font-size: 15.5px !important; }
-  details.faq { padding: 16px 0 !important; }
-  details.q summary { font-size: 15.5px !important; }
-
-  /* --- TRUST-BAR siffror — ta bort border-left mellan --- */
-  section [style*="gridTemplateColumns: 'repeat(4, 1fr)'"] > div {
-    border-left: none !important;
-    padding-left: 0 !important;
-  }
-
-  /* --- HELP-WIDGET mobil --- */
-  .clarti-help-fab { bottom: 14px !important; right: 14px !important; width: 48px !important; height: 48px !important; }
-  .clarti-help-panel { bottom: 72px !important; right: 14px !important; left: 14px !important; width: auto !important; max-width: none !important; }
-
-  /* --- BRIEF wizard --- */
-  .wizard-shell { grid-template-columns: 1fr !important; }
-  .wizard-aside {
-    position: relative !important;
-    height: auto !important;
-    padding: 88px 20px 20px !important;
-  }
-  .wizard-aside h2 { font-size: 22px !important; }
-  .step-list { display: flex !important; flex-direction: row !important; overflow-x: auto !important; gap: 6px !important; padding-bottom: 8px !important; scrollbar-width: none; }
-  .step-list::-webkit-scrollbar { display: none; }
-  .step-item { white-space: nowrap !important; flex-shrink: 0; font-size: 12px !important; padding: 6px 10px !important; }
-  .step-item .dot { width: 18px !important; height: 18px !important; font-size: 9px !important; }
-  .aside-footer { display: none !important; }
-  .wizard-main { padding: 28px 18px 32px !important; }
-  .wizard-footer { flex-wrap: wrap; gap: 10px; }
-  .wizard-footer .hint { order: 3; width: 100%; text-align: center; font-size: 11px !important; }
-
-  /* Form-inputs större touch-target */
-  .input, input[type="text"], input[type="email"], input[type="tel"], textarea {
-    padding: 14px 16px !important;
-    font-size: 16px !important;
-  }
-
-  /* --- PORTAL dashboard --- */
-  [style*="gridTemplateColumns: '240px"],
-  [style*="grid-template-columns: 240px"] {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* --- CASE-CARDS och liknande --- */
-  .cases-grid, .blog-grid, .perks-grid, .cats-grid, .vals-grid, .team-grid {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
-  }
-  .feature-card { padding: 32px 24px !important; gap: 24px !important; }
-  .feature-card h2 { font-size: clamp(24px, 6vw, 32px) !important; }
-  .feature-img { aspect-ratio: 16/10 !important; font-size: 60px !important; }
-
-  /* Jobb-roller */
-  .role { grid-template-columns: 1fr !important; gap: 12px !important; padding: 20px !important; }
-  .role-meta { flex-wrap: wrap !important; }
-
-  /* Hjälpcenter */
-  .cant-find { grid-template-columns: 1fr !important; text-align: center !important; padding: 28px 20px !important; }
-  .cant-find .btns { justify-content: center; }
-  .search-box input { padding: 16px 20px 16px 46px !important; font-size: 15px !important; }
-
-  /* Kunder filter-tabs - horisontell scroll */
-  .filter-tabs { padding: 0 18px !important; }
-  .filter-tab { padding: 7px 14px !important; font-size: 12.5px !important; }
-
-  /* Status-sida uptime-bars */
-  .uptime-bar { gap: 1px !important; }
-  .uptime-bar .bar { width: 2px !important; height: 16px !important; }
-  .srv-row { grid-template-columns: 1fr auto !important; gap: 10px !important; padding: 14px 16px !important; }
-  .uptime-bar { display: none !important; }
-  .srv-name { font-size: 14px !important; }
-  .srv-name .desc { font-size: 11px !important; }
-  .srv-status { font-size: 12px !important; }
-
-  /* Newsletter / subscribe-form — stack */
-  .nl-form, .sub-form {
-    flex-direction: column !important;
-    gap: 10px !important;
-  }
-  .nl-form input, .sub-form input { border-radius: 12px !important; }
-  .nl-form button, .sub-form button { border-radius: 12px !important; padding: 14px 20px !important; }
-
-  /* Tweaks-panel (debug) */
-  .tweaks-panel { display: none !important; }
-
-  /* VsAgency-sektion jämförelse */
-  section[class*="section-pad"] > .container > [style*="gridTemplateColumns: '1fr 1fr'"] {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
-  }
-
-  /* Alla horizontella flex som kan krocka */
-  [style*="flexWrap: 'wrap'"] { gap: 10px !important; }
-}
-
-/* --- SMALL MOBILE (≤ 480px) --- */
-@media (max-width: 480px) {
-  .container { padding: 0 14px !important; }
-  .section-pad { padding: 40px 0 !important; }
-
-  h1 { font-size: clamp(28px, 9vw, 40px) !important; }
-  h2 { font-size: clamp(22px, 7.5vw, 32px) !important; }
-  h3 { font-size: clamp(18px, 5.5vw, 24px) !important; }
-
-  /* Footer full-width 1-col för riktigt små skärmar */
-  footer [style*="gridTemplateColumns: '1.5fr 1fr 1fr 1fr'"] {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
-  }
-
-  /* CTA-knappar */
-  .btn { font-size: 14px !important; padding: 12px 18px !important; width: auto !important; }
-  
-  /* Stats / trust-row — 2 kolumner ej 4 */
-  section [style*="gridTemplateColumns: 'repeat(4, 1fr)'"] {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 18px !important;
-  }
-
-  /* Stor typografi absolut */
-  [style*="fontSize: 64"], [style*="fontSize: 68"], [style*="fontSize: 72"], [style*="fontSize: 80"], [style*="fontSize: 88"] {
-    font-size: clamp(28px, 10vw, 42px) !important;
-  }
-
-  /* About-grid sticky-boxen — ta bort sticky på mobil */
-  .about-grid > div > div[style*="position: sticky"] { position: static !important; }
-}
-
-/* --- TOUCH-DEVICES (ingen hover) --- */
-@media (hover: none) {
-  .card:hover, .btn-primary:hover, .btn-accent:hover, .btn-ghost:hover,
-  .case-card:hover, .post-card:hover, .cat:hover {
-    transform: none !important;
-  }
-  .btn-primary:hover, .btn-accent:hover { box-shadow: none !important; }
-  /* Ge tap-feedback istället */
-  .btn:active, .case-card:active, .post-card:active, .cat:active {
-    transform: scale(0.98) !important;
-    transition: transform 0.1s !important;
-  }
-}
-
-/* --- REDUCED MOTION (accessibility) --- */
-@media (prefers-reduced-motion: reduce) {
-  :root { --motion: 0 !important; }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-}
-
-
-/* ============================================================
-   MOBILE v3 — MINIMAL & SAFE overrides
-   Använder ENDAST klass-selektorer, aldrig breda [style*=""] som kan
-   matcha oavsiktligt och bryta desktop-layout.
-   ============================================================ */
-
-@media (max-width: 820px) {
-  /* Säkerställ inget element sticker ut */
-  body, html, section, main, article, footer { max-width: 100vw; }
-  img, video, iframe { max-width: 100%; height: auto; }
-  h1, h2, h3, h4 { word-wrap: break-word; overflow-wrap: break-word; }
-
-  /* Touch-target minimum */
-  .btn, a.btn, button.btn { min-height: 44px; box-sizing: border-box; }
-
-  /* Portal dashboard smartare på mobil */
-  .stat-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
-  .quick-actions { grid-template-columns: repeat(2, 1fr) !important; }
-  .file-row, .invoice-row, .tl-row {
-    grid-template-columns: 1fr !important; gap: 6px !important;
-    padding: 14px 0 !important; align-items: flex-start !important;
-  }
-  .file-row > *, .invoice-row > * { text-align: left !important; }
-
-  /* Admin — dölj sidebaren */
-  .admin-sidebar { display: none !important; }
-
-  /* Brief wizard — sidomeny till horisontell scrollrad */
-  .wizard-aside { padding: 20px 16px !important; max-height: 200px; overflow-y: auto; }
-  .wizard-aside::before { display: none !important; }
-  .wizard-aside h2 { font-size: 19px !important; line-height: 1.2 !important; }
-  .wizard-aside p { font-size: 13px !important; margin-top: 4px !important; }
-  .wizard-main { padding: 24px 16px 32px !important; }
-
-  /* Brief — touch-vänligt */
-  .chip { padding: 14px 16px !important; font-size: 14px !important; }
-  .chip .icon { width: 28px !important; height: 28px !important; }
-  .color-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 8px !important; }
-  .color-swatch { min-height: 56px; }
-
-  /* Tabeller läsbara */
-  table { font-size: 12px !important; }
-  table th, table td { padding: 8px 6px !important; }
-
-  /* Demo-preview kort på mobil */
-  .demo-preview-card { width: 92% !important; }
-
-  /* Help-widget position — inte under navbar */
-  .clarti-help-fab { bottom: 80px !important; right: 16px !important; }
-}
-
-/* --- TINY MOBILE (≤ 380px) — senaste fallback för riktigt små skärmar --- */
-@media (max-width: 380px) {
-  .container { padding: 0 12px !important; }
-  .section-pad { padding: 32px 0 !important; }
-  h1 { font-size: clamp(24px, 8vw, 32px) !important; }
-  h2 { font-size: clamp(20px, 7vw, 28px) !important; }
-  .btn { padding: 11px 16px !important; font-size: 13px !important; }
-  .clarti-banner { padding: 8px 10px !important; font-size: 9.5px !important; }
-  .clarti-banner .cb-right a:not(.back) { padding: 4px 8px !important; font-size: 9px !important; }
-  /* Brief steg-lista scrollar bättre */
-  .step-item { font-size: 11px !important; padding: 5px 8px !important; }
-}
-
-/* ============================================================
-   V1.11B MICRO-INTERACTIONS
-   Premium feel: focus-states, button-feedback, link-growth, 
-   card-lift, smooth-scroll. Endast klass/element-selektorer.
-   Alla inuti motion-respect så reduced-motion fungerar.
-   ============================================================ */
-
-/* --- Smooth scroll för hela dokumentet --- */
-html { scroll-behavior: smooth; scroll-padding-top: 90px; }
-
-/* --- Focus-ring för tangentbordsnavigering --- */
-*:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-a:focus-visible, button:focus-visible, .btn:focus-visible {
-  outline-offset: 4px;
-}
-input:focus-visible, textarea:focus-visible, select:focus-visible {
-  outline: none;
-  border-color: var(--accent) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent) !important;
-}
-
-/* --- Button active/pressed state — riktig fysisk feedback --- */
-.btn:active, button:not(.nav-item):not([class*="tab"]):active {
-  transform: scale(0.97) translateY(1px);
-  transition: transform 0.08s ease-out;
-}
-.btn {
-  transition: transform 0.2s var(--ease-spring), background 0.2s, color 0.2s, box-shadow 0.3s, border-color 0.2s;
-}
-.btn:hover {
-  transform: translateY(-1px);
-}
-.btn-primary:hover, .btn.primary:hover {
-  box-shadow: 0 12px 24px -8px color-mix(in srgb, var(--ink) 35%, transparent);
-}
-
-/* --- Link-underline-growth för footer/nav — subtil premium-detalj --- */
-nav a:not(.btn):not(.logo), footer a {
-  position: relative;
-  transition: color 0.2s;
-}
-nav a:not(.btn):not(.logo)::after, footer a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s var(--ease-spring);
-}
-nav a:not(.btn):not(.logo):hover::after, footer a:hover::after {
-  transform: scaleX(1);
-}
-
-/* --- Card-lift på hover (bara kort som redan har hover-intent) --- */
-.card, .case-card, .post-card, .demo-link, .plan-card, .pricing-card {
-  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s, border-color 0.2s;
-}
-
-/* --- Input/textarea focus-glow --- */
-input, textarea, select {
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-}
-
-/* --- Checkbox/radio smooth --- */
-input[type="checkbox"], input[type="radio"] {
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  cursor: pointer;
-}
-input[type="checkbox"]:active, input[type="radio"]:active {
-  transform: scale(0.92);
-}
-
-/* --- Badge/tag-pulse för "Live"/"NU"-indikatorer --- */
-@keyframes clarti-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.15); }
-}
-.live-dot, .status-dot, [class*="badge-now"] .d {
-  animation: clarti-pulse 2s ease-in-out infinite;
-}
-
-/* --- Page-load fade-in för body (subtil) --- */
-@keyframes clarti-fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-body {
-  animation: clarti-fadein 0.4s ease-out;
-}
-
-/* --- Chip/pill aktiv-state --- */
-.chip, [class*="filter-chip"], .tag-pill {
-  transition: all 0.2s var(--ease-spring);
-}
-.chip:active, [class*="filter-chip"]:active, .tag-pill:active {
-  transform: scale(0.96);
-}
-
-/* --- Reducerad rörelse respekteras alltid --- */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  body { animation: none !important; }
-  .live-dot, .status-dot, [class*="badge-now"] .d { animation: none !important; }
-  *, *::before, *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-  }
-}
-
-/* ============================================================
-   V1.12B FULL MOBILE QA — GLOBAL SAFETY
-   Endast element- och klass-selektorer. Aldrig [style*=""].
-   Fokus: iOS-bugs, touch-targets, overflow-prevention.
-   ============================================================ */
-
-/* === GLOBAL — alla viewports === */
-
-/* Prevent iOS auto-text-scaling */
-html { -webkit-text-size-adjust: 100%; }
-
-/* Inga hidden scrollbarer skapar horizontal scroll */
-html, body { overflow-x: hidden; max-width: 100vw; }
-
-/* Images/video/iframes aldrig över viewport */
-img, video, iframe, svg, picture { max-width: 100%; height: auto; }
-img[width][height] { height: auto; } /* override explicit heights on mobile */
-
-/* === MOBIL < 820px === */
-@media (max-width: 820px) {
-
-  /* Touch-targets enligt Apple HIG: min 44×44 px */
-  button, .btn, a.btn, a.chip,
-  input[type="button"], input[type="submit"],
-  nav a, footer a,
-  .nav-item, .tab, [role="button"] {
-    min-height: 44px;
-  }
-
-  /* iOS input-zoom-prevention: alla text-inputs 16px+ */
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="tel"],
-  input[type="url"],
-  input[type="search"],
-  input[type="number"],
-  input:not([type]),
-  textarea,
-  select {
-    font-size: 16px !important;
-  }
-
-  /* Rubriker bryter aldrig layout */
-  h1, h2, h3, h4, h5, h6 {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    -webkit-hyphens: auto;
-  }
-
-  /* Pre och code scrollar istället för att sticka ut */
-  pre, code {
-    max-width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Tables ska kunna scrollas horisontellt */
-  table {
-    max-width: 100%;
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Allt nowrap-innehåll i container som kan scrollas */
-  .marquee, [class*="marquee"],
-  .filter-bar, [class*="filter-bar"],
-  .step-list, [class*="stepper"],
-  .chip-row, [class*="tab-list"] {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .marquee::-webkit-scrollbar,
-  [class*="filter-bar"]::-webkit-scrollbar,
-  [class*="tab-list"]::-webkit-scrollbar { display: none; }
-
-  /* Forms stackar alltid */
-  form input, form textarea, form select, form button {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* Anchors accepterar tap utan 300ms delay */
-  a, button { touch-action: manipulation; }
-
-  /* Container i alla publika sidor aldrig > viewport */
-  .container { max-width: 100vw; padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); box-sizing: border-box; }
-
-  /* Safe-area insets för iPhone X+ */
-  body { padding-bottom: env(safe-area-inset-bottom); }
-}
-
-</style>
-
-<style>
-/* Mobile nav toggle — visas bara på små skärmar */
-.mobile-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  color: var(--ink);
-}
-.mobile-menu-btn span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: currentColor;
-  margin: 4px 0;
-  transition: transform 0.3s, opacity 0.3s;
-  border-radius: 2px;
-}
-.mobile-menu-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #FAFAF7;
-  z-index: 40;
-  padding: 80px 24px 40px;
-  flex-direction: column;
-  gap: 8px;
-}
-.mobile-menu-overlay a {
-  padding: 16px 20px;
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--ink);
-  border-bottom: 1px solid var(--line);
-}
-body.menu-open .mobile-menu-overlay { display: flex; }
-body.menu-open { overflow: hidden; }
-body.menu-open .mobile-menu-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-body.menu-open .mobile-menu-btn span:nth-child(2) { opacity: 0; }
-body.menu-open .mobile-menu-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-@media (max-width: 820px) {
-  .mobile-menu-btn { display: block; }
-  .nav-inner .btn { padding: 8px 14px !important; font-size: 13px !important; }
-  .nav-inner a[href="#"] { display: none !important; } /* dölj "Logga in" på mobil */
-}
-</style>
-</head>
-<body>
-<div id="clarti-loader" style="position:fixed;inset:0;background:#FAFAF7;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;transition:opacity 0.4s;">
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
-    <div style="width:18px;height:18px;background:#4F46E5;border-radius:50%;"></div>
-    <div style="font-family:-apple-system,'Inter Tight',sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.03em;color:#0A0A0A;">Clarti</div>
-  </div>
-  <div style="width:40px;height:40px;border:3px solid #EEF0FF;border-top-color:#4F46E5;border-radius:50%;animation:clarti-spin 0.8s linear infinite;"></div>
-  <style>@keyframes clarti-spin{to{transform:rotate(360deg);}}</style>
-</div>
-<script>
-  // Dölj loader när React renderat (max 10 sek)
-  (function(){
-    var timeout = setTimeout(function(){
-      var l = document.getElementById('clarti-loader');
-      if (l) { l.style.opacity = '0'; setTimeout(function(){ l.remove(); }, 400); }
-    }, 10000);
-    
-    var checkInterval = setInterval(function(){
-      var root = document.getElementById('root');
-      if (root && root.children.length > 0) {
-        clearTimeout(timeout);
-        clearInterval(checkInterval);
-        var l = document.getElementById('clarti-loader');
-        if (l) { l.style.opacity = '0'; setTimeout(function(){ l.remove(); }, 400); }
-      }
-    }, 50);
-  })();
-</script>
-
-<div id="root"></div>
-
-<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
-
-<script type="text/babel" data-presets="react">
-// Shared hooks and small components
-
-const { useState, useEffect, useRef, useMemo, useCallback } = React;
-
-// Intersection observer hook for reveal animations
-function useInView(options = {}) {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    // Fire immediately if already in viewport on mount
-    const rect = el.getBoundingClientRect();
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.top < vh && rect.bottom > 0) {
-      setInView(true);
-      return;
-    }
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setInView(true);
-        obs.disconnect();
-      }
-    }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px', ...options });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, inView];
-}
-
-function Reveal({ children, delay = 0, as: As = 'div', className = '', style = {}, ...rest }) {
-  const [ref, inView] = useInView();
-  return (
-    <As
-      ref={ref}
-      className={`reveal ${inView ? 'in' : ''} ${className}`}
-      style={{ transitionDelay: `${delay}ms`, ...style }}
-      {...rest}
-    >
-      {children}
-    </As>
-  );
-}
-
-// Animated counter
-function Counter({ to, duration = 1600, suffix = '', prefix = '' }) {
-  const [ref, inView] = useInView();
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    if (!inView) return;
-    const start = performance.now();
-    let raf;
-    const tick = (t) => {
-      const p = Math.min(1, (t - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setVal(Math.round(to * eased));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, to, duration]);
-  return <span ref={ref} className="tick">{prefix}{val.toLocaleString('sv-SE')}{suffix}</span>;
-}
-
-// Icon components — simple, geometric, not AI-slop
-const Icon = {
-  check: (p) => (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" {...p}>
-      <path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  ),
-  arrow: (p) => (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" {...p}>
-      <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  ),
-  play: (p) => (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" {...p}>
-      <path d="M3 2L10 6L3 10V2Z"/>
-    </svg>
-  ),
-  sparkle: (p) => (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" {...p}>
-      <path d="M8 1V5M8 11V15M1 8H5M11 8H15M3 3L5.5 5.5M10.5 10.5L13 13M13 3L10.5 5.5M5.5 10.5L3 13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-    </svg>
-  ),
-  cursor: (p) => (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" {...p}>
-      <path d="M3 2L13 7L8 8.5L7 13L3 2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" fill="currentColor"/>
-    </svg>
-  ),
+</style></head><body><div id="root"></div>
+<script type="text/babel">
+const{useState,useEffect,useCallback}=React;
+const LS={g:k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}},s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+
+const SCRIPTS=[
+{id:"s1",n:"🏆 Hybrid V1.0 (Bästa)",c:"#10b981",l:[
+{t:1,x:"Hej du [NAMN], de var Kim här från Perfectum Industriservice i Skövde!"},
+{t:1,x:"Hur mår vi? Sitter du i grävarn?"},
+{t:0,x:"KALLSNACK — matcha energi, max 15 sek"},
+{t:1,x:"Vi är en totalleverantör, lite som Swedol fast vi kommer till dig. Verktyg, förbrukningsvaror, kem, kläder, skydd — allt under ett tak. Vi har över 18 000 kunder."},
+{t:1,x:"Anledningen att jag ringer: vi vill visa vilka vi är och få in en liten fot. Min chef velat att jag ska ringa runt (haha) — men jag skapar relationer."},
+{t:1,x:"Vi bjuder på en verktygsväska 94 delar. Den ligger på mig."},
+{t:0,x:"PAUS 3 sek"},
+{t:1,x:"Enda motprestationen: prova en liten förbrukningsvara. Inga volymer, inga pallar. Strumpa, handske, dunke spolarvätska — du väljer."},
+{t:1,x:"VAD SKULLE DU SÄGA GÅR ÅT ALLRA MEST?"},
+{t:2,x:"🏢 AVSLUT → Välj kundens bransch för produkter"}]},
+{id:"s2",n:"🎪 Mässa-versionen",c:"#3b82f6",l:[
+{t:1,x:"Hej du [NAMN], de var Kim från Perfectum."},{t:0,x:"KALLSNACK 15 sek"},{t:1,x:"Perfectum — verktyg, förbrukningsvaror, kem. Anledningen: visa vilka vi är, få in en fot."},{t:1,x:"Vi fick grejer från en mässa — verktygsväska 94 delar, den ligger på mig."},{t:0,x:"PAUS"},{t:1,x:"Motprestation: prova en förbrukningsvara. Inga volymer. Du väljer."},{t:1,x:"VAD GÅR ÅT MEST?"},{t:2,x:"🏢 AVSLUT → Välj bransch"}]},
+{id:"s3",n:"👔 Chef-versionen",c:"#f59e0b",l:[
+{t:1,x:"Hej! Kim från Perfectum, hur mår vi?"},{t:0,x:"KALLSNACK"},{t:1,x:"Vi är totalleverantör — som Swedol fast vi kommer till dig. Allt under ett tak, 18 000 kunder."},{t:1,x:"Min chef velat att jag ringer (haha) — men jag skapar relationer."},{t:1,x:"Verktygsväska 94 delar — ligger på mig. Motprestation: testa en vara. Inga volymer."},{t:1,x:"Vad går åt mest?"},{t:2,x:"🏢 AVSLUT → Välj bransch"}]},
+{id:"s5",n:"✅ AVSLUT + Varuprover + 12000 varor",c:"#dc2626",l:[
+{t:0,x:"═══ EFTER PRODUKTVAL ═══"},
+{t:1,x:"Toppen [NAMN]! Då kör vi på det — en [PRODUKT]."},
+{t:1,x:"Du behöver inte en svetsmaskin också va? (Haha)"},
+{t:0,x:"── GRATIS VARUPROVER ──"},
+{t:1,x:"Jag slänger med lite gratis grejer — strumpor och handskar, exklusiva saker så du ser kvaliteten."},
+{t:0,x:"── STORLEKAR ──"},
+{t:1,x:"Handskstorlek? Typ 9, 10?"},{t:0,x:"✍️ Handsk: ___"},
+{t:1,x:"Skostorlek för strumporna?"},{t:0,x:"✍️ Sko: ___"},
+{t:1,x:"Hur många är ni?"},{t:0,x:"✍️ Antal: ___"},
+{t:0,x:"── 12 000 VAROR ──"},
+{t:1,x:"Och sen [NAMN] — vi har över 12 000 varor. Allt från strumpor till trädgårdsmaskiner. Har du behov av nåt annat — ring mig gärna."},
+{t:0,x:"── ADRESS ──"},
+{t:1,x:"Stämmer adressen [ADRESS]? Så det inte hamnar hos grannen (haha)"},
+{t:0,x:"── UPPFÖLJNING ──"},
+{t:1,x:"Jag ringer om 1-2 månader — genuint nyfiken vad du tycker."},
+{t:1,x:"Toppen [NAMN]! Tack — ha det bäst!"},
+{t:0,x:"📱 SMS direkt | 📝 Spara som Varm Kund"}]},
+];
+
+function App(){
+const[tab,setTab]=useState("scripts");const[selS,setSelS]=useState(null);const[selP,setSelP]=useState(null);
+const[q,setQ]=useState("");const[cp,setCp]=useState(null);const[showLog,setShowLog]=useState(false);
+const[log,setLog]=useState({namn:"",tel:"",antal:"",hsk:"",sko:"",prod:"",adr:"",bday:"",note:""});
+const[missed,setMissed]=useState(LS.g("pf-miss")||[]);const[missIn,setMissIn]=useState("");
+const[cust,setCust]=useState(LS.g("pf-cust")||[]);const[custSt,setCustSt]=useState("alla");
+const[cf,setCf]=useState(null);const[typeF,setTypeF]=useState(null);const[editS,setEditS]=useState(null);const[editL,setEditL]=useState(null);
+const[scripts,setScripts]=useState(()=>{
+  const saved=LS.g("pf-scripts");
+  // Auto-migrering V9.6+: om sparade scripts saknar t:2 bransch-rader, använd nya SCRIPTS
+  if(!saved)return SCRIPTS;
+  const hasT2=saved.some(s=>s.l&&s.l.some(l=>l.t===2));
+  if(!hasT2){LS.s("pf-scripts",SCRIPTS);return SCRIPTS}
+  return saved;
+});
+const[selBranch,setSelBranch]=useState(null);
+const[showBranches,setShowBranches]=useState(false);
+const[order,setOrder]=useState(LS.g("pf-order")||[]);
+const[objOpen,setObjOpen]=useState(false);
+const[objQ,setObjQ]=useState("");
+const[expP,setExpP]=useState(null); // Expanderad produkt i manus-vyn
+
+const saveM=m=>{setMissed(m);LS.s("pf-miss",m)};
+const saveC=c=>{setCust(c);LS.s("pf-cust",c)};
+const saveSc=s=>{setScripts(s);LS.s("pf-scripts",s)};
+const saveO=o=>{setOrder(o);LS.s("pf-order",o)};
+const copy=(t,id)=>{navigator.clipboard.writeText(t).catch(()=>{});setCp(id);setTimeout(()=>setCp(null),1500)};
+const today=new Date().toISOString().split("T")[0];
+
+const addToOrder=(p,qty=1,size="")=>{
+const existing=order.find(o=>o.id===p.id&&o.size===size);
+if(existing){saveO(order.map(o=>o.id===p.id&&o.size===size?{...o,qty:o.qty+qty}:o))}
+else{saveO([...order,{id:p.id,n:p.n,e:p.e,price:p.pr,qty,size,added:Date.now()}])}
 };
+const removeFromOrder=id=>saveO(order.filter(o=>o.added!==id));
+const clearOrder=()=>{if(confirm("Rensa hela ordern?"))saveO([])};
+const orderTotal=order.reduce((s,o)=>{
+const m=o.price?.match(/(\d+)/);return s+(m?parseInt(m[1])*o.qty:0);
+},0);
 
-// Placeholder image
-function Placeholder({ label, aspect = '16/9', className = '', style = {} }) {
-  return (
-    <div className={`placeholder ${className}`} style={{
-      aspectRatio: aspect,
-      background: `repeating-linear-gradient(135deg, var(--bg-warm) 0 12px, var(--bg-dim) 12px 24px)`,
-      border: '1px solid var(--line)',
-      borderRadius: '12px',
-      display: 'grid',
-      placeItems: 'center',
-      color: 'var(--muted)',
-      fontFamily: "'JetBrains Mono', monospace",
-      fontSize: '11px',
-      letterSpacing: '0.08em',
-      textTransform: 'uppercase',
-      ...style,
-    }}>
-      {label}
-    </div>
-  );
+const sorted=[...PRODUCTS].sort((a,b)=>(a.r||99)-(b.r||99));
+const filt=typeF?sorted.filter(p=>p.tags?.includes(typeF)):sorted;
+const searched=q?filt.filter(p=>p.n.toLowerCase().includes(q.toLowerCase())||p.cat?.toLowerCase().includes(q.toLowerCase())||p.sub?.toLowerCase().includes(q.toLowerCase())||p.p?.toLowerCase().includes(q.toLowerCase())):null;
+const cats=[];const cm={};(searched||filt).forEach(p=>{const c=p.cat||"Övrigt";if(!cm[c]){cm[c]={n:c,ps:[]};cats.push(cm[c])}cm[c].ps.push(p)});
+
+const filteredObj=objQ?OBJ.filter(o=>o.q.toLowerCase().includes(objQ.toLowerCase())||o.a.toLowerCase().includes(objQ.toLowerCase())):OBJ;
+
+const addCust=c=>{saveC([...cust,{...c,id:Date.now(),created:today,history:[]}])};
+const filtC=custSt==="alla"?cust:custSt==="ring"?cust.filter(c=>c.followUp&&c.followUp<=today):cust.filter(c=>c.status===custSt);
+
+return React.createElement("div",{style:{display:"flex",height:"100vh",fontFamily:"'DM Sans',system-ui,sans-serif",background:"#f5f5f7",overflow:"hidden"}},
+
+React.createElement("div",{style:{width:200,background:"#1d1d1f",color:"#fff",display:"flex",flexDirection:"column",flexShrink:0}},
+React.createElement("div",{style:{padding:"18px 14px 10px",borderBottom:"1px solid #333"}},React.createElement("div",{style:{fontSize:10,fontWeight:600,color:"#9ca3af",textTransform:"uppercase",letterSpacing:1.5}},"Perfectum"),React.createElement("div",{style:{fontSize:16,fontWeight:700}},"Sales Dashboard"),React.createElement("div",{style:{fontSize:9,color:"#6b7280",marginTop:2}},"V9.10")),
+React.createElement("nav",{style:{flex:1,padding:"6px 4px",overflowY:"auto"}},
+[{id:"scripts",e:"📋",l:"Manus"},{id:"products",e:"📦",l:"Produkter ("+PRODUCTS.length+")"},{id:"order",e:"🛒",l:"Order ("+order.length+")"},{id:"customers",e:"🔥",l:"Varm Kund ("+cust.length+")"},{id:"jokes",e:"😄",l:"Skämt"},{id:"missed",e:"📞",l:"Ringlista ("+missed.length+")"}].map(t=>
+React.createElement("button",{key:t.id,onClick:()=>{setTab(t.id);setSelS(null);setSelP(null);setQ("");setTypeF(null);setSelBranch(null);setShowBranches(false)},style:{display:"flex",alignItems:"center",gap:7,width:"100%",padding:"8px 10px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:500,fontFamily:"inherit",marginBottom:1,background:tab===t.id?"rgba(255,255,255,.12)":"transparent",color:tab===t.id?"#fff":"#9ca3af",fontSize:12.5}},t.e," ",t.l)),
+React.createElement("div",{style:{height:1,background:"#333",margin:"6px"}}),
+React.createElement("button",{onClick:()=>setObjOpen(true),style:{display:"flex",alignItems:"center",gap:7,width:"100%",padding:"8px 10px",borderRadius:8,border:"none",cursor:"pointer",fontWeight:600,fontFamily:"inherit",marginBottom:1,background:"#dc2626",color:"#fff",fontSize:12.5}},"🛡️ Invändningar"),
+React.createElement("div",{style:{height:1,background:"#333",margin:"6px"}}),
+React.createElement("button",{onClick:()=>{if(confirm("Återställa manus?")){saveSc(SCRIPTS)}},style:{display:"flex",alignItems:"center",gap:6,width:"100%",padding:"8px 10px",borderRadius:8,border:"none",cursor:"pointer",fontSize:11,fontFamily:"inherit",background:"transparent",color:"#6b7280"}},"🔄 Återställ manus")),
+React.createElement("div",{style:{padding:"10px 14px",borderTop:"1px solid #333",fontSize:9,color:"#6b7280"}},"Perfectum V9.10 | ",PRODUCTS.length," produkter | ",BRANCHES.length," branscher")),
+
+React.createElement("div",{style:{flex:1,overflow:"auto",padding:"24px 32px",marginRight:showLog?300:0,transition:"margin .2s"}},
+
+React.createElement("button",{onClick:()=>setShowLog(!showLog),style:{position:"fixed",bottom:16,right:showLog?316:(order.length>0?220:16),zIndex:100,padding:"8px 16px",borderRadius:10,border:"none",background:showLog?"#dc2626":"#1d1d1f",color:"#fff",fontSize:12,fontWeight:600,cursor:"pointer",boxShadow:"0 4px 16px rgba(0,0,0,.25)",fontFamily:"inherit"}},showLog?"✕":"📝 Logg"),
+
+order.length>0&&!showLog&&tab!=="order"&&React.createElement("div",{className:"order-fab",onClick:()=>setTab("order")},
+React.createElement("div",{style:{fontSize:11,color:"#9ca3af",marginBottom:2}},"🛒 Aktuell order"),
+React.createElement("div",{style:{fontSize:16,fontWeight:800}},order.length," produkter"),
+React.createElement("div",{style:{fontSize:13,color:"#10b981",fontWeight:700}},"~",orderTotal," kr"),
+React.createElement("div",{style:{fontSize:10,color:"#9ca3af",marginTop:4}},"Klicka för detaljer →")),
+
+showLog&&React.createElement("div",{style:{position:"fixed",right:0,top:0,width:300,height:"100vh",background:"#fff",borderLeft:"1px solid #e5e7eb",zIndex:99,overflow:"auto",padding:16,boxShadow:"-4px 0 16px rgba(0,0,0,.08)"}},
+React.createElement("h3",{style:{margin:"0 0 12px",fontSize:15,fontWeight:700}},"📝 Samtalslogg"),
+[{k:"namn",l:"Företag"},{k:"tel",l:"Telefon"},{k:"antal",l:"Antal anst."},{k:"hsk",l:"Handskstl"},{k:"sko",l:"Skostl"},{k:"prod",l:"Produkt"},{k:"adr",l:"Adress"},{k:"bday",l:"Födelsedag (MM-DD)"}].map(f=>
+React.createElement("div",{key:f.k,style:{marginBottom:8}},React.createElement("label",{className:"lbl"},f.l),React.createElement("input",{value:log[f.k],onChange:e=>setLog({...log,[f.k]:e.target.value})}))),
+React.createElement("div",{style:{marginBottom:8}},React.createElement("label",{className:"lbl"},"Anteckningar"),React.createElement("textarea",{value:log.note,onChange:e=>setLog({...log,note:e.target.value}),rows:2,style:{resize:"vertical"}})),
+React.createElement("div",{style:{display:"flex",gap:4,flexWrap:"wrap"}},
+React.createElement("button",{className:"btn btn-dark",onClick:()=>{const t=Object.entries(log).filter(([_,v])=>v).map(([k,v])=>k+": "+v).join("\n");copy(t,"log")}},cp==="log"?"✓":"📋 Kopiera"),
+React.createElement("button",{className:"btn btn-green",onClick:()=>{if(log.namn){addCust({name:log.namn,phone:log.tel,status:"ny",products:log.prod,sizes:log.hsk+"/"+log.sko,address:log.adr,antal:log.antal,followUp:"",notes:log.note,birthday:log.bday});setLog({namn:"",tel:"",antal:"",hsk:"",sko:"",prod:"",adr:"",bday:"",note:""})}}},"→ Spara"),
+React.createElement("button",{className:"btn btn-light",onClick:()=>setLog({namn:"",tel:"",antal:"",hsk:"",sko:"",prod:"",adr:"",bday:"",note:""})},"Rensa"))),
+
+objOpen&&React.createElement("div",{className:"obj-overlay",onClick:()=>setObjOpen(false)},
+React.createElement("div",{className:"obj-modal",onClick:e=>e.stopPropagation()},
+React.createElement("div",{style:{padding:"16px 20px",borderBottom:"1px solid #e5e7eb",display:"flex",justifyContent:"space-between",alignItems:"center"}},
+React.createElement("div",null,React.createElement("div",{style:{fontSize:18,fontWeight:800}},"🛡️ Invändningar"),React.createElement("div",{style:{fontSize:11,color:"#6b7280"}},OBJ.length," färdiga svar")),
+React.createElement("button",{onClick:()=>setObjOpen(false),style:{width:32,height:32,borderRadius:8,border:"none",background:"#f3f4f6",cursor:"pointer",fontSize:14}},"✕")),
+React.createElement("div",{style:{padding:"12px 20px"}},React.createElement("input",{value:objQ,onChange:e=>setObjQ(e.target.value),placeholder:"🔍 Sök invändning...",autoFocus:true})),
+React.createElement("div",{style:{padding:"0 20px 20px",maxHeight:"55vh",overflow:"auto"}},
+filteredObj.length===0?React.createElement("div",{style:{textAlign:"center",padding:20,color:"#9ca3af"}},"Inga träffar")
+:filteredObj.map((o,i)=>React.createElement("div",{key:i,style:{padding:12,borderRadius:10,background:"#f9fafb",marginBottom:6,border:"1px solid #e5e7eb"}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,color:"#dc2626"}},'"',o.q,'"'),
+React.createElement("div",{style:{fontSize:13,margin:"4px 0"}},React.createElement("span",{style:{color:"#10b981",fontWeight:600}},"→ "),o.a),
+React.createElement("div",{style:{display:"flex",gap:6,marginTop:4,alignItems:"center"}},
+React.createElement("div",{style:{fontSize:10,color:"#f59e0b",flex:1}},"⚠️ ",o.w),
+React.createElement("button",{onClick:()=>copy(o.a,"obj"+i),style:{padding:"3px 8px",borderRadius:6,border:"none",background:"#1d1d1f",color:"#fff",fontSize:10,cursor:"pointer"}},cp==="obj"+i?"✓ Kopierad":"📋 Kopiera svar"))))))),
+
+tab==="scripts"&&!selS&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
+React.createElement("h1",{style:{fontSize:24,fontWeight:800,marginBottom:16}},"📋 Manus"),
+React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))",gap:10}},
+scripts.map(s=>React.createElement("div",{key:s.id,className:"card",onClick:()=>setSelS(s.id),style:{padding:16}},
+React.createElement("div",{style:{fontWeight:700,fontSize:14,marginBottom:4}},s.n),
+React.createElement("div",{style:{fontSize:12,color:"#6b7280"}},s.l.length," rader"))))),
+
+tab==="scripts"&&selS&&(()=>{const s=scripts.find(x=>x.id===selS);if(!s)return null;const ed=editS===s.id;const lines=ed?editL:s.l;
+return React.createElement("div",{style:{animation:"fadeIn .3s"}},
+React.createElement("div",{style:{display:"flex",gap:6,marginBottom:14}},
+React.createElement("button",{className:"btn btn-light",onClick:()=>{setSelS(null);setEditS(null);setEditL(null);setShowBranches(false);setSelBranch(null)}},"← Tillbaka"),
+!ed?React.createElement("button",{className:"btn btn-light",onClick:()=>{setEditS(s.id);setEditL(s.l.map(l=>({...l})))}},"✏️ Redigera")
+:React.createElement(React.Fragment,null,
+React.createElement("button",{className:"btn btn-green",onClick:()=>{saveSc(scripts.map(x=>x.id===s.id?{...x,l:editL}:x));setEditS(null);setEditL(null)}},"💾 Spara"),
+React.createElement("button",{className:"btn btn-light",onClick:()=>{setEditS(null);setEditL(null)}},"Avbryt"))),
+React.createElement("h2",{style:{fontSize:20,fontWeight:700,marginBottom:16}},s.n),
+React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:2}},
+lines.map((l,i)=>{
+if(l.t===2)return React.createElement("div",{key:i,style:{marginTop:10,padding:14,background:"#ecfdf5",borderRadius:10,border:"2px solid #10b981"}},
+React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"#065f46",marginBottom:8}},l.x),
+!showBranches?React.createElement("button",{className:"btn btn-green",style:{fontSize:13},onClick:()=>setShowBranches(true)},"🏢 Välj kundens bransch →")
+:React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:6,marginTop:8}},
+BRANCHES.map(b=>React.createElement("button",{key:b.id,onClick:()=>setSelBranch(b.id),style:{padding:"10px 12px",borderRadius:8,border:selBranch===b.id?"2px solid #10b981":"1px solid #d1d5db",background:selBranch===b.id?"#d1fae5":"#fff",cursor:"pointer",textAlign:"left",fontFamily:"inherit"}},
+React.createElement("div",{style:{fontSize:12,fontWeight:700,marginBottom:2}},b.n),
+React.createElement("div",{style:{fontSize:9,color:"#6b7280"}},"SNI: ",b.sni)))));
+return React.createElement("div",{key:i,style:{display:"flex",gap:8,padding:"8px 12px",borderRadius:8,background:l.t===0?"#fef3c7":"#fff",border:l.t===0?"1px solid #fde68a":"1px solid #f3f4f6",alignItems:"flex-start"}},
+React.createElement("span",{style:{width:20,height:20,borderRadius:6,background:l.t===0?"#f59e0b":s.c,display:"inline-flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2,fontSize:9,color:"#fff",fontWeight:700}},l.t===0?"!":"💬"),
+ed?React.createElement("textarea",{value:l.x,onChange:e=>{const nl=[...editL];nl[i]={...nl[i],x:e.target.value};setEditL(nl)},style:{flex:1,fontSize:13,lineHeight:1.4,border:"1px solid #d1d5db",borderRadius:6,padding:"4px 8px",fontFamily:"inherit",resize:"vertical",minHeight:32}})
+:React.createElement("div",{style:{flex:1,fontSize:13,lineHeight:1.5,color:l.t===0?"#92400e":"#1d1d1f",fontWeight:l.t===0?500:400}},l.x),
+!ed&&l.t===1&&React.createElement("button",{onClick:()=>copy(l.x,"l"+i),style:{width:26,height:26,borderRadius:6,border:"none",background:"#f3f4f6",cursor:"pointer",color:"#6b7280",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}},cp==="l"+i?"✓":"📋"),
+ed&&React.createElement("button",{onClick:()=>setEditL(editL.filter((_,x)=>x!==i)),style:{width:26,height:26,borderRadius:6,border:"none",background:"#fef2f2",cursor:"pointer",color:"#ef4444",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}},"✕"))})),
+ed&&React.createElement("button",{className:"btn btn-light",style:{marginTop:4},onClick:()=>setEditL([...editL,{t:1,x:""}])},"+Rad"),
+
+// ALLTID-SYNLIG bransch-sektion i slutet av manus (fallback om t:2 saknas)
+!ed&&!lines.some(l=>l.t===2)&&React.createElement("div",{style:{marginTop:14,padding:14,background:"#ecfdf5",borderRadius:10,border:"2px dashed #10b981"}},
+React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"#065f46",marginBottom:8}},"🏢 AVSLUT → Välj kundens bransch"),
+!showBranches?React.createElement("button",{className:"btn btn-green",style:{fontSize:13},onClick:()=>setShowBranches(true)},"Välj bransch →")
+:React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:6,marginTop:8}},
+BRANCHES.map(b=>React.createElement("button",{key:b.id,onClick:()=>setSelBranch(b.id),style:{padding:"10px 12px",borderRadius:8,border:selBranch===b.id?"2px solid #10b981":"1px solid #d1d5db",background:selBranch===b.id?"#d1fae5":"#fff",cursor:"pointer",textAlign:"left",fontFamily:"inherit"}},
+React.createElement("div",{style:{fontSize:12,fontWeight:700,marginBottom:2}},b.n),
+React.createElement("div",{style:{fontSize:9,color:"#6b7280"}},"SNI: ",b.sni))))),
+
+selBranch&&(()=>{const b=BRANCHES.find(x=>x.id===selBranch);if(!b)return null;
+const branchProducts=b.ps.map(pid=>PRODUCTS.find(p=>p.id===pid)).filter(Boolean);
+return React.createElement("div",{style:{marginTop:16,padding:16,background:"#fff",borderRadius:12,border:"2px solid #10b981",animation:"fadeIn .3s"}},
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:4}},
+React.createElement("div",{style:{fontSize:15,fontWeight:800}},b.n),
+React.createElement("span",{className:"tag",style:{background:"#d1fae5",color:"#065f46"}},"SNI ",b.sni)),
+React.createElement("div",{style:{fontSize:12,color:"#6b7280",marginBottom:12,fontStyle:"italic"}},b.desc),
+React.createElement("div",{style:{fontSize:11,fontWeight:700,color:"#6b7280",marginBottom:8}},"RELEVANTA PRODUKTER (",branchProducts.length,"):"),
+React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:6}},
+branchProducts.map(p=>React.createElement("div",{key:p.id,className:"card",onClick:()=>setExpP(expP===p.id?null:p.id),style:{padding:10,border:expP===p.id?"2px solid #10b981":"1px solid #e5e7eb"}},
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:6}},
+React.createElement("span",{style:{fontSize:16}},p.e),
+React.createElement("span",{style:{flex:1,fontSize:12,fontWeight:700}},p.n),
+React.createElement("span",{style:{color:"#d1d5db",fontSize:14}},expP===p.id?"▼":"›")),
+React.createElement("div",{style:{fontSize:10,color:"#6b7280",marginTop:4,lineHeight:1.3}},p.p?.substring(0,60)+"..."))),
+
+// INLINE EXPANDERAD PRODUKT
+expP&&(()=>{const ep=PRODUCTS.find(x=>x.id===expP);if(!ep)return null;
+return React.createElement("div",{style:{marginTop:12,padding:16,background:"#f9fafb",borderRadius:10,border:"2px solid #10b981",animation:"fadeIn .25s"}},
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:10}},
+React.createElement("span",{style:{fontSize:28}},ep.e),
+React.createElement("div",{style:{flex:1}},React.createElement("div",{style:{fontWeight:800,fontSize:16}},ep.n),React.createElement("div",{style:{fontSize:11,color:"#6b7280"}},ep.cat)),
+React.createElement("button",{onClick:()=>setExpP(null),style:{width:28,height:28,borderRadius:8,border:"none",background:"#fff",cursor:"pointer"}},"✕")),
+
+// Pitch
+React.createElement("div",{style:{padding:12,background:"#fff",borderRadius:8,marginBottom:8}},
+React.createElement("div",{style:{fontSize:11,fontWeight:700,color:"#6b7280",marginBottom:4}},"🎯 PITCH"),
+React.createElement("div",{style:{fontSize:13,lineHeight:1.6}},ep.p),
+React.createElement("button",{className:"btn btn-light",style:{marginTop:8,fontSize:11,padding:"4px 10px"},onClick:()=>copy(ep.p,"eP"+ep.id)},cp==="eP"+ep.id?"✓":"📋 Kopiera pitch")),
+
+// Discovery
+ep.discovery&&React.createElement("div",{style:{padding:12,background:"#fef3c7",borderRadius:8,marginBottom:8,border:"1px solid #fde68a"}},
+React.createElement("div",{style:{fontSize:11,fontWeight:700,color:"#92400e",marginBottom:4}},"❓ DISCOVERY"),
+React.createElement("div",{style:{fontSize:13,fontStyle:"italic",color:"#78350f"}},'"',ep.discovery,'"'),
+React.createElement("button",{className:"btn btn-light",style:{marginTop:8,fontSize:11,padding:"4px 10px"},onClick:()=>copy(ep.discovery,"eD"+ep.id)},cp==="eD"+ep.id?"✓":"📋 Kopiera fråga")),
+
+// Bullets
+React.createElement("div",{style:{padding:12,background:"#fff",borderRadius:8,marginBottom:8}},
+React.createElement("div",{style:{fontSize:11,fontWeight:700,color:"#6b7280",marginBottom:4}},"📋 NYCKELPUNKTER"),
+ep.sp?.map((s,si)=>React.createElement("div",{key:si,style:{fontSize:12,padding:"2px 0"}},s))),
+
+// Pris + actions
+React.createElement("div",{style:{display:"flex",gap:8,alignItems:"center",padding:10,background:"#fff",borderRadius:8}},
+React.createElement("div",{style:{flex:1,fontSize:12,fontWeight:700}},"💰 ",ep.pr),
+React.createElement("button",{className:"btn btn-orange",style:{fontSize:12,padding:"6px 12px"},onClick:()=>{addToOrder(ep);setCp("eO"+ep.id);setTimeout(()=>setCp(null),1500)}},cp==="eO"+ep.id?"✓ I order":"🛒 Lägg till"),
+React.createElement("button",{className:"btn btn-dark",style:{fontSize:12,padding:"6px 12px"},onClick:()=>{setTab("products");setSelP(ep.id)}},"→ Öppna helt")))})()))})())})(),
+
+tab==="products"&&!selP&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
+React.createElement("h1",{style:{fontSize:24,fontWeight:800,marginBottom:4}},"📦 Produkter"),
+React.createElement("div",{style:{display:"flex",gap:4,marginBottom:10,flexWrap:"wrap",marginTop:6}},
+React.createElement("button",{className:"btn "+(typeF===null?"btn-dark":"btn-light"),onClick:()=>setTypeF(null)},"Alla"),
+CTYPES.map(ct=>React.createElement("button",{key:ct.id,className:"btn "+(typeF===ct.id?"btn-dark":"btn-light"),onClick:()=>setTypeF(ct.id===typeF?null:ct.id)},ct.n))),
+React.createElement("input",{value:q,onChange:e=>setQ(e.target.value),placeholder:"🔍 Sök produkt, kategori...",style:{marginBottom:14}}),
+cats.map(cat=>React.createElement("div",{key:cat.n,style:{marginBottom:16}},
+React.createElement("div",{style:{fontSize:11,fontWeight:700,color:"#6b7280",textTransform:"uppercase",letterSpacing:1,marginBottom:6,paddingBottom:4,borderBottom:"2px solid #e5e7eb"}},cat.n," (",cat.ps.length,")"),
+React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:8}},
+cat.ps.map(p=>React.createElement("div",{key:p.id,className:"card",onClick:()=>setSelP(p.id),style:{padding:12}},
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:4}},
+React.createElement("span",{style:{fontSize:18}},p.e),
+React.createElement("span",{style:{flex:1,fontWeight:700,fontSize:13}},p.n),
+React.createElement("span",{style:{color:"#d1d5db"}},"›")),
+React.createElement("div",{style:{fontSize:11,color:"#6b7280",lineHeight:1.3}},p.p?.substring(0,70)+"..."))))))),
+
+tab==="products"&&selP&&(()=>{const p=PRODUCTS.find(x=>x.id===selP);if(!p)return null;
+return React.createElement("div",{style:{animation:"fadeIn .3s"}},
+React.createElement("button",{className:"btn btn-light",style:{marginBottom:14},onClick:()=>setSelP(null)},"← Tillbaka"),
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:12,marginBottom:20}},
+React.createElement("span",{style:{fontSize:36}},p.e),
+React.createElement("div",null,React.createElement("h2",{style:{margin:0,fontSize:22,fontWeight:700}},p.n),
+React.createElement("span",{className:"tag",style:{background:p.c+"15",color:p.c}},p.cat+(p.sub?" > "+p.sub:"")))),
+
+React.createElement("div",{className:"card",style:{padding:16,marginBottom:10}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:6}},"🎯 Pitch-summering"),
+React.createElement("div",{style:{fontSize:14,lineHeight:1.7,whiteSpace:"pre-wrap"}},p.p),
+p.box&&React.createElement("div",{style:{marginTop:10,padding:10,background:"#f0fdf4",borderRadius:8,fontSize:13,color:"#166534"}},"📦 Börja högt: ",p.box),
+p.bonus&&React.createElement("div",{style:{marginTop:6,padding:10,background:"#eff6ff",borderRadius:8,fontSize:13,color:"#1e40af"}},"🎁 Kampanj: ",p.bonus),
+React.createElement("button",{className:"btn btn-light",style:{marginTop:8},onClick:()=>copy(p.p,"pitch")},cp==="pitch"?"✓ Kopierad":"📋 Kopiera")),
+
+p.discovery&&React.createElement("div",{className:"card",style:{padding:14,marginBottom:10,background:"#fef3c7",border:"1px solid #fde68a"}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:6,color:"#92400e"}},"❓ Discovery-fråga"),
+React.createElement("div",{style:{fontSize:14,lineHeight:1.5,fontStyle:"italic",color:"#78350f"}},'"',p.discovery,'"'),
+React.createElement("button",{className:"btn btn-light",style:{marginTop:8},onClick:()=>copy(p.discovery,"disc")},cp==="disc"?"✓ Kopierad":"📋 Kopiera")),
+
+p.di?.length>0&&React.createElement("div",{className:"card",style:{padding:16,marginBottom:10}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:6}},"🔗 Relaterade produkter"),
+p.di.map((d,i)=>React.createElement("div",{key:i,style:{display:"flex",gap:6,alignItems:"center",padding:"5px 0",borderBottom:i<p.di.length-1?"1px solid #f3f4f6":"none"}},
+React.createElement("span",{style:{fontSize:13,flex:1}},'"',d.q,'"'),
+d.lk?React.createElement("button",{className:"btn btn-dark",style:{padding:"3px 10px",fontSize:11},onClick:()=>setSelP(d.lk)},"→ Manus")
+:React.createElement("button",{onClick:()=>copy(d.q,"d"+i),style:{width:24,height:24,borderRadius:6,border:"none",background:"#f3f4f6",cursor:"pointer",fontSize:10}},cp==="d"+i?"✓":"📋")))),
+
+React.createElement("div",{className:"card",style:{padding:16,marginBottom:10}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:8}},"📋 Nyckelpunkter"),
+p.sp?.map((s,i)=>React.createElement("div",{key:i,style:{fontSize:14,padding:"4px 0",lineHeight:1.5}},s))),
+
+React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:10}},
+React.createElement("div",{className:"card",style:{padding:14}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:4}},"💰 Pris"),
+React.createElement("div",{style:{fontSize:13,fontFamily:"monospace",whiteSpace:"pre-wrap",lineHeight:1.6}},p.pr)),
+React.createElement("div",{className:"card",style:{padding:14}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,marginBottom:4}},"📦 Format"),
+p.fm?.map((f,i)=>React.createElement("div",{key:i,style:{fontSize:12,color:"#6b7280",padding:"2px 0"}},"• ",f)))),
+
+p.art&&React.createElement("div",{style:{fontSize:12,color:"#9ca3af",marginBottom:8}},"Art.nr: ",typeof p.art==="string"?p.art:p.art?.join(", ")),
+React.createElement("div",{style:{display:"flex",gap:8,marginBottom:10}},
+React.createElement("button",{className:"btn btn-orange",style:{flex:1,padding:"12px 16px",fontSize:14},onClick:()=>{addToOrder(p);setCp("added"+p.id);setTimeout(()=>setCp(null),1500)}},cp==="added"+p.id?"✓ Tillagd":"🛒 Lägg till i order")),
+React.createElement("div",{style:{padding:14,background:"#fef3c7",borderRadius:12,border:"1px solid #fde68a"}},
+React.createElement("div",{style:{fontWeight:700,fontSize:13,color:"#92400e"}},"🎁 Nästa → Manus → ✅ AVSLUT (varuprover + storlekar + 12000 varor)")))})(),
+
+tab==="order"&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
+React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
+React.createElement("h1",{style:{fontSize:24,fontWeight:800}},"🛒 Aktuell order"),
+order.length>0&&React.createElement("div",{style:{display:"flex",gap:6}},
+React.createElement("button",{className:"btn btn-dark",onClick:()=>{
+const txt="BESTÄLLNING - Perfectum\n═══════════════════\n"+order.map(o=>"• "+o.qty+"x "+o.n+(o.size?" ("+o.size+")":"")+" — "+o.price).join("\n")+"\n═══════════════════\nUppskattat total: ~"+orderTotal+" kr (exkl. moms)\nFri frakt | 45 dgr faktura";
+copy(txt,"order")}},cp==="order"?"✓ Kopierad":"📋 Kopiera som mail"),
+React.createElement("button",{className:"btn btn-red",onClick:clearOrder},"🗑️ Rensa"))),
+order.length===0?React.createElement("div",{style:{textAlign:"center",padding:40,color:"#9ca3af"}},
+React.createElement("div",{style:{fontSize:48,marginBottom:10}},"🛒"),
+React.createElement("div",{style:{fontSize:15,marginBottom:4}},"Ingen order igång"),
+React.createElement("div",{style:{fontSize:12}},"Gå till Produkter och klicka '🛒 Lägg till i order'"))
+:React.createElement(React.Fragment,null,
+order.map(o=>React.createElement("div",{key:o.added,className:"card",style:{padding:14,marginBottom:6,cursor:"default",display:"flex",alignItems:"center",gap:10}},
+React.createElement("span",{style:{fontSize:24}},o.e),
+React.createElement("div",{style:{flex:1}},
+React.createElement("div",{style:{fontWeight:700,fontSize:14}},o.n),
+React.createElement("div",{style:{fontSize:11,color:"#6b7280"}},o.price,o.size?" | Stl: "+o.size:"")),
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:6}},
+React.createElement("button",{onClick:()=>saveO(order.map(x=>x.added===o.added?{...x,qty:Math.max(1,x.qty-1)}:x)),style:{width:28,height:28,borderRadius:6,border:"1px solid #e5e7eb",background:"#fff",cursor:"pointer"}},"−"),
+React.createElement("div",{style:{minWidth:30,textAlign:"center",fontWeight:700}},o.qty),
+React.createElement("button",{onClick:()=>saveO(order.map(x=>x.added===o.added?{...x,qty:x.qty+1}:x)),style:{width:28,height:28,borderRadius:6,border:"1px solid #e5e7eb",background:"#fff",cursor:"pointer"}},"+")),
+React.createElement("button",{onClick:()=>removeFromOrder(o.added),style:{width:28,height:28,borderRadius:6,border:"none",background:"#fef2f2",color:"#dc2626",cursor:"pointer"}},"🗑️"))),
+React.createElement("div",{style:{padding:16,background:"#1d1d1f",color:"#fff",borderRadius:12,marginTop:10}},
+React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}},
+React.createElement("div",{style:{fontSize:12,color:"#9ca3af"}},"Antal produkter"),
+React.createElement("div",{style:{fontWeight:700}},order.length," st | ",order.reduce((s,o)=>s+o.qty,0)," enheter")),
+React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center"}},
+React.createElement("div",{style:{fontSize:12,color:"#9ca3af"}},"Uppskattad total"),
+React.createElement("div",{style:{fontSize:22,fontWeight:800,color:"#10b981"}},"~",orderTotal," kr")),
+React.createElement("div",{style:{fontSize:10,color:"#6b7280",marginTop:8,textAlign:"right"}},"Exkl. moms | Fri frakt | 45 dgr faktura")))),
+
+tab==="customers"&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
+React.createElement("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}},
+React.createElement("div",null,React.createElement("h1",{style:{fontSize:24,fontWeight:800}},"🔥 Varm Kund"),React.createElement("div",{style:{fontSize:11,color:"#6b7280"}},"Kunder som köpt eller är nära avslut")),
+React.createElement("button",{className:"btn btn-dark",onClick:()=>setCf({name:"",orgnr:"",phone:"",email:"",title:"",status:"ny",products:"",sizes:"",address:"",antal:"",followUp:"",notes:"",birthday:"",personal:""})},"+ Ny Varm Kund")),
+React.createElement("div",{style:{display:"flex",gap:4,marginBottom:12,flexWrap:"wrap"}},
+React.createElement("button",{className:"btn "+(custSt==="alla"?"btn-dark":"btn-light"),onClick:()=>setCustSt("alla")},"Alla (",cust.length,")"),
+React.createElement("button",{className:"btn "+(custSt==="ring"?"btn-dark":"btn-light"),style:{background:custSt==="ring"?"#dc2626":undefined,color:custSt==="ring"?"#fff":undefined},onClick:()=>setCustSt("ring")},"🔴 Ring idag (",cust.filter(c=>c.followUp&&c.followUp<=today).length,")"),
+STATUSES.map(st=>React.createElement("button",{key:st.id,className:"btn "+(custSt===st.id?"btn-dark":"btn-light"),onClick:()=>setCustSt(custSt===st.id?"alla":st.id)},st.l))),
+cf&&React.createElement("div",{className:"card",style:{padding:16,marginBottom:12,cursor:"default"}},
+React.createElement("div",{style:{fontWeight:700,fontSize:14,marginBottom:10}},cf.id?"✏️ Redigera Varm Kund":"➕ Ny Varm Kund"),
+React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}},
+[{k:"name",l:"Företag *"},{k:"orgnr",l:"Org.nr"},{k:"title",l:"Kontaktperson titel"},{k:"phone",l:"Mobilnummer"},{k:"email",l:"E-post"},{k:"antal",l:"Antal anställda"},{k:"products",l:"Produkter köpta"},{k:"sizes",l:"Storlekar (handskar/skor)"},{k:"address",l:"Leveransadress"},{k:"followUp",l:"Uppföljning YYYY-MM-DD"},{k:"birthday",l:"Födelsedag MM-DD"},{k:"personal",l:"Personligt (fika, hobby)"}].map(f=>
+React.createElement("div",{key:f.k},React.createElement("label",{className:"lbl"},f.l),React.createElement("input",{value:cf[f.k]||"",onChange:e=>setCf({...cf,[f.k]:e.target.value})})))),
+React.createElement("div",{style:{marginTop:8}},React.createElement("label",{className:"lbl"},"Anteckningar"),React.createElement("textarea",{value:cf.notes||"",onChange:e=>setCf({...cf,notes:e.target.value}),rows:3,style:{resize:"vertical"}})),
+React.createElement("div",{style:{display:"flex",gap:6,marginTop:10}},
+React.createElement("button",{className:"btn btn-green",onClick:()=>{if(cf.id){saveC(cust.map(x=>x.id===cf.id?cf:x))}else{addCust(cf)}setCf(null)}},"💾 Spara"),
+React.createElement("button",{className:"btn btn-light",onClick:()=>setCf(null)},"Avbryt"))),
+filtC.length===0?React.createElement("div",{style:{textAlign:"center",padding:32,color:"#9ca3af"}},"Inga varma kunder här")
+:filtC.sort((a,b)=>(a.followUp||"z").localeCompare(b.followUp||"z")).map(c=>{const st=STATUSES.find(s=>s.id===c.status)||STATUSES[0];const od=c.followUp&&c.followUp<=today;const bd=c.birthday&&today.substring(5)===c.birthday;
+return React.createElement("div",{key:c.id,className:"card",style:{padding:14,marginBottom:6,borderColor:od?"#ef4444":bd?"#f59e0b":"#e5e7eb",borderWidth:od||bd?2:1,cursor:"default"}},
+React.createElement("div",{style:{display:"flex",alignItems:"center",gap:6,marginBottom:6,flexWrap:"wrap"}},
+React.createElement("span",{className:"tag",style:{background:st.c+"15",color:st.c}},st.l),
+od&&React.createElement("span",{className:"tag",style:{background:"#fef2f2",color:"#dc2626"}},"⚠️ RING IDAG"),
+bd&&React.createElement("span",{className:"tag",style:{background:"#fef3c7",color:"#92400e"}},"🎂 FÖDELSEDAG!"),
+c.orgnr&&React.createElement("span",{className:"tag",style:{background:"#f3f4f6",color:"#6b7280"}},"Org: ",c.orgnr),
+React.createElement("span",{style:{marginLeft:"auto",fontSize:10,color:"#9ca3af"}},c.created)),
+React.createElement("div",{style:{display:"flex",gap:12,marginBottom:6,fontSize:13,flexWrap:"wrap"}},
+React.createElement("strong",null,c.name),
+c.title&&React.createElement("span",null,"👤 ",c.title),
+c.phone&&React.createElement("span",null,"📱 ",c.phone),
+c.email&&React.createElement("span",null,"📧 ",c.email),
+c.products&&React.createElement("span",null,"📦 ",c.products),
+c.sizes&&React.createElement("span",null,"📏 ",c.sizes),
+c.address&&React.createElement("span",null,"📍 ",c.address),
+c.antal&&React.createElement("span",null,"👥 ",c.antal," anst"),
+c.followUp&&React.createElement("span",{style:{color:od?"#dc2626":"#6b7280"}},"📅 ",c.followUp),
+c.birthday&&React.createElement("span",null,"🎂 ",c.birthday)),
+c.personal&&React.createElement("div",{style:{fontSize:12,color:"#6b7280",fontStyle:"italic",marginBottom:4}},"💭 ",c.personal),
+c.notes&&React.createElement("div",{style:{fontSize:11,color:"#9ca3af",marginBottom:6,whiteSpace:"pre-wrap"}},"📝 ",c.notes),
+React.createElement("div",{style:{display:"flex",gap:4,flexWrap:"wrap"}},
+STATUSES.map(s=>React.createElement("button",{key:s.id,onClick:()=>{saveC(cust.map(x=>x.id===c.id?{...x,status:s.id}:x))},style:{padding:"2px 8px",borderRadius:6,border:c.status===s.id?"2px solid "+s.c:"1px solid #e5e7eb",fontSize:10,cursor:"pointer",background:c.status===s.id?s.c+"15":"#fff",color:s.c}},s.l)),
+React.createElement("input",{placeholder:"Uppföljning",defaultValue:c.followUp,onBlur:e=>saveC(cust.map(x=>x.id===c.id?{...x,followUp:e.target.value}:x)),style:{width:120,fontSize:10,padding:"2px 6px"}}),
+React.createElement("button",{className:"btn btn-light",style:{padding:"2px 8px",fontSize:10},onClick:()=>setCf(c)},"✏️ Redigera"),
+React.createElement("button",{className:"btn btn-red",style:{padding:"2px 8px",fontSize:10},onClick:()=>{if(confirm("Radera?"))saveC(cust.filter(x=>x.id!==c.id))}},"🗑️")))})),
+
+tab==="jokes"&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
+React.createElement("h1",{style:{fontSize:24,fontWeight:800,marginBottom:12}},"😄 Skämt & Isbrytare"),
+JOKES.map((cat,ci)=>React.createElement("div",{key:ci,style:{marginBottom:16}},
+React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"#6b7280",marginBottom:6}},cat.cat),
+cat.items.map((j,ji)=>React.createElement("div",{key:ji,className:"card",style:{padding:"8px 12px",marginBottom:3,display:"flex",alignItems:"center",gap:6,cursor:"default"}},
+React.createElement("span",{style:{fontSize:13,flex:1}},'"',j,'"'),
+React.createElement("button",{onClick:()=>copy(j,"j"+ci+ji),style:{width:24,height:24,borderRadius:6,border:"none",background:"#f3f4f6",cursor:"pointer",fontSize:10}},cp==="j"+ci+ji?"✓":"📋")))))),
+
+tab==="missed"&&React.createElement("div",{style:{animation:"fadeIn .3s"}},
+React.createElement("h1",{style:{fontSize:24,fontWeight:800,marginBottom:4}},"📞 Ringlista"),
+React.createElement("p",{style:{fontSize:12,color:"#6b7280",marginBottom:12}},"Auto-bort efter 2 försök"),
+React.createElement("div",{style:{display:"flex",gap:6,marginBottom:14}},
+React.createElement("input",{value:missIn,onChange:e=>setMissIn(e.target.value),onKeyDown:e=>{if(e.key==="Enter"&&missIn.trim()){saveM([...missed,{id:Date.now(),n:missIn.trim(),t:0,d:today}]);setMissIn("")}},placeholder:"Företag + telefon..."}),
+React.createElement("button",{className:"btn btn-dark",onClick:()=>{if(missIn.trim()){saveM([...missed,{id:Date.now(),n:missIn.trim(),t:0,d:today}]);setMissIn("")}}},"+Lägg till")),
+missed.length===0?React.createElement("div",{style:{textAlign:"center",padding:32,color:"#9ca3af"}},"Tom lista — bra jobbat! 🎉")
+:missed.map(m=>React.createElement("div",{key:m.id,className:"card",style:{padding:12,marginBottom:4,display:"flex",alignItems:"center",gap:8,cursor:"default"}},
+React.createElement("div",{style:{flex:1}},React.createElement("div",{style:{fontWeight:600,fontSize:14}},m.n),React.createElement("div",{style:{fontSize:11,color:"#9ca3af"}},m.d," — ",m.t," försök")),
+m.t===0&&React.createElement("span",{className:"tag",style:{background:"#fef3c7",color:"#92400e"}},"Ej ringd"),
+m.t===1&&React.createElement("span",{className:"tag",style:{background:"#fef2f2",color:"#dc2626"}},"1 försök"),
+React.createElement("button",{className:"btn btn-green",style:{padding:"4px 12px",fontSize:11},onClick:()=>saveM(missed.map(x=>x.id===m.id?{...x,t:x.t+1}:x).filter(x=>x.t<2))},"📞 ",m.t===0?"Försök 1":"Sista"),
+React.createElement("button",{className:"btn btn-red",style:{padding:"4px 8px",fontSize:11},onClick:()=>saveM(missed.filter(x=>x.id!==m.id))},"🗑️"))))
+
+));
 }
 
-Object.assign(window, { useInView, Reveal, Counter, Icon, Placeholder });
-// Data: pricing features
-
-const PRICING_GROUPS = [
-  {
-    title: 'Hemsida',
-    features: [
-      { name: 'Komplett sajt byggd åt dig', values: [true, true, true, true] },
-      { name: 'Egen .se-domän', values: [true, true, true, true] },
-      { name: 'Mobiloptimerad + SSL', values: [true, true, true, true] },
-      { name: 'Antal sidor', values: ['5', '10', '15', 'Obegränsat'] },
-      { name: 'Självservice-portal (ändra allt själv)', values: [true, true, true, true] },
-      { name: 'SEO-grund', values: [true, true, true, true] },
-      { name: 'SEO-avancerat (schema, hastighet)', values: [false, true, true, true] },
-      { name: 'Google My Business setup', values: [false, true, true, true] },
-      { name: 'Blog-funktion', values: [false, true, true, true] },
-    ],
-  },
-  {
-    title: 'Email',
-    features: [
-      { name: 'Email-forwarding', values: ['1 alias', false, false, false] },
-      { name: 'Riktig inbox @ domän (Gmail/Apple Mail)', values: [false, '1', '2', '5'] },
-    ],
-  },
-  {
-    title: 'Bokning & Fakturor',
-    features: [
-      { name: 'Bokningssystem', values: [false, true, true, true] },
-      { name: 'Offert-mallar (PDF)', values: [false, true, true, true] },
-      { name: 'Enkel fakturering', values: [false, true, true, true] },
-    ],
-  },
-  {
-    title: 'Webshop',
-    features: [
-      { name: 'Webbutik', values: [false, false, true, true] },
-      { name: 'Antal produkter', values: [false, false, 'Upp till 50', 'Obegränsat'] },
-      { name: 'Klarna + Swish + kort', values: [false, false, true, true] },
-      { name: 'Lagerhantering (enkel)', values: [false, false, true, true] },
-      { name: 'Lagerhantering (avancerad, flera platser)', values: [false, false, false, true] },
-      { name: 'Kundkonton', values: [false, false, true, true] },
-      { name: 'Rabattkoder', values: [false, false, true, true] },
-      { name: 'Övergiven varukorg-mail', values: [false, false, true, true] },
-    ],
-  },
-  {
-    title: 'CRM & Automation',
-    features: [
-      { name: 'Kontakt-CRM (leads, kunder, uppföljning)', values: [false, false, false, true] },
-      { name: 'Email-marketing (3 000 kontakter/mån)', values: [false, false, false, true] },
-      { name: 'Integrationer (Fortnox, Visma, Shopify-sync)', values: [false, false, false, true] },
-      { name: 'Staff-konton', values: ['1', '1', '2', '5'] },
-    ],
-  },
-  {
-    title: 'Annonsering',
-    features: [
-      { name: 'Google Ads hantering (budget separat)', values: [false, false, false, true] },
-      { name: 'Meta Ads hantering (budget separat)', values: [false, false, false, true] },
-      { name: 'Månadsrapport (trafik, leads, försäljning)', values: [false, false, false, true] },
-    ],
-  },
-];
-
-const PLANS = [
-  { name: 'Start', price: 299, tagline: 'Synas online, professionellt.', highlight: false },
-  { name: 'Mail', price: 399, tagline: 'Hemsida + företagsmail + bokning.', highlight: false },
-  { name: 'Shop', price: 599, tagline: 'Sälj online med Klarna & Swish.', highlight: true },
-  { name: 'Komplett', price: 899, tagline: 'Allt-i-ett. Vi driver tillväxten.', highlight: false },
-];
-
-window.PRICING_GROUPS = PRICING_GROUPS;
-window.PLANS = PLANS;
-// Hero section — the first impression. Must be stunning.
-
-function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-  return (
-    <nav className="nav" style={{ opacity: scrolled ? 1 : 0.98 }}>
-      <div className="nav-inner">
-        <a href="index.html" className="logo">
-          <span className="logo-dot"></span>
-          Clarti
-        </a>
-        <div className="nav-links">
-          <a href="#hur">Hur det funkar</a>
-          <a href="#paket">Paket</a>
-          <a href="#jamf">Jämförelse</a>
-          <a href="#faq">Vanliga frågor</a>
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <a href="login.html" style={{ padding: '8px 14px', fontSize: 14, color: 'var(--muted)' }}>Logga in</a>
-          <a href="brief.html" className="btn btn-primary" style={{ padding: '10px 18px', fontSize: 14 }}>
-            Starta gratis <Icon.arrow />
-          </a>
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-// A floating mini-browser mockup that shows "the website being built"
-function HeroMockup() {
-  const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState(0); // 0 = sketch, 1 = wireframe, 2 = design, 3 = live
-  useEffect(() => {
-    let t = 0;
-    const id = setInterval(() => {
-      t += 1;
-      setProgress(p => {
-        const next = p + 1.2;
-        if (next >= 100) {
-          setPhase(ph => (ph + 1) % 4);
-          return 0;
-        }
-        return next;
-      });
-    }, 60);
-    return () => clearInterval(id);
-  }, []);
-
-  return (
-    <div style={{
-      position: 'relative',
-      width: '100%',
-      aspectRatio: '4/3',
-      perspective: '1600px',
-    }}>
-      {/* Glow */}
-      <div style={{
-        position: 'absolute', inset: '-20%',
-        background: 'radial-gradient(ellipse at center, color-mix(in srgb, var(--accent) 18%, transparent), transparent 60%)',
-        filter: 'blur(40px)',
-        pointerEvents: 'none',
-      }} />
-      {/* Main browser window */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: '#fff',
-        borderRadius: '14px',
-        border: '1px solid var(--line)',
-        boxShadow: 'var(--shadow-lg)',
-        overflow: 'hidden',
-        transform: 'rotateY(-4deg) rotateX(2deg)',
-        transformStyle: 'preserve-3d',
-      }}>
-        {/* Browser chrome */}
-        <div style={{
-          height: 38, background: 'var(--bg-warm)', borderBottom: '1px solid var(--line)',
-          display: 'flex', alignItems: 'center', padding: '0 14px', gap: 10,
-        }}>
-          <div style={{ display: 'flex', gap: 6 }}>
-            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FF5F56' }} />
-            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FFBD2E' }} />
-            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#27C93F' }} />
-          </div>
-          <div style={{
-            flex: 1, height: 22, borderRadius: 6, background: '#fff', border: '1px solid var(--line)',
-            display: 'flex', alignItems: 'center', padding: '0 10px',
-            fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--muted)',
-          }}>
-            <span style={{ marginRight: 8, opacity: 0.5 }}>⌘</span>
-            ditt-foretag.se
-          </div>
-        </div>
-        {/* Content area */}
-        <div style={{ padding: '24px 28px', position: 'relative', height: 'calc(100% - 38px)' }}>
-          <MockWebsite phase={phase} progress={progress} />
-        </div>
-      </div>
-
-      {/* Floating "being built" chip */}
-      <div style={{
-        position: 'absolute',
-        top: '-18px', right: '12%',
-        background: 'var(--ink)', color: 'var(--bg)',
-        padding: '10px 16px',
-        borderRadius: 999,
-        fontSize: 12,
-        fontFamily: "'JetBrains Mono', monospace",
-        display: 'flex', alignItems: 'center', gap: 8,
-        boxShadow: '0 16px 32px -12px rgba(10,10,10,0.35)',
-        transform: 'rotate(-2deg)',
-      }}>
-        <span style={{
-          width: 8, height: 8, borderRadius: '50%',
-          background: '#B8FF3C',
-          boxShadow: '0 0 0 3px rgba(184, 255, 60, 0.25)',
-          animation: 'pulse 1.4s infinite',
-        }} />
-        Byggs just nu · live-preview
-      </div>
-
-      {/* Floating price tag */}
-      <div style={{
-        position: 'absolute',
-        bottom: '-10px', left: '-8px',
-        background: '#fff',
-        padding: '14px 18px',
-        borderRadius: 14,
-        border: '1px solid var(--line)',
-        boxShadow: '0 16px 40px -12px rgba(10,10,10,0.18)',
-        transform: 'rotate(-3deg)',
-      }}>
-        <div style={{ fontSize: 10, color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-          Att betala idag
-        </div>
-        <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 32, fontWeight: 600, letterSpacing: '-0.04em', marginTop: 2 }}>
-          0 kr
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// The faux website interior — morphs through 4 phases
-function MockWebsite({ phase, progress }) {
-  const phases = [
-    { label: 'Skiss', color: 'var(--muted-2)' },
-    { label: 'Wireframe', color: 'var(--muted)' },
-    { label: 'Design', color: 'var(--accent)' },
-    { label: 'Live', color: 'var(--success)' },
-  ];
-  const p = phases[phase];
-
-  return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 14 }}>
-      {/* Top indicator */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 10, fontFamily: "'JetBrains Mono', monospace", color: 'var(--muted)' }}>
-        <span>FAS {phase + 1}/4 · {p.label.toUpperCase()}</span>
-        <span>{Math.round(progress)}%</span>
-      </div>
-      {/* Progress bar */}
-      <div style={{ height: 3, background: 'var(--bg-warm)', borderRadius: 2, overflow: 'hidden' }}>
-        <div style={{
-          height: '100%',
-          width: `${progress}%`,
-          background: p.color,
-          transition: 'width 0.3s linear, background 0.5s',
-          borderRadius: 2,
-        }} />
-      </div>
-
-      {/* Fake page layout — morphs */}
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 4 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, justifyContent: 'center' }}>
-          <MockBlock h={12} phase={phase} delay={0} wPct={80} />
-          <MockBlock h={28} phase={phase} delay={100} wPct={95} isHeading />
-          <MockBlock h={8} phase={phase} delay={200} wPct={70} />
-          <MockBlock h={8} phase={phase} delay={250} wPct={65} />
-          <div style={{ height: 10 }} />
-          <div style={{ display: 'flex', gap: 6 }}>
-            <MockBlock h={24} phase={phase} delay={300} wPct={35} isButton />
-            <MockBlock h={24} phase={phase} delay={350} wPct={30} isButton outline />
-          </div>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <MockBlock h="100%" phase={phase} delay={150} wPct={100} isImage />
-        </div>
-      </div>
-
-      {/* Bottom cards row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-        {[0, 1, 2].map(i => (
-          <div key={i} style={{
-            height: 46, borderRadius: 8,
-            background: phase >= 2 ? '#fff' : 'var(--bg-warm)',
-            border: '1px solid var(--line)',
-            padding: 6,
-            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-            transition: 'background 0.6s var(--ease-spring)',
-          }}>
-            <MockBlock h={4} phase={phase} delay={400 + i * 80} wPct={60} />
-            <MockBlock h={6} phase={phase} delay={450 + i * 80} wPct={80} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MockBlock({ h, wPct = 100, phase, delay = 0, isHeading, isButton, isImage, outline }) {
-  // phase 0: skeleton, 1: dashed wireframe, 2: solid color, 3: real
-  let bg, border, content = null;
-  if (phase === 0) {
-    bg = 'var(--bg-warm)'; border = '1px dashed var(--line-strong)';
-  } else if (phase === 1) {
-    bg = 'transparent'; border = '1px dashed var(--muted-2)';
-  } else if (phase === 2) {
-    bg = isHeading ? 'var(--ink)' : isButton ? (outline ? 'transparent' : 'var(--accent)') : isImage ? 'var(--bg-warm)' : 'var(--line-strong)';
-    border = outline ? '1px solid var(--line-strong)' : 'none';
-  } else {
-    bg = isHeading ? 'var(--ink)' : isButton ? (outline ? '#fff' : 'var(--accent)') : isImage ? 'linear-gradient(135deg, var(--bg-warm), var(--bg-dim))' : 'var(--ink-2)';
-    border = outline ? '1px solid var(--line-strong)' : 'none';
-  }
-
-  if (isImage && phase === 3) {
-    content = (
-      <div style={{ width: '100%', height: '100%', display: 'grid', placeItems: 'center', color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", fontSize: 9, opacity: 0.6 }}>
-        [produkt-foto]
-      </div>
-    );
-  }
-
-  return (
-    <div style={{
-      height: h, width: `${wPct}%`,
-      background: bg, border,
-      borderRadius: isButton ? 6 : isImage ? 6 : 3,
-      transition: 'background 0.7s var(--ease-spring), border 0.7s var(--ease-spring), opacity 0.4s',
-      transitionDelay: `${delay}ms`,
-    }}>
-      {content}
-    </div>
-  );
-}
-
-function Hero() {
-  return (
-    <section style={{ position: 'relative', paddingTop: 140, paddingBottom: 80, overflow: 'hidden' }}>
-      <div className="hero-grid-bg" />
-      <div className="container" style={{ position: 'relative' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.05fr) minmax(0, 1fr)', gap: 60, alignItems: 'center' }}>
-          <div>
-            <Reveal>
-              <div className="eyebrow" style={{ marginBottom: 24 }}>
-                Clarti · Hemsida utan risk
-              </div>
-            </Reveal>
-            <Reveal delay={100}>
-              <h1 style={{ fontSize: 'clamp(48px, 6.4vw, 88px)', letterSpacing: '-0.045em' }}>
-                Se din hemsida<br/>
-                <span style={{ position: 'relative', display: 'inline-block' }}>
-                  <span style={{ position: 'relative', zIndex: 2 }}>innan</span>
-                  <svg style={{ position: 'absolute', left: 0, right: 0, bottom: '0.05em', width: '100%', height: '0.22em', zIndex: 1 }} viewBox="0 0 200 20" preserveAspectRatio="none">
-                    <path d="M2 14 Q 50 4, 100 10 T 198 10" stroke="var(--accent)" strokeWidth="4" fill="none" strokeLinecap="round" style={{ strokeDasharray: 220, strokeDashoffset: 220, animation: 'dash 1.6s 0.4s var(--ease-spring) forwards' }} />
-                  </svg>
-                </span>{' '}
-                du betalar.
-              </h1>
-            </Reveal>
-            <Reveal delay={220}>
-              <p style={{ fontSize: 20, marginTop: 28, maxWidth: 520, color: 'var(--muted)', lineHeight: 1.45 }}>
-                Vi bygger en komplett hemsida åt dig — gratis. När den är klar bestämmer du själv: behåll den för från 299 kr/mån, eller gå vidare utan att betala ett öre.
-              </p>
-            </Reveal>
-            <Reveal delay={340}>
-              <div style={{ display: 'flex', gap: 10, marginTop: 36, flexWrap: 'wrap' }}>
-                <a href="brief.html" className="btn btn-primary" style={{ padding: '16px 24px', fontSize: 16 }}>
-                  Börja gratis — se förslag på 48h <Icon.arrow />
-                </a>
-                <a href="#hur" className="btn btn-ghost" style={{ padding: '16px 22px', fontSize: 16 }}>
-                  <Icon.play /> Så funkar det
-                </a>
-              </div>
-            </Reveal>
-            <Reveal delay={460}>
-              <div style={{ display: 'flex', gap: 24, marginTop: 32, flexWrap: 'wrap', fontSize: 13, color: 'var(--muted)' }}>
-                {['Ingen startavgift', 'Ingen bindningstid', '0 kr tills du säger ja'].map((t, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ width: 16, height: 16, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent)', display: 'grid', placeItems: 'center' }}>
-                      <Icon.check />
-                    </span>
-                    {t}
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-          <Reveal delay={200}>
-            <HeroMockup />
-          </Reveal>
-        </div>
-      </div>
-      <style>{`@keyframes dash { to { stroke-dashoffset: 0; } }`}</style>
-    </section>
-  );
-}
-
-// Logo marquee / stats bar directly under hero
-function TrustBar() {
-  return (
-    <section style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', padding: '36px 0', background: '#fff' }}>
-      <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32, alignItems: 'center' }}>
-          {[
-            { num: 847, suffix: '', label: 'Företag på Clarti' },
-            { num: 4.9, suffix: '/5', label: 'Snittbetyg', decimal: true },
-            { num: 48, suffix: 'h', label: 'Från brief till färdigt förslag' },
-            { num: 0, suffix: ' kr', label: 'Att betala innan du säger ja' },
-          ].map((s, i) => (
-            <Reveal key={i} delay={i * 80}>
-              <div style={{ borderLeft: i > 0 ? '1px solid var(--line)' : 'none', paddingLeft: i > 0 ? 24 : 0 }}>
-                <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 36, fontWeight: 500, letterSpacing: '-0.04em', lineHeight: 1 }}>
-                  {s.decimal ? (
-                    <span className="tick">{s.num.toFixed(1)}{s.suffix}</span>
-                  ) : (
-                    <Counter to={s.num} suffix={s.suffix} />
-                  )}
-                </div>
-                <div style={{ fontSize: 13, color: 'var(--muted)', marginTop: 6 }}>{s.label}</div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-Object.assign(window, { Nav, Hero, TrustBar });
-// "Hur det funkar" — horizontal timeline with animated steps
-
-function HowItWorks() {
-  const [active, setActive] = useState(0);
-  const steps = [
-    {
-      n: '01',
-      title: 'Du fyller i kort brief',
-      time: '3 minuter',
-      body: 'Vad gör ni? Vilken känsla? Logga, färger, bilder — finns eller fixar vi. Inga formulär på 40 sidor.',
-      visual: 'brief',
-    },
-    {
-      n: '02',
-      title: 'Vi bygger hela sajten',
-      time: '24–48 timmar',
-      body: 'Riktiga designers och utvecklare (inte AI-slop). Vi skickar en live-länk när den är klar.',
-      visual: 'build',
-    },
-    {
-      n: '03',
-      title: 'Du ser den färdig',
-      time: 'När du vill',
-      body: 'Öppna länken. Klicka runt. Visa partnern. Sov på det. Inga begränsningar, inga paywalls, inga betalkort.',
-      visual: 'preview',
-    },
-    {
-      n: '04',
-      title: 'Du bestämmer',
-      time: 'No rush',
-      body: 'Älskar du den? Välj paket från 299 kr/mån. Ogillar du? Säg det — vi justerar tills du är nöjd, eller så går vi skilda vägar. 0 kr.',
-      visual: 'decide',
-    },
-  ];
-
-  return (
-    <section id="hur" className="section-pad" style={{ background: 'var(--bg)' }}>
-      <div className="container">
-        <Reveal>
-          <div className="eyebrow" style={{ marginBottom: 18 }}>Hur det funkar</div>
-        </Reveal>
-        <Reveal delay={80}>
-          <h2 style={{ fontSize: 'clamp(40px, 5vw, 68px)', maxWidth: 900, marginBottom: 18 }}>
-            Från första kontakt till färdig hemsida —<br/>
-            <span style={{ color: 'var(--muted)' }}>på högst två dagar.</span>
-          </h2>
-        </Reveal>
-        <Reveal delay={160}>
-          <p style={{ fontSize: 18, color: 'var(--muted)', maxWidth: 560, marginBottom: 60 }}>
-            Klicka på ett steg för att se vad som händer. Hela processen är byggd så att du aldrig känner osäkerhet — och aldrig betalar en krona innan du är säker.
-          </p>
-        </Reveal>
-
-        {/* Stepper tabs */}
-        <Reveal delay={240}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 32 }}>
-            {steps.map((s, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                style={{
-                  textAlign: 'left',
-                  background: active === i ? '#fff' : 'transparent',
-                  border: active === i ? '1px solid var(--line-strong)' : '1px solid var(--line)',
-                  borderRadius: 14,
-                  padding: '16px 18px',
-                  transition: 'all 0.4s var(--ease-spring)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  transform: active === i ? 'translateY(-2px)' : 'none',
-                  boxShadow: active === i ? 'var(--shadow)' : 'none',
-                }}
-              >
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: active === i ? 'var(--accent)' : 'var(--muted-2)', letterSpacing: '0.1em' }}>
-                  {s.n}
-                </div>
-                <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 17, fontWeight: 500, letterSpacing: '-0.02em', marginTop: 6 }}>
-                  {s.title}
-                </div>
-                <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>
-                  {s.time}
-                </div>
-                {/* Progress bar inside active tab */}
-                {active === i && (
-                  <div style={{
-                    position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
-                    background: 'var(--accent)',
-                    animation: 'fillbar 5s linear forwards',
-                  }} />
-                )}
-              </button>
-            ))}
-          </div>
-        </Reveal>
-
-        {/* Active step visual */}
-        <Reveal delay={340}>
-          <div style={{
-            background: '#fff',
-            border: '1px solid var(--line)',
-            borderRadius: 'var(--radius-lg)',
-            padding: 48,
-            display: 'grid',
-            gridTemplateColumns: '1fr 1.2fr',
-            gap: 56,
-            alignItems: 'center',
-            minHeight: 440,
-          }}>
-            <div>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: 12 }}>
-                STEG {steps[active].n} · {steps[active].time.toUpperCase()}
-              </div>
-              <h3 style={{ fontSize: 40, letterSpacing: '-0.035em', marginBottom: 20 }}>
-                {steps[active].title}
-              </h3>
-              <p style={{ fontSize: 17, color: 'var(--muted)', lineHeight: 1.55 }}>
-                {steps[active].body}
-              </p>
-              <div style={{ marginTop: 32, display: 'flex', gap: 8 }}>
-                <button
-                  onClick={() => setActive(Math.max(0, active - 1))}
-                  disabled={active === 0}
-                  className="btn btn-ghost"
-                  style={{ padding: '10px 14px', opacity: active === 0 ? 0.4 : 1 }}
-                >
-                  ← Förra
-                </button>
-                <button
-                  onClick={() => setActive(Math.min(3, active + 1))}
-                  disabled={active === 3}
-                  className="btn btn-primary"
-                  style={{ padding: '10px 18px', opacity: active === 3 ? 0.4 : 1 }}
-                >
-                  Nästa steg <Icon.arrow />
-                </button>
-              </div>
-            </div>
-            <StepVisual which={steps[active].visual} key={active} />
-          </div>
-        </Reveal>
-
-        <style>{`@keyframes fillbar { from { width: 0; } to { width: 100%; } }`}</style>
-      </div>
-    </section>
-  );
-}
-
-function StepVisual({ which }) {
-  if (which === 'brief') return <BriefVisual />;
-  if (which === 'build') return <BuildVisual />;
-  if (which === 'preview') return <PreviewVisual />;
-  return <DecideVisual />;
-}
-
-function BriefVisual() {
-  return (
-    <div style={{ background: 'var(--bg-warm)', borderRadius: 18, padding: 28, height: 360, display: 'flex', flexDirection: 'column', gap: 14 }}>
-      {[
-        { label: 'Företagsnamn', value: 'Lindströms Bygg AB', typed: true },
-        { label: 'Bransch', value: 'Hantverkare · Bygg', typed: true },
-        { label: 'Primär färg', value: null, swatch: true },
-        { label: 'Logga', value: null, upload: true },
-      ].map((f, i) => (
-        <div key={i} style={{
-          background: '#fff', borderRadius: 10, padding: '12px 14px',
-          border: '1px solid var(--line)',
-          animation: `slideIn 0.6s ${i * 0.15}s var(--ease-spring) both`,
-        }}>
-          <div style={{ fontSize: 10, color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>
-            {f.label}
-          </div>
-          {f.typed && (
-            <div style={{ fontSize: 15, color: 'var(--ink)', display: 'flex', alignItems: 'center' }}>
-              {f.value}
-              <span style={{ display: 'inline-block', width: 2, height: 16, background: 'var(--accent)', marginLeft: 4, animation: 'blink 1s infinite' }} />
-            </div>
-          )}
-          {f.swatch && (
-            <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
-              {['#4F46E5', '#0A0A0A', '#D84315', '#0F8F5C'].map((c, j) => (
-                <div key={j} style={{ width: 26, height: 26, borderRadius: 8, background: c, border: j === 0 ? '2px solid var(--ink)' : '1px solid var(--line)', cursor: 'pointer' }} />
-              ))}
-            </div>
-          )}
-          {f.upload && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 4 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--ink)', color: '#fff', display: 'grid', placeItems: 'center', fontFamily: "'Inter Tight', sans-serif", fontSize: 18, fontWeight: 600 }}>L</div>
-              <span style={{ fontSize: 13, color: 'var(--muted)' }}>lindstroms-bygg.svg · 12 KB</span>
-            </div>
-          )}
-        </div>
-      ))}
-      <style>{`
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes blink { 50% { opacity: 0; } }
-      `}</style>
-    </div>
-  );
-}
-
-function BuildVisual() {
-  const [lines, setLines] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => setLines(l => (l + 1) % 8), 600);
-    return () => clearInterval(id);
-  }, []);
-  const logs = [
-    '→ Skapar projekt: lindstroms-bygg',
-    '→ Installerar design-system',
-    '→ Designar hero-sektion',
-    '→ Optimerar bilder (5 st)',
-    '→ Genererar SEO-metadata',
-    '→ Registrerar domän: lindstroms-bygg.se',
-    '→ Aktiverar SSL-certifikat',
-    '✓ Live preview redo',
-  ];
-  return (
-    <div style={{ background: '#0A0A0A', borderRadius: 18, padding: 28, height: 360, display: 'flex', flexDirection: 'column', gap: 8, fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>
-      <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FF5F56' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FFBD2E' }} />
-        <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#27C93F' }} />
-      </div>
-      {logs.slice(0, lines + 1).map((l, i) => (
-        <div key={i} style={{
-          color: l.startsWith('✓') ? '#B8FF3C' : '#9A978F',
-          animation: 'typeIn 0.3s var(--ease-out) both',
-        }}>
-          {l}
-        </div>
-      ))}
-      <div style={{ marginTop: 'auto', padding: 12, background: 'rgba(255,255,255,0.04)', borderRadius: 8, border: '1px solid rgba(255,255,255,0.08)', color: '#E6E6E0', fontSize: 12 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-          <span>Framsteg</span>
-          <span style={{ color: '#B8FF3C' }}>{Math.round((lines + 1) / 8 * 100)}%</span>
-        </div>
-        <div style={{ height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 2, overflow: 'hidden' }}>
-          <div style={{ height: '100%', width: `${(lines + 1) / 8 * 100}%`, background: '#B8FF3C', transition: 'width 0.6s var(--ease-spring)' }} />
-        </div>
-      </div>
-      <style>{`@keyframes typeIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }`}</style>
-    </div>
-  );
-}
-
-function PreviewVisual() {
-  return (
-    <div style={{ position: 'relative', height: 360 }}>
-      {/* Desktop preview */}
-      <div style={{
-        position: 'absolute', left: 0, top: 20, width: '80%', height: 240,
-        background: '#fff', borderRadius: 12, border: '1px solid var(--line)',
-        boxShadow: 'var(--shadow)', overflow: 'hidden',
-      }}>
-        <div style={{ height: 24, background: 'var(--bg-warm)', borderBottom: '1px solid var(--line)', display: 'flex', alignItems: 'center', paddingLeft: 10, gap: 4 }}>
-          <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#FF5F56' }} />
-          <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#FFBD2E' }} />
-          <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#27C93F' }} />
-        </div>
-        <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ height: 14, width: '50%', background: 'var(--ink)', borderRadius: 3 }} />
-          <div style={{ height: 6, width: '70%', background: 'var(--line-strong)', borderRadius: 2 }} />
-          <div style={{ height: 6, width: '60%', background: 'var(--line-strong)', borderRadius: 2 }} />
-          <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
-            <div style={{ height: 22, width: 70, background: 'var(--accent)', borderRadius: 4 }} />
-            <div style={{ height: 22, width: 60, border: '1px solid var(--line-strong)', borderRadius: 4 }} />
-          </div>
-          <div style={{ marginTop: 10, height: 80, borderRadius: 6, background: 'repeating-linear-gradient(135deg, var(--bg-warm) 0 8px, var(--bg-dim) 8px 16px)' }} />
-        </div>
-      </div>
-      {/* Phone preview */}
-      <div style={{
-        position: 'absolute', right: 0, bottom: 0, width: 130, height: 260,
-        background: '#0A0A0A', borderRadius: 22, padding: 6,
-        boxShadow: '0 30px 60px -20px rgba(10,10,10,0.4)',
-      }}>
-        <div style={{ background: '#fff', borderRadius: 16, height: '100%', padding: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <div style={{ height: 10, width: '60%', background: 'var(--ink)', borderRadius: 2 }} />
-          <div style={{ height: 4, background: 'var(--line-strong)', borderRadius: 2 }} />
-          <div style={{ height: 4, width: '80%', background: 'var(--line-strong)', borderRadius: 2 }} />
-          <div style={{ height: 18, width: 60, background: 'var(--accent)', borderRadius: 3, marginTop: 4 }} />
-          <div style={{ flex: 1, borderRadius: 4, marginTop: 6, background: 'repeating-linear-gradient(135deg, var(--bg-warm) 0 6px, var(--bg-dim) 6px 12px)' }} />
-        </div>
-      </div>
-      <div style={{
-        position: 'absolute', left: 10, bottom: 10,
-        background: 'var(--ink)', color: 'var(--bg)',
-        padding: '8px 14px', borderRadius: 999,
-        fontSize: 12, fontFamily: "'JetBrains Mono', monospace",
-        display: 'flex', alignItems: 'center', gap: 6,
-      }}>
-        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#B8FF3C' }} />
-        live-preview · mobiloptimerad
-      </div>
-    </div>
-  );
-}
-
-function DecideVisual() {
-  const [choice, setChoice] = useState(null);
-  return (
-    <div style={{ background: 'var(--bg-warm)', borderRadius: 18, padding: 28, height: 360, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 16 }}>
-      <div style={{ textAlign: 'center', fontSize: 20, fontFamily: "'Inter Tight', sans-serif", letterSpacing: '-0.02em', fontWeight: 500, marginBottom: 12 }}>
-        Vad tycker du?
-      </div>
-      {[
-        { key: 'love', label: 'Jag älskar den', sub: 'Välj paket · 299–899 kr/mån', primary: true },
-        { key: 'tweak', label: 'Nästan — några ändringar', sub: 'Vi justerar kostnadsfritt', primary: false },
-        { key: 'no', label: 'Inte min stil', sub: 'Ingen fara. 0 kr. Vi skiljs som vänner.', primary: false },
-      ].map(opt => (
-        <button key={opt.key} onClick={() => setChoice(opt.key)} style={{
-          background: choice === opt.key ? (opt.primary ? 'var(--accent)' : 'var(--ink)') : '#fff',
-          color: choice === opt.key ? '#fff' : 'var(--ink)',
-          border: choice === opt.key ? 'none' : '1px solid var(--line)',
-          borderRadius: 12,
-          padding: '14px 18px',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          cursor: 'pointer',
-          transition: 'all 0.3s var(--ease-spring)',
-          textAlign: 'left',
-        }}>
-          <div>
-            <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 16, fontWeight: 500, letterSpacing: '-0.01em' }}>
-              {opt.label}
-            </div>
-            <div style={{ fontSize: 12, opacity: 0.7, marginTop: 2 }}>
-              {opt.sub}
-            </div>
-          </div>
-          <Icon.arrow />
-        </button>
-      ))}
-    </div>
-  );
-}
-
-window.HowItWorks = HowItWorks;
-// Pricing section — cards + full comparison table
-
-function Pricing() {
-  return (
-    <section id="paket" className="section-pad" style={{ background: 'var(--bg-warm)' }}>
-      <div className="container">
-        <Reveal>
-          <div className="eyebrow" style={{ marginBottom: 18 }}>Paket · Alla byggs gratis först</div>
-        </Reveal>
-        <Reveal delay={80}>
-          <h2 style={{ fontSize: 'clamp(40px, 5vw, 68px)', maxWidth: 900, marginBottom: 18 }}>
-            Fyra paket.<br/>
-            <span style={{ color: 'var(--muted)' }}>Ett enkelt beslut.</span>
-          </h2>
-        </Reveal>
-        <Reveal delay={160}>
-          <p style={{ fontSize: 18, color: 'var(--muted)', maxWidth: 560, marginBottom: 56 }}>
-            Du ser hela sajten först. Väljer paket sen. Byter när du vill — uppåt eller neråt, utan straff.
-          </p>
-        </Reveal>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
-          {PLANS.map((p, i) => (
-            <Reveal key={p.name} delay={i * 90}>
-              <PlanCard plan={p} index={i} />
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal delay={400}>
-          <div style={{ fontSize: 13, color: 'var(--muted)', textAlign: 'center', marginBottom: 40 }}>
-            Alla priser ex. moms. Domän & SSL ingår. Säg upp när som helst med 1 månads uppsägning.
-          </div>
-        </Reveal>
-
-        <div id="jamf" style={{ scrollMarginTop: 80 }} />
-        <Reveal delay={200}>
-          <h3 style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', marginBottom: 24, marginTop: 40 }}>
-            Full jämförelse
-          </h3>
-        </Reveal>
-
-        <Reveal delay={280}>
-          <ComparisonTable />
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-function PlanCard({ plan, index }) {
-  const [hover, setHover] = useState(false);
-  const isHi = plan.highlight;
-  return (
-    <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{
-        background: isHi ? 'var(--ink)' : '#fff',
-        color: isHi ? 'var(--bg)' : 'var(--ink)',
-        border: isHi ? '1px solid var(--ink)' : '1px solid var(--line)',
-        borderRadius: 'var(--radius-lg)',
-        padding: 24,
-        position: 'relative',
-        transition: 'transform 0.4s var(--ease-spring), box-shadow 0.4s',
-        transform: hover ? 'translateY(calc(-6px * var(--motion)))' : 'none',
-        boxShadow: hover ? 'var(--shadow-lg)' : 'var(--shadow-sm)',
-        display: 'flex', flexDirection: 'column', gap: 18,
-      }}
-    >
-      {isHi && (
-        <div style={{
-          position: 'absolute', top: -12, right: 20,
-          background: '#B8FF3C', color: '#0A0A0A',
-          padding: '4px 10px', borderRadius: 999,
-          fontSize: 10, fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 500,
-        }}>
-          Populärast
-        </div>
-      )}
-      <div>
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', opacity: 0.6 }}>
-          {String(index + 1).padStart(2, '0')} · {plan.name}
-        </div>
-        <div style={{ marginTop: 14, display: 'flex', alignItems: 'baseline', gap: 4 }}>
-          <span style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 52, fontWeight: 500, letterSpacing: '-0.045em', lineHeight: 1 }}>
-            {plan.price}
-          </span>
-          <span style={{ fontSize: 14, opacity: 0.6 }}>kr/mån</span>
-        </div>
-        <div style={{ fontSize: 14, opacity: 0.7, marginTop: 10, minHeight: 42 }}>
-          {plan.tagline}
-        </div>
-      </div>
-
-      <div style={{ height: 1, background: isHi ? 'rgba(255,255,255,0.12)' : 'var(--line)' }} />
-
-      <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13.5 }}>
-        {planHighlights(plan.name).map((f, i) => (
-          <li key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-            <span style={{
-              width: 16, height: 16, flexShrink: 0, borderRadius: '50%',
-              background: isHi ? '#B8FF3C' : 'var(--accent-soft)',
-              color: isHi ? '#0A0A0A' : 'var(--accent)',
-              display: 'grid', placeItems: 'center', marginTop: 2,
-            }}>
-              <Icon.check />
-            </span>
-            <span style={{ opacity: 0.9 }}>{f}</span>
-          </li>
-        ))}
-      </ul>
-
-      <a href="brief.html" className={`btn ${isHi ? 'btn-accent' : 'btn-primary'}`} style={{
-        justifyContent: 'center', marginTop: 'auto',
-        background: isHi ? '#B8FF3C' : 'var(--ink)',
-        color: isHi ? '#0A0A0A' : '#fff',
-      }}>
-        Starta gratis <Icon.arrow />
-      </a>
-    </div>
-  );
-}
-
-function planHighlights(name) {
-  if (name === 'Start') return ['Hemsida (5 sidor)', 'Egen .se-domän + SSL', 'Mobiloptimerad', 'SEO-grund', 'Självservice-portal'];
-  if (name === 'Mail') return ['Allt i Start + 10 sidor', 'Riktig företagsmail @dindoman', 'Bokningssystem', 'Offerter & fakturor', 'SEO-avancerat'];
-  if (name === 'Shop') return ['Allt i Mail + 15 sidor', 'Webshop (upp till 50 produkter)', 'Klarna + Swish + kort', 'Lager- & kundkonton', 'Rabatter & varukorg-mail'];
-  return ['Obegränsat antal sidor', 'CRM + email-marketing', 'Google & Meta Ads (hanterat)', 'Fortnox / Visma / Shopify', 'Månadsrapport + 5 mailboxar'];
-}
-
-function Cell({ v, highlighted }) {
-  if (v === true) {
-    return <td className={`plan-col ${highlighted ? 'highlighted' : ''}`}>
-      <span className="check"><Icon.check /></span>
-    </td>;
-  }
-  if (v === false) {
-    return <td className={`plan-col ${highlighted ? 'highlighted' : ''}`}>
-      <span className="dash">—</span>
-    </td>;
-  }
-  return <td className={`plan-col ${highlighted ? 'highlighted' : ''}`}>
-    <span className="num">{v}</span>
-  </td>;
-}
-
-function ComparisonTable() {
-  return (
-    <div className="table-wrap">
-      <div style={{ overflowX: 'auto' }}>
-        <table className="ptable">
-          <thead>
-            <tr>
-              <th style={{ width: '38%' }}>Feature</th>
-              {PLANS.map((p, i) => (
-                <th key={p.name} className={`plan-col ${p.highlight ? 'highlighted' : ''}`}>
-                  <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 18, color: 'var(--ink)', fontWeight: 500, letterSpacing: '-0.02em' }}>
-                    {p.name}
-                  </div>
-                  <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
-                    {p.price} kr/mån
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="feat-name" style={{ fontWeight: 500, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ color: 'var(--accent)' }}>✦</span> Gratis bygge först (alltid)
-              </td>
-              {PLANS.map(p => <Cell key={p.name} v={true} highlighted={p.highlight} />)}
-            </tr>
-            {PRICING_GROUPS.map((g, gi) => (
-              <React.Fragment key={gi}>
-                <tr className="group-row">
-                  <td colSpan={5}>{g.title}</td>
-                </tr>
-                {g.features.map((f, fi) => (
-                  <tr key={fi}>
-                    <td className="feat-name">{f.name}</td>
-                    {f.values.map((v, vi) => (
-                      <Cell key={vi} v={v} highlighted={PLANS[vi].highlight} />
-                    ))}
-                  </tr>
-                ))}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-window.Pricing = Pricing;
-// Trust section: vs traditional agencies, testimonials, "if you're not happy"
-
-function VsAgency() {
-  const [ref, inView] = useInView();
-  return (
-    <section className="section-pad" style={{ background: 'var(--bg)' }} ref={ref}>
-      <div className="container">
-        <Reveal>
-          <div className="eyebrow" style={{ marginBottom: 18 }}>Jämförelse · Clarti vs traditionell webbyrå</div>
-        </Reveal>
-        <Reveal delay={80}>
-          <h2 style={{ fontSize: 'clamp(40px, 5vw, 68px)', maxWidth: 960, marginBottom: 18 }}>
-            Samma sajt.<br/>
-            <span style={{ color: 'var(--muted)' }}>En tiondel av priset.</span>
-          </h2>
-        </Reveal>
-        <Reveal delay={160}>
-          <p style={{ fontSize: 18, color: 'var(--muted)', maxWidth: 560, marginBottom: 60 }}>
-            Traditionella byråer börjar med en offert och ett projekt-avtal. Vi börjar med en färdig hemsida du kan titta på.
-          </p>
-        </Reveal>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-          <Reveal delay={240}>
-            <div style={{ background: 'var(--bg-warm)', borderRadius: 'var(--radius-lg)', padding: 36, border: '1px solid var(--line)' }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-                Traditionell webbyrå
-              </div>
-              <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 48, letterSpacing: '-0.04em', fontWeight: 500, color: 'var(--muted)', textDecoration: 'line-through', textDecorationColor: 'rgba(10,10,10,0.2)' }}>
-                35 000 – 120 000 kr
-              </div>
-              <div style={{ fontSize: 13, color: 'var(--muted)', marginTop: 6 }}>Startkostnad + 6–12 veckor + månadsavgift</div>
-
-              <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {[
-                  { l: 'Offert först, sajt sen', w: 100 },
-                  { l: 'Betalar innan du sett något', w: 100 },
-                  { l: '6–12 veckors väntan', w: 85 },
-                  { l: 'Bindningstid 12 mån', w: 75 },
-                ].map((row, i) => (
-                  <div key={i}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--ink-2)', marginBottom: 6 }}>
-                      <span>{row.l}</span>
-                      <span style={{ color: '#D84315' }}>✕</span>
-                    </div>
-                    <div className="vs-bar">
-                      <div className="vs-fill" style={{ width: inView ? `${row.w}%` : '0%', background: '#D84315', transitionDelay: `${0.3 + i * 0.15}s` }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={320}>
-            <div style={{ background: 'var(--ink)', color: 'var(--bg)', borderRadius: 'var(--radius-lg)', padding: 36, border: '1px solid var(--ink)', position: 'relative', overflow: 'hidden' }}>
-              <div style={{
-                position: 'absolute', top: -60, right: -60, width: 200, height: 200,
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, color-mix(in srgb, var(--accent) 40%, transparent), transparent 70%)',
-                filter: 'blur(40px)',
-              }} />
-              <div style={{ position: 'relative' }}>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: '#B8FF3C', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-                  Clarti
-                </div>
-                <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 48, letterSpacing: '-0.04em', fontWeight: 500 }}>
-                  Från 299 kr/mån
-                </div>
-                <div style={{ fontSize: 13, color: '#9A978F', marginTop: 6 }}>0 kr startkostnad · 48h leverans · 1 månads uppsägning</div>
-
-                <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 14 }}>
-                  {[
-                    { l: 'Sajten först, beslut sen', w: 100 },
-                    { l: '0 kr innan du säger ja', w: 100 },
-                    { l: 'Färdig på 24–48 timmar', w: 98 },
-                    { l: 'Säg upp när du vill', w: 100 },
-                  ].map((row, i) => (
-                    <div key={i}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#E6E6E0', marginBottom: 6 }}>
-                        <span>{row.l}</span>
-                        <span style={{ color: '#B8FF3C' }}>✓</span>
-                      </div>
-                      <div style={{ height: 36, borderRadius: 8, background: 'rgba(255,255,255,0.06)', position: 'relative', overflow: 'hidden' }}>
-                        <div style={{
-                          position: 'absolute', top: 0, left: 0, bottom: 0,
-                          width: inView ? `${row.w}%` : '0%',
-                          background: '#B8FF3C', borderRadius: 8,
-                          transition: 'width 1.2s var(--ease-spring)',
-                          transitionDelay: `${0.4 + i * 0.15}s`,
-                        }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Testimonials() {
-  const quotes = [
-    { name: 'Anna Lindström', role: 'Lindströms Bygg AB · Göteborg', q: 'Jag fick offert på 65 000 kr från en byrå. Clarti byggde den på två dagar — jag såg den färdig innan jag hade bestämt mig. Betalar 299 kr/mån och har aldrig ångrat mig.', avatar: 'AL' },
-    { name: 'Marcus Ek', role: 'Eks Juridik · Malmö', q: 'Som nystartad advokatbyrå behövde jag se seriös ut direkt. Clarti levererade på 36 timmar. Klienter tror vi varit online i flera år.', avatar: 'ME' },
-    { name: 'Fatima Haddad', role: 'Haddad Konditori · Stockholm', q: 'Webshopen drar in mer per månad än jag betalar på ett år. Klarna-betalningar och bokning fungerade från dag ett.', avatar: 'FH' },
-  ];
-  return (
-    <section className="section-pad" style={{ background: 'var(--bg-warm)' }}>
-      <div className="container">
-        <Reveal>
-          <div className="eyebrow" style={{ marginBottom: 18 }}>Kunder</div>
-        </Reveal>
-        <Reveal delay={80}>
-          <h2 style={{ fontSize: 'clamp(40px, 5vw, 60px)', maxWidth: 800, marginBottom: 48 }}>
-            847 företag. Inte en enda ångrad signatur.
-          </h2>
-        </Reveal>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-          {quotes.map((t, i) => (
-            <Reveal key={i} delay={i * 100}>
-              <div style={{ background: '#fff', borderRadius: 'var(--radius-lg)', padding: 28, border: '1px solid var(--line)', height: '100%', display: 'flex', flexDirection: 'column', gap: 20 }}>
-                <div style={{ display: 'flex', gap: 2, color: 'var(--accent)' }}>
-                  {[...Array(5)].map((_, j) => <span key={j} style={{ fontSize: 14 }}>★</span>)}
-                </div>
-                <p style={{ fontSize: 17, lineHeight: 1.45, letterSpacing: '-0.01em', color: 'var(--ink)', flex: 1 }}>
-                  "{t.q}"
-                </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 12, borderTop: '1px solid var(--line)' }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--ink)', color: '#fff', display: 'grid', placeItems: 'center', fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 500 }}>
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 500 }}>{t.name}</div>
-                    <div style={{ fontSize: 12, color: 'var(--muted)' }}>{t.role}</div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Guarantee() {
-  return (
-    <section className="section-pad" style={{ background: 'var(--bg)' }}>
-      <div className="container">
-        <div style={{ background: '#fff', borderRadius: 'var(--radius-lg)', padding: '72px 56px', border: '1px solid var(--line)', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 40, right: 56, width: 120, height: 120, borderRadius: '50%', border: '1.5px solid var(--line-strong)', display: 'grid', placeItems: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--muted)', letterSpacing: '0.08em' }}>
-            <div style={{ textAlign: 'center' }}>
-              0 KR<br/>GARANTI
-            </div>
-          </div>
-          <Reveal>
-            <div className="eyebrow" style={{ marginBottom: 18 }}>Om du inte är nöjd</div>
-          </Reveal>
-          <Reveal delay={80}>
-            <h2 style={{ fontSize: 'clamp(34px, 4.4vw, 56px)', maxWidth: 820, marginBottom: 28 }}>
-              Inget finstilt. Inga klausuler. Om du inte älskar det — säg det, så går vi skilda vägar.
-            </h2>
-          </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, marginTop: 40 }}>
-            {[
-              { n: '01', h: 'Innan du säger ja', p: 'Du betalar 0 kr. Ingen kortuppgift krävs. Sajten ligger på vår server som en live-länk du kan visa vem du vill.' },
-              { n: '02', h: 'Efter du signat', p: 'Säg upp när som helst med 1 månads uppsägning. Ingen bindningstid, ingen straffavgift, inga obskyra villkor.' },
-              { n: '03', h: 'Om något går sönder', p: 'Skapa ärende i portalen. Svar inom 4 timmar, åtgärdat samma dag. Annars får du månaden gratis.' },
-            ].map((b, i) => (
-              <Reveal key={i} delay={180 + i * 100}>
-                <div>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--accent)', letterSpacing: '0.12em' }}>{b.n}</div>
-                  <h4 style={{ fontSize: 20, marginTop: 10, marginBottom: 10 }}>{b.h}</h4>
-                  <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.5 }}>{b.p}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-window.VsAgency = VsAgency;
-window.Testimonials = Testimonials;
-window.Guarantee = Guarantee;
-// Customer portal preview — shows what they get after signing up
-
-function PortalPreview() {
-  const [tab, setTab] = useState('overview');
-  const tabs = [
-    { key: 'overview', label: 'Översikt' },
-    { key: 'ticket', label: 'Skapa ärende' },
-    { key: 'billing', label: 'Fakturering' },
-    { key: 'stats', label: 'Statistik' },
-    { key: 'editor', label: 'Redigera' },
-    { key: 'domain', label: 'Domän & mail' },
-    { key: 'support', label: 'Support' },
-    { key: 'shop', label: 'Webshop' },
-  ];
-  return (
-    <section id="portal" className="section-pad" style={{ background: 'var(--ink)', color: 'var(--bg)', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'radial-gradient(ellipse at 70% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 55%)' }} />
-      <div className="container" style={{ position: 'relative' }}>
-        <Reveal>
-          <div className="eyebrow" style={{ marginBottom: 18, color: '#B8FF3C' }}>Kundportal · Ingår i alla paket</div>
-        </Reveal>
-        <Reveal delay={80}>
-          <h2 style={{ fontSize: 'clamp(40px, 5vw, 68px)', maxWidth: 880, marginBottom: 18, color: 'var(--bg)' }}>
-            Hantera allt själv.<br/>
-            <span style={{ color: '#76766E' }}>Eller lämna över till oss.</span>
-          </h2>
-        </Reveal>
-        <Reveal delay={160}>
-          <p style={{ fontSize: 18, color: '#9A978F', maxWidth: 560, marginBottom: 44 }}>
-            Full kontroll från dag ett. Byt text, byt bilder, uppgradera paket, skapa ärende — allt från en ren dashboard som är lika enkel som iPhone-inställningar.
-          </p>
-        </Reveal>
-
-        <Reveal delay={240}>
-          <div style={{ background: '#fff', color: 'var(--ink)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: '0 60px 120px -40px rgba(0,0,0,0.6), 0 20px 40px -20px rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            {/* Browser chrome */}
-            <div style={{ background: 'var(--bg-warm)', padding: '12px 18px', borderBottom: '1px solid var(--line)', display: 'flex', alignItems: 'center', gap: 14 }}>
-              <div style={{ display: 'flex', gap: 6 }}>
-                <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FF5F56' }} />
-                <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#FFBD2E' }} />
-                <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#27C93F' }} />
-              </div>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--muted)' }}>
-                app.clarti.se/dashboard
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', minHeight: 560 }}>
-              {/* Sidebar */}
-              <div style={{ background: 'var(--bg)', borderRight: '1px solid var(--line)', padding: 20, display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <div className="logo" style={{ marginBottom: 24, fontSize: 18 }}>
-                  <span className="logo-dot"></span>Clarti
-                </div>
-                {tabs.map(t => (
-                  <button key={t.key} onClick={() => setTab(t.key)} style={{
-                    textAlign: 'left',
-                    padding: '10px 12px',
-                    borderRadius: 8,
-                    background: tab === t.key ? 'var(--ink)' : 'transparent',
-                    color: tab === t.key ? 'var(--bg)' : 'var(--ink-2)',
-                    fontSize: 13, fontWeight: 450,
-                    transition: 'background 0.25s, color 0.25s',
-                    cursor: 'pointer',
-                  }}>
-                    {t.label}
-                  </button>
-                ))}
-                <div style={{ marginTop: 'auto', padding: 14, background: 'var(--bg-warm)', borderRadius: 12, fontSize: 12 }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Nuvarande paket</div>
-                  <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 18, fontWeight: 500, marginTop: 2 }}>Shop · 599 kr/mån</div>
-                  <div style={{ marginTop: 8, fontSize: 11, color: 'var(--accent)' }}>↑ Uppgradera till Komplett</div>
-                </div>
-              </div>
-
-              {/* Main content */}
-              <div style={{ padding: 32, background: '#fff' }}>
-                <PortalContent tab={tab} />
-              </div>
-            </div>
-          </div>
-        </Reveal>
-
-        <div style={{ marginTop: 28, display: 'flex', gap: 12, flexWrap: 'wrap', fontSize: 13, color: '#9A978F' }}>
-          {tabs.map(t => (
-            <button key={t.key} onClick={() => setTab(t.key)} style={{
-              padding: '8px 14px', borderRadius: 999,
-              background: tab === t.key ? 'rgba(255,255,255,0.12)' : 'transparent',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: tab === t.key ? '#fff' : '#9A978F',
-              fontSize: 13,
-            }}>
-              {t.label}
-            </button>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PortalContent({ tab }) {
-  if (tab === 'overview') return <PortalOverview />;
-  if (tab === 'ticket') return <PortalTicket />;
-  if (tab === 'billing') return <PortalBilling />;
-  if (tab === 'stats') return <PortalStats />;
-  if (tab === 'editor') return <PortalEditor />;
-  if (tab === 'domain') return <PortalDomain />;
-  if (tab === 'support') return <PortalSupport />;
-  return <PortalShop />;
-}
-
-function KPI({ label, value, trend, trendColor = 'var(--success)' }) {
-  return (
-    <div style={{ background: 'var(--bg)', borderRadius: 12, padding: 16, border: '1px solid var(--line)' }}>
-      <div style={{ fontSize: 11, color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em' }}>{label}</div>
-      <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 28, fontWeight: 500, letterSpacing: '-0.035em', marginTop: 6 }}>{value}</div>
-      {trend && <div style={{ fontSize: 12, color: trendColor, marginTop: 4 }}>{trend}</div>}
-    </div>
-  );
-}
-
-function PortalOverview() {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div>
-          <div style={{ fontSize: 13, color: 'var(--muted)' }}>God morgon, Anna</div>
-          <h3 style={{ fontSize: 26, marginTop: 4, letterSpacing: '-0.03em' }}>Din sajt presterar bra denna vecka</h3>
-        </div>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 12, padding: '6px 12px', borderRadius: 999, background: 'color-mix(in srgb, var(--success) 10%, transparent)', color: 'var(--success)' }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--success)' }} />
-          Live · lindstroms-bygg.se
-        </div>
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
-        <KPI label="Besökare (7d)" value="1 284" trend="↑ 22% vs förra veckan" />
-        <KPI label="Leads" value="18" trend="↑ 6 nya" />
-        <KPI label="Bokningar" value="9" trend="↑ 3 denna vecka" />
-        <KPI label="Pagespeed" value="98" trend="Utmärkt" trendColor="var(--muted)" />
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 16 }}>
-        <div style={{ background: 'var(--bg)', borderRadius: 12, padding: 20, border: '1px solid var(--line)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-            <div style={{ fontSize: 14, fontWeight: 500 }}>Besökare senaste 30 dagar</div>
-            <div style={{ fontSize: 12, color: 'var(--muted)' }}>4 892 totalt</div>
-          </div>
-          <MiniChart />
-        </div>
-        <div style={{ background: 'var(--bg)', borderRadius: 12, padding: 20, border: '1px solid var(--line)' }}>
-          <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 14 }}>Senaste leads</div>
-          {[
-            { name: 'Erik Svensson', when: '2 min sedan', type: 'Offertförfrågan' },
-            { name: 'Maria Andersson', when: '1h sedan', type: 'Bokning · badrum' },
-            { name: 'Johan Berg', when: '3h sedan', type: 'Kontaktformulär' },
-          ].map((l, i) => (
-            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < 2 ? '1px solid var(--line)' : 'none' }}>
-              <div>
-                <div style={{ fontSize: 13, fontWeight: 500 }}>{l.name}</div>
-                <div style={{ fontSize: 11, color: 'var(--muted)' }}>{l.type}</div>
-              </div>
-              <div style={{ fontSize: 11, color: 'var(--muted)' }}>{l.when}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MiniChart() {
-  const points = [30, 40, 35, 60, 50, 70, 65, 80, 75, 90, 82, 95, 88, 110, 105, 120, 100, 130, 125, 140, 135, 155, 148, 170, 160, 185, 178, 200, 190, 220];
-  const max = Math.max(...points);
-  const W = 400, H = 120;
-  const step = W / (points.length - 1);
-  const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${i * step} ${H - (p / max) * H * 0.9}`).join(' ');
-  const area = path + ` L ${W} ${H} L 0 ${H} Z`;
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={120} preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="grad1" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="var(--accent)" stopOpacity="0.25" />
-          <stop offset="1" stopColor="var(--accent)" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <path d={area} fill="url(#grad1)" />
-      <path d={path} stroke="var(--accent)" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" style={{ strokeDasharray: 1200, strokeDashoffset: 0, animation: 'drawLine 1.8s var(--ease-out)' }} />
-      <style>{`@keyframes drawLine { from { stroke-dashoffset: 1200; } to { stroke-dashoffset: 0; } }`}
-  /* V1.12B Mobile QA */
-  @media (max-width: 820px) {
-    main { padding-left: 16px !important; padding-right: 16px !important; }
-    section { padding-left: 0 !important; padding-right: 0 !important; }
-  }
-  @media (max-width: 480px) {
-    /* Extreme small: ytterligare kompaktering */
-    nav { padding: 12px 16px !important; }
-  }
-</style>
-    </svg>
-  );
-}
-
-function PortalTicket() {
-  const [title, setTitle] = useState('Byt hero-bild på startsidan');
-  const [msg, setMsg] = useState('Hej! Kan ni byta hero-bilden till den nya med mig och teamet? Bifogar den. Tack!');
-  const [priority, setPriority] = useState('normal');
-  return (
-    <div>
-      <h3 style={{ fontSize: 24, letterSpacing: '-0.03em', marginBottom: 4 }}>Skapa ärende</h3>
-      <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 24 }}>Svar inom 4 timmar på vardagar. Ändringar lösta samma dag.</p>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 20 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div>
-            <label style={{ fontSize: 12, color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em' }}>Rubrik</label>
-            <input value={title} onChange={e => setTitle(e.target.value)} style={{ width: '100%', padding: '12px 14px', border: '1px solid var(--line)', borderRadius: 10, fontSize: 14, marginTop: 6, fontFamily: 'inherit', background: '#fff' }} />
-          </div>
-          <div>
-            <label style={{ fontSize: 12, color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em' }}>Beskrivning</label>
-            <textarea value={msg} onChange={e => setMsg(e.target.value)} rows={5} style={{ width: '100%', padding: '12px 14px', border: '1px solid var(--line)', borderRadius: 10, fontSize: 14, marginTop: 6, fontFamily: 'inherit', resize: 'none', background: '#fff' }} />
-          </div>
-          <div>
-            <label style={{ fontSize: 12, color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: 6 }}>Prioritet</label>
-            <div style={{ display: 'flex', gap: 6 }}>
-              {['låg', 'normal', 'hög'].map(p => (
-                <button key={p} onClick={() => setPriority(p)} style={{
-                  padding: '8px 14px', borderRadius: 8, fontSize: 13,
-                  background: priority === p ? 'var(--ink)' : '#fff',
-                  color: priority === p ? '#fff' : 'var(--ink-2)',
-                  border: '1px solid var(--line)',
-                  textTransform: 'capitalize',
-                }}>{p}</button>
-              ))}
-            </div>
-          </div>
-          <button className="btn btn-primary" style={{ alignSelf: 'flex-start', marginTop: 6 }}>Skicka ärende <Icon.arrow /></button>
-        </div>
-        <div style={{ background: 'var(--bg)', borderRadius: 12, padding: 18, border: '1px solid var(--line)' }}>
-          <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 12 }}>Aktiva ärenden (2)</div>
-          {[
-            { id: '#CL-482', t: 'Lägg till bokningssida för konsultation', s: 'Pågår', c: 'var(--accent)' },
-            { id: '#CL-479', t: 'Ny logga från designer', s: 'Klart idag', c: 'var(--success)' },
-          ].map((t, i) => (
-            <div key={i} style={{ padding: 10, borderRadius: 8, background: '#fff', border: '1px solid var(--line)', marginBottom: 8 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace" }}>
-                <span>{t.id}</span>
-                <span style={{ color: t.c }}>● {t.s}</span>
-              </div>
-              <div style={{ fontSize: 13, marginTop: 4 }}>{t.t}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PortalBilling() {
-  return (
-    <div>
-      <h3 style={{ fontSize: 24, letterSpacing: '-0.03em', marginBottom: 20 }}>Prenumeration & fakturering</h3>
-      <div style={{ background: 'var(--ink)', color: 'var(--bg)', borderRadius: 14, padding: 24, marginBottom: 20, position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: -30, right: -30, width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, color-mix(in srgb, var(--accent) 35%, transparent), transparent 70%)', filter: 'blur(30px)' }} />
-        <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div>
-            <div style={{ fontSize: 11, color: '#9A978F', fontFamily: "'JetBrains Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.1em' }}>Nuvarande paket</div>
-            <div style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 36, letterSpacing: '-0.035em', fontWeight: 500, marginTop: 6 }}>Shop · 599 kr/mån</div>
-            <div style={{ fontSize: 13, color: '#9A978F', marginTop: 4 }}>Nästa faktura: 15 maj 2026</div>
-          </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <button style={{ padding: '10px 16px', borderRadius: 999, background: '#B8FF3C', color: '#0A0A0A', fontSize: 13, fontWeight: 500 }}>Uppgradera</button>
-            <button style={{ padding: '10px 16px', borderRadius: 999, background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#E6E6E0', fontSize: 13 }}>Pausa</button>
-          </div>
-        </div>
-      </div>
-      <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 10 }}>Fakturor</div>
-      <div style={{ background: 'var(--bg)', borderRadius: 12, border: '1px solid var(--line)', overflow: 'hidden' }}>
-        {[
-          { d: '15 apr 2026', n: 'CL-2026-04', a: '599 kr', s: 'Betald' },
-          { d: '15 mar 2026', n: 'CL-2026-03', a: '599 kr', s: 'Betald' },
-          { d: '15 feb 2026', n: 'CL-2026-02', a: '599 kr', s: 'Betald' },
-          { d: '15 jan 2026', n: 'CL-2026-01', a: '599 kr', s: 'Betald' },
-        ].map((r, i) => (
-          <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr 1fr 1fr auto', gap: 16, padding: '14px 18px', borderBottom: i < 3 ? '1px solid var(--line)' : 'none', alignItems: 'center', fontSize: 13 }}>
-            <span>{r.d}</span>
-            <span className="mono" style={{ color: 'var(--muted)' }}>{r.n}</span>
-            <span className="mono">{r.a}</span>
-            <span style={{ color: 'var(--success)' }}>● {r.s}</span>
-            <button style={{ fontSize: 12, color: 'var(--accent)' }}>Hämta PDF →</button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function PortalStats() {
-  return (
-    <div>
-      <h3 style={{ fontSize: 24, letterSpacing: '-0.03em', marginBottom: 20 }}>Statistik</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
-        <KPI label="Sessioner (30d)" value="4 892" trend="↑ 18%" />
-        <KPI label="Unika besökare" value="3 214" trend="↑ 14%" />
-        <KPI label="Konvertering" value="2.4%" trend="↑ 0.3pp" />
-        <KPI label="Avvisning" value="38%" trend="↓ 4pp bättre" />
-      </div>
-      <div style={{ background: 'var(--bg)', borderRadius: 12, padding: 20, border: '1px solid var(--line)', marginBottom: 16 }}>
-        <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 14 }}>Trafik per dag</div>
-        <MiniChart />
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-        <div style={{ background: 'var(--bg)', borderRadius: 12, padding: 20, border: '1px solid var(--line)' }}>
-          <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 14 }}>Toppkällor</div>
-          {[
-            { s: 'Google Search', p: 64 },
-            { s: 'Direkt', p: 22 },
-            { s: 'Instagram', p: 9 },
-            { s: 'Facebook', p: 5 },
-          ].map((r, i) => (
-            <div key={i} style={{ marginBottom: 10 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 4 }}>
-                <span>{r.s}</span>
-                <span className="mono" style={{ color: 'var(--muted)' }}>{r.p}%</span>
-              </div>
-              <div style={{ height: 6, background: 'var(--line)', borderRadius: 3, overflow: 'hidden' }}>
-                <div style={{ width: `${r.p}%`, height: '100%', background: 'var(--accent)', borderRadius: 3 }} />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div style={{ background: 'var(--bg)', borderRadius: 12, padding: 20, border: '1px solid var(--line)' }}>
-          <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 14 }}>Toppsidor</div>
-          {[
-            { s: '/tjanster/badrum', p: '1 240 visningar' },
-            { s: '/kontakt', p: '890 visningar' },
-            { s: '/referenser', p: '642 visningar' },
-            { s: '/om-oss', p: '418 visningar' },
-          ].map((r, i) => (
-            <div key={i} style={{ padding: '8px 0', borderBottom: i < 3 ? '1px solid var(--line)' : 'none', display: 'flex', justifyContent: 'space-between' }}>
-              <span className="mono" style={{ fontSize: 12 }}>{r.s}</span>
-              <span style={{ fontSize: 12, color: 'var(--muted)' }}>{r.p}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PortalEditor() {
-  return (
-    <div>
-      <h3 style={{ fontSize: 24, letterSpacing: '-0.03em', marginBottom: 6 }}>Redigera innehåll</h3>
-      <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 20 }}>Klicka på vad som helst för att ändra. Sparas automatiskt.</p>
-      <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: 16 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          {['Startsida', 'Tjänster', 'Referenser', 'Om oss', 'Kontakt'].map((p, i) => (
-            <button key={i} style={{
-              textAlign: 'left', padding: '10px 12px', borderRadius: 8,
-              background: i === 0 ? 'var(--bg-warm)' : 'transparent',
-              fontSize: 13, color: i === 0 ? 'var(--ink)' : 'var(--muted)',
-              fontWeight: i === 0 ? 500 : 400,
-            }}>
-              {p}
-            </button>
-          ))}
-        </div>
-        <div style={{ background: '#fff', border: '1px solid var(--line)', borderRadius: 12, padding: 28, position: 'relative' }}>
-          <div style={{ position: 'absolute', top: 10, right: 10, fontSize: 10, color: 'var(--success)', fontFamily: "'JetBrains Mono', monospace", display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--success)' }} />
-            SPARAT · för 2 sek sedan
-          </div>
-          <div style={{ display: 'inline-block', padding: '2px 6px', background: 'color-mix(in srgb, var(--accent) 10%, transparent)', border: '1px dashed var(--accent)', borderRadius: 4, fontSize: 11, color: 'var(--accent)', fontFamily: "'JetBrains Mono', monospace", marginBottom: 14 }}>
-            ⌶ H1
-          </div>
-          <div contentEditable suppressContentEditableWarning style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 38, fontWeight: 600, letterSpacing: '-0.035em', outline: 'none', marginBottom: 12 }}>
-            Bygg som håller. Från Göteborg.
-          </div>
-          <div contentEditable suppressContentEditableWarning style={{ fontSize: 15, color: 'var(--muted)', outline: 'none', lineHeight: 1.5 }}>
-            Vi är en familjeägd byggfirma med 28 års erfarenhet. Specialiserade på badrumsrenoveringar, kök och tillbyggnader i Göteborgsområdet.
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PortalDomain() {
-  return (
-    <div>
-      <h3 style={{ fontSize: 24, letterSpacing: '-0.03em', marginBottom: 20 }}>Domän & mail</h3>
-      <div style={{ background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: 12, padding: 20, marginBottom: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 44, height: 44, borderRadius: 10, background: 'var(--accent)', display: 'grid', placeItems: 'center', color: '#fff', fontFamily: "'Inter Tight', sans-serif", fontSize: 20, fontWeight: 600 }}>L</div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 14, fontWeight: 500 }}>lindstroms-bygg.se</div>
-            <div style={{ fontSize: 12, color: 'var(--muted)' }}>SSL aktiv · DNS konfigurerad · Förnyas 12 mars 2027</div>
-          </div>
-          <span style={{ padding: '6px 10px', background: 'color-mix(in srgb, var(--success) 12%, transparent)', color: 'var(--success)', borderRadius: 6, fontSize: 11, fontWeight: 500 }}>✓ Aktiv</span>
-        </div>
-      </div>
-      <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 10 }}>Mailboxar (2 av 2)</div>
-      <div style={{ background: 'var(--bg)', borderRadius: 12, border: '1px solid var(--line)', overflow: 'hidden' }}>
-        {[
-          { e: 'anna@lindstroms-bygg.se', r: 'Ägare', used: '2.4 GB / 15 GB' },
-          { e: 'info@lindstroms-bygg.se', r: 'Info', used: '0.8 GB / 15 GB' },
-        ].map((m, i) => (
-          <div key={i} style={{ padding: '14px 18px', borderBottom: i === 0 ? '1px solid var(--line)' : 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: 13, fontFamily: "'JetBrains Mono', monospace" }}>{m.e}</div>
-              <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>{m.r} · {m.used}</div>
-            </div>
-            <button style={{ fontSize: 12, color: 'var(--accent)' }}>Hantera →</button>
-          </div>
-        ))}
-      </div>
-      <button className="btn btn-ghost" style={{ marginTop: 16, padding: '10px 16px', fontSize: 13 }}>
-        + Uppgradera för fler mailboxar
-      </button>
-    </div>
-  );
-}
-
-function PortalSupport() {
-  return (
-    <div>
-      <h3 style={{ fontSize: 24, letterSpacing: '-0.03em', marginBottom: 20 }}>Support-chatt</h3>
-      <div style={{ background: 'var(--bg)', borderRadius: 12, border: '1px solid var(--line)', height: 380, display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--line)', display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--accent)', color: '#fff', display: 'grid', placeItems: 'center', fontFamily: "'Inter Tight', sans-serif", fontSize: 13, fontWeight: 500 }}>JO</div>
-          <div>
-            <div style={{ fontSize: 13, fontWeight: 500 }}>Johan · Clarti-teamet</div>
-            <div style={{ fontSize: 11, color: 'var(--success)' }}>● Online nu</div>
-          </div>
-        </div>
-        <div style={{ flex: 1, padding: 18, display: 'flex', flexDirection: 'column', gap: 10, overflow: 'hidden' }}>
-          <div style={{ alignSelf: 'flex-start', maxWidth: '70%', background: '#fff', border: '1px solid var(--line)', padding: '10px 14px', borderRadius: '14px 14px 14px 2px', fontSize: 13 }}>
-            Hej Anna! Hur kan jag hjälpa idag?
-          </div>
-          <div style={{ alignSelf: 'flex-end', maxWidth: '70%', background: 'var(--ink)', color: 'var(--bg)', padding: '10px 14px', borderRadius: '14px 14px 2px 14px', fontSize: 13 }}>
-            Kan vi lägga till en bokningsknapp på tjänst-sidan?
-          </div>
-          <div style={{ alignSelf: 'flex-start', maxWidth: '70%', background: '#fff', border: '1px solid var(--line)', padding: '10px 14px', borderRadius: '14px 14px 14px 2px', fontSize: 13 }}>
-            Absolut — fixar det på 20 min. Skickar länk när det är live.
-          </div>
-          <div style={{ alignSelf: 'flex-start', fontSize: 11, color: 'var(--muted)', paddingLeft: 8 }}>Johan skriver...</div>
-        </div>
-        <div style={{ padding: 12, borderTop: '1px solid var(--line)', display: 'flex', gap: 8 }}>
-          <input placeholder="Skriv ett meddelande..." style={{ flex: 1, padding: '10px 14px', border: '1px solid var(--line)', borderRadius: 999, fontSize: 13, fontFamily: 'inherit', background: '#fff' }} />
-          <button className="btn btn-primary" style={{ padding: '10px 16px', fontSize: 13 }}>Skicka</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PortalShop() {
-  return (
-    <div>
-      <h3 style={{ fontSize: 24, letterSpacing: '-0.03em', marginBottom: 4 }}>Webshop</h3>
-      <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 20 }}>32 produkter · 14 ordrar idag · 9 240 kr i försäljning</p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-        {[
-          { n: 'Snickarbyxa Pro', p: '1 490 kr', s: 24 },
-          { n: 'Arbetshandskar', p: '249 kr', s: 128 },
-          { n: 'Verktygsbälte', p: '890 kr', s: 18 },
-          { n: 'Säkerhetsskor', p: '1 290 kr', s: 42 },
-          { n: 'Hjälm', p: '399 kr', s: 67 },
-          { n: 'Regnjacka', p: '990 kr', s: 12 },
-        ].map((p, i) => (
-          <div key={i} style={{ background: 'var(--bg)', borderRadius: 12, padding: 14, border: '1px solid var(--line)' }}>
-            <div style={{ height: 100, background: 'repeating-linear-gradient(135deg, var(--bg-warm) 0 10px, var(--bg-dim) 10px 20px)', borderRadius: 8, marginBottom: 10, display: 'grid', placeItems: 'center', color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", fontSize: 10 }}>
-              [produkt]
-            </div>
-            <div style={{ fontSize: 13, fontWeight: 500 }}>{p.n}</div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
-              <span className="mono" style={{ fontSize: 13 }}>{p.p}</span>
-              <span style={{ fontSize: 11, color: 'var(--muted)' }}>{p.s} i lager</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-window.PortalPreview = PortalPreview;
-// CTA, FAQ, Footer, Tweaks
-
-function FAQ() {
-  const items = [
-    { q: 'Vad menar ni med “gratis bygge först”?', a: 'Exakt som det låter. Vi bygger din kompletta hemsida innan du betalar en krona. Du får en live-länk att titta på, visa vem du vill, och bestämma i lugn och ro. 0 kr tills du säger ja till ett paket.' },
-    { q: 'Vad händer om jag inte gillar förslaget?', a: 'Då justerar vi — utan extra kostnad. Om vi trots allt inte träffar rätt går vi skilda vägar utan kostnad. Ingen faktura, inget kortuppgift, ingen hård försäljning.' },
-    { q: 'Vad ingår i priset?', a: 'Hosting, domän (.se), SSL-certifikat, obegränsade ändringar via portalen, månatliga säkerhetskopior, 24/7 uptime-monitorering. Det är ett månadspris — inga hidden fees.' },
-    { q: 'Hur snabbt går det?', a: 'Första versionen på 24–48 timmar efter brief. Eventuella justeringar inom samma vecka. Live-publicering så fort du säger ja.' },
-    { q: 'Kan jag byta paket senare?', a: 'När som helst, upp eller ner. Uppgradering ger direkt tillgång. Nedgradering sker vid nästa faktureringsperiod. Allt hanterar du själv i portalen.' },
-    { q: 'Äger jag min hemsida?', a: 'Ja. Du äger ditt innehåll, din domän och dina kundregister. Om du säger upp oss hjälper vi dig att flytta allt till en annan leverantör.' },
-    { q: 'Vad är bindningstiden?', a: 'Ingen. 1 månads uppsägning, när som helst. Inga straffavgifter.' },
-    { q: 'Hur hanteras support?', a: 'Portal-chatt med svar inom 4h på vardagar. Ärenden med kod-ändringar lösta samma dag. Om vi inte håller SLA får du månaden gratis.' },
-  ];
-  return (
-    <section id="faq" className="section-pad" style={{ background: 'var(--bg)' }}>
-      <div className="container" style={{ maxWidth: 880 }}>
-        <Reveal>
-          <div className="eyebrow" style={{ marginBottom: 18 }}>Vanliga frågor</div>
-        </Reveal>
-        <Reveal delay={80}>
-          <h2 style={{ fontSize: 'clamp(40px, 5vw, 60px)', marginBottom: 40 }}>
-            Allt du vill veta.<br/>
-            <span style={{ color: 'var(--muted)' }}>Utan finstilt.</span>
-          </h2>
-        </Reveal>
-        {items.map((it, i) => (
-          <Reveal key={i} delay={i * 50}>
-            <details className="faq">
-              <summary>
-                {it.q}
-                <span className="plus">+</span>
-              </summary>
-              <p>{it.a}</p>
-            </details>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function FinalCTA() {
-  return (
-    <section id="cta" className="section-pad" style={{ background: 'var(--ink)', color: 'var(--bg)', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: '-30%', left: '50%', transform: 'translateX(-50%)', width: '80%', aspectRatio: '2/1', background: 'radial-gradient(ellipse at center, color-mix(in srgb, var(--accent) 28%, transparent), transparent 55%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
-      <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
-        <Reveal>
-          <div className="eyebrow" style={{ marginBottom: 24, color: '#B8FF3C', justifyContent: 'center', display: 'inline-flex' }}>
-            Redo att komma igång?
-          </div>
-        </Reveal>
-        <Reveal delay={100}>
-          <h2 className="display" style={{ fontSize: 'clamp(52px, 8vw, 120px)', letterSpacing: '-0.05em', color: 'var(--bg)', marginBottom: 28, maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto' }}>
-            Se din hemsida<br/>
-            <span style={{ color: '#76766E' }}>innan du betalar.</span>
-          </h2>
-        </Reveal>
-        <Reveal delay={220}>
-          <p style={{ fontSize: 20, color: '#9A978F', maxWidth: 540, margin: '0 auto 40px' }}>
-            Tre minuters brief nu. Färdig sajt på torsdag. Beslut när du är redo — inte en sekund tidigare.
-          </p>
-        </Reveal>
-        <Reveal delay={340}>
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="brief.html" className="btn" style={{ background: '#B8FF3C', color: '#0A0A0A', padding: '18px 28px', fontSize: 17 }}>
-              Starta gratis — 3 min <Icon.arrow />
-            </a>
-            <a href="brief.html" className="btn" style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', padding: '18px 28px', fontSize: 17 }}>
-              Boka 15-min demo
-            </a>
-          </div>
-        </Reveal>
-        <Reveal delay={460}>
-          <div style={{ marginTop: 40, display: 'flex', justifyContent: 'center', gap: 32, fontSize: 13, color: '#76766E', flexWrap: 'wrap' }}>
-            <span>✓ 0 kr idag</span>
-            <span>✓ Inget kortuppgift</span>
-            <span>✓ Se sajten först</span>
-            <span>✓ Svenska team</span>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer>
-      <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: 48, paddingBottom: 60, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-          <div>
-            <div className="logo" style={{ color: '#fff', marginBottom: 16 }}>
-              <span className="logo-dot"></span>Clarti
-            </div>
-            <p style={{ fontSize: 14, color: '#9A978F', maxWidth: 320, lineHeight: 1.55 }}>
-              Proffsig hemsida för ditt företag. Vi bygger den gratis. Du betalar bara om du vill behålla den.
-            </p>
-            <div style={{ marginTop: 20, fontSize: 12, color: '#76766E', fontFamily: "'JetBrains Mono', monospace" }}>
-              Byggda i Stockholm · Tjänar hela Sverige
-            </div>
-          </div>
-          <div>
-            <h5>Produkt</h5>
-            <ul>
-              <li><a href="#paket">Paket</a></li>
-              <li><a href="#jamf">Jämförelse</a></li>
-              <li><a href="#portal">Kundportal</a></li>
-              <li><a href="#hur">Hur det funkar</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Företag</h5>
-            <ul>
-              <li><a href="om-oss.html">Om oss</a></li>
-              <li><a href="kunder.html">Kunder</a></li>
-              <li><a href="blog.html">Blog</a></li>
-              <li><a href="jobb.html">Jobb</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5>Support</h5>
-            <ul>
-              <li><a href="hjalpcenter.html">Hjälpcenter</a></li>
-              <li><a href="mailto:hej@clarti.se">Kontakt</a></li>
-              <li><a href="status.html">Status</a></li>
-              <li><a href="integritet.html">GDPR</a></li>
-            </ul>
-          </div>
-        </div>
-        <div style={{ padding: '28px 0', display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#76766E', flexWrap: 'wrap', gap: 12 }}>
-          <div>© 2026 Clarti AB · Org.nr 559-000-0000</div>
-          <div style={{ display: 'flex', gap: 20 }}>
-            <a href="villkor.html">Villkor</a>
-            <a href="integritet.html">Integritet</a>
-            <a href="integritet.html#cookies">Cookies</a>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-// Tweaks panel — accentfärg, animationsintensitet, portal on/off
-function TweaksPanel({ config, onChange }) {
-  const [open, setOpen] = useState(true);
-  const swatches = [
-    { name: 'Indigo', v: '#4F46E5', soft: '#EEF0FF' },
-    { name: 'Accent orange', v: '#D84315', soft: '#FFEDE6' },
-    { name: 'Apple blue', v: '#0066FF', soft: '#E6F0FF' },
-    { name: 'Deep black', v: '#0A0A0A', soft: '#F0F0EE' },
-    { name: 'Forest', v: '#0F8F5C', soft: '#E6F5EE' },
-    { name: 'Magenta', v: '#C026D3', soft: '#FBE6FE' },
-  ];
-  if (!open) {
-    return (
-      <button onClick={() => setOpen(true)} style={{
-        position: 'fixed', right: 24, bottom: 24, zIndex: 100,
-        background: 'rgba(255,255,255,0.72)', backdropFilter: 'blur(20px)',
-        border: '1px solid var(--line)', borderRadius: 999, padding: '10px 16px',
-        boxShadow: 'var(--shadow)', fontSize: 13, fontFamily: "'JetBrains Mono', monospace",
-        display: 'flex', alignItems: 'center', gap: 6,
-      }}>
-        <Icon.sparkle /> Tweaks
-      </button>
-    );
-  }
-  return (
-    <div className="tweaks-panel">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-        <h4 style={{ margin: 0 }}>Tweaks</h4>
-        <button onClick={() => setOpen(false)} style={{ fontSize: 14, color: 'var(--muted)' }}>×</button>
-      </div>
-      <div className="tweaks-row">
-        <label>Accentfärg</label>
-        <div className="tweaks-swatches">
-          {swatches.map(s => (
-            <button key={s.v} className={`swatch ${config.accent === s.v ? 'active' : ''}`} onClick={() => onChange({ accent: s.v, accentSoft: s.soft })} style={{ background: s.v }} title={s.name} />
-          ))}
-        </div>
-      </div>
-      <div className="tweaks-row">
-        <label>Animationsintensitet <span className="mono">{config.motion.toFixed(1)}</span></label>
-        <input type="range" min="0" max="1" step="0.1" value={config.motion} onChange={e => onChange({ motion: parseFloat(e.target.value) })} />
-      </div>
-      <div className="tweaks-row">
-        <label className="toggle">
-          <input type="checkbox" checked={config.showPortal} onChange={e => onChange({ showPortal: e.target.checked })} />
-          Visa kundportal-sektion
-        </label>
-      </div>
-    </div>
-  );
-}
-
-window.FAQ = FAQ;
-window.FinalCTA = FinalCTA;
-window.Footer = Footer;
-window.TweaksPanel = TweaksPanel;
-
-</script>
-
-<script type="text/babel" data-presets="react">
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accent": "#4F46E5",
-  "accentSoft": "#EEF0FF",
-  "motion": 1,
-  "showPortal": true
-}/*EDITMODE-END*/;
-
-function App() {
-  const { useState, useEffect } = React;
-  const [config, setConfig] = useState(TWEAK_DEFAULTS);
-  const [tweaksOn, setTweaksOn] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty('--accent', config.accent);
-    document.documentElement.style.setProperty('--accent-soft', config.accentSoft);
-    document.documentElement.style.setProperty('--motion', config.motion);
-  }, [config]);
-
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.data?.type === '__activate_edit_mode') setTweaksOn(true);
-      if (e.data?.type === '__deactivate_edit_mode') setTweaksOn(false);
-    };
-    window.addEventListener('message', handler);
-    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
-    return () => window.removeEventListener('message', handler);
-  }, []);
-
-  const updateConfig = (patch) => {
-    const next = { ...config, ...patch };
-    setConfig(next);
-    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: patch }, '*');
-  };
-
-  return (
-    <>
-      <Nav />
-      <Hero />
-      <TrustBar />
-      <HowItWorks />
-      <Pricing />
-      <VsAgency />
-      {config.showPortal && <PortalPreview />}
-      <Testimonials />
-      <Guarantee />
-      <FAQ />
-      <FinalCTA />
-      <Footer />
-      {tweaksOn && <TweaksPanel config={config} onChange={updateConfig} />}
-    </>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-</script>
-<script>
-/* Clarti Mobile Navigation
- * Auto-injects hamburger menu on all pages with a .nav element.
- * Detects current page and marks active link.
- * Closes on link-click, ESC, or clicking outside.
- */
-(function() {
-  'use strict';
-  
-  function init() {
-    // Hitta nav-container: primärt .nav > .nav-inner, fallback till nav.top, .top, eller första <nav>
-    let nav = document.querySelector('.nav .nav-inner');
-    if (!nav) {
-      const topNav = document.querySelector('nav.top, nav.nav, nav');
-      if (topNav) nav = topNav;
-    }
-    if (!nav) return;
-
-    // Förhindra dubbel-injektion
-    if (document.querySelector('.mobile-menu-btn')) return;
-
-    // 1. Skapa hamburger-knappen
-    const btn = document.createElement('button');
-    btn.className = 'mobile-menu-btn';
-    btn.setAttribute('aria-label', 'Öppna meny');
-    btn.setAttribute('aria-expanded', 'false');
-    btn.innerHTML = '<span class="mm-lines"><span class="mm-line"></span><span class="mm-line"></span><span class="mm-line"></span></span>';
-    nav.appendChild(btn);
-
-    // 2. Skapa menu-panelen
-    const panel = document.createElement('div');
-    panel.className = 'mobile-menu-panel';
-    panel.setAttribute('aria-hidden', 'true');
-    
-    const currentPage = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-    
-    const links = [
-      { href: 'index.html', text: 'Hem', key: 'index.html' },
-      { href: 'index.html#hur', text: 'Hur det funkar' },
-      { href: 'index.html#paket', text: 'Paket' },
-      { href: 'priser.html', text: 'Priser', key: 'priser.html' },
-      { href: 'kunder.html', text: 'Kunder', key: 'kunder.html' },
-      { href: 'blog.html', text: 'Blog', key: 'blog.html' },
-      { href: 'om-oss.html', text: 'Om oss', key: 'om-oss.html' },
-      { href: 'hjalpcenter.html', text: 'Hjälpcenter', key: 'hjalpcenter.html' },
-      { divider: true },
-      { href: 'login.html', text: 'Logga in', key: 'login.html' },
-      { href: 'brief.html', text: 'Starta gratis →', accent: true, key: 'brief.html' },
-    ];
-
-    let html = '';
-    for (const l of links) {
-      if (l.divider) {
-        html += '<div class="mm-divider"></div>';
-        continue;
-      }
-      const isActive = l.key && l.key === currentPage;
-      const classes = [];
-      if (l.accent) classes.push('accent');
-      if (isActive) classes.push('active');
-      const activeDot = isActive ? '<span style="color: var(--accent); font-size: 14px;">•</span>' : '';
-      html += '<a href="' + l.href + '" class="' + classes.join(' ') + '">' + l.text + activeDot + '</a>';
-    }
-    
-    html += '<div class="mm-footer">© 2026 Clarti AB</div>';
-    panel.innerHTML = html;
-    document.body.appendChild(panel);
-
-    // 3. Toggle-logik
-    function openMenu() {
-      btn.classList.add('open');
-      panel.classList.add('open');
-      btn.setAttribute('aria-expanded', 'true');
-      panel.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeMenu() {
-      btn.classList.remove('open');
-      panel.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-      panel.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
-    function toggleMenu() {
-      if (panel.classList.contains('open')) closeMenu();
-      else openMenu();
-    }
-
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      toggleMenu();
-    });
-
-    // Stäng på länkklick (utom på anchor-länkar för nuvarande sida)
-    panel.querySelectorAll('a').forEach(function(a) {
-      a.addEventListener('click', function() {
-        setTimeout(closeMenu, 100);
-      });
-    });
-
-    // ESC stänger
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && panel.classList.contains('open')) closeMenu();
-    });
-
-    // Klick utanför stänger
-    document.addEventListener('click', function(e) {
-      if (!panel.classList.contains('open')) return;
-      if (!panel.contains(e.target) && !btn.contains(e.target)) closeMenu();
-    });
-
-    // Stäng om fönstret blir bredare än mobile-breakpoint
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function() {
-        if (window.innerWidth > 820 && panel.classList.contains('open')) closeMenu();
-      }, 100);
-    });
-  }
-
-  // Kör när DOM är klart
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-
-</script>
-
-
-<div class="mobile-menu-overlay" id="mobileMenu">
-  <a href="#hur" onclick="document.body.classList.remove('menu-open')">Hur det funkar</a>
-  <a href="#paket" onclick="document.body.classList.remove('menu-open')">Paket</a>
-  <a href="#jamf" onclick="document.body.classList.remove('menu-open')">Jämförelse</a>
-  <a href="#faq" onclick="document.body.classList.remove('menu-open')">Vanliga frågor</a>
-  <a href="brief.html" style="background:var(--ink);color:var(--bg);border-radius:12px;margin-top:20px;border-bottom:none;text-align:center;">Starta gratis →</a>
-</div>
-<script>
-// Injicera mobile menu-knapp i nav när den finns
-(function(){
-  function setup() {
-    const nav = document.querySelector('.nav-inner');
-    if (!nav) { setTimeout(setup, 100); return; }
-    if (nav.querySelector('.mobile-menu-btn')) return;
-    const btn = document.createElement('button');
-    btn.className = 'mobile-menu-btn';
-    btn.setAttribute('aria-label', 'Meny');
-    btn.innerHTML = '<span></span><span></span><span></span>';
-    btn.onclick = () => document.body.classList.toggle('menu-open');
-    nav.appendChild(btn);
-  }
-  setup();
-})();
-</script>
-</body>
-</html>
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script></body></html>
